@@ -20,6 +20,9 @@ from django.conf.urls import url,include
 from uaccounts import views as acc
 from booking import views as book
 from django.views.generic.base import TemplateView
+from django.conf.urls.static import static
+from django.conf import settings
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,4 +33,5 @@ urlpatterns = [
     url(r'^uaccounts/', include('uaccounts.urls')),
     url(r'^booking/', include('booking.urls')),
     url(r'^signout/$', acc.user_logout, name='logout'),
-]
+    #path('', include('booking.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
