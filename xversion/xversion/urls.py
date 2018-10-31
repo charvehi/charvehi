@@ -33,5 +33,5 @@ urlpatterns = [
     url(r'^uaccounts/', include('uaccounts.urls')),
     url(r'^booking/', include('booking.urls')),
     url(r'^signout/$', acc.user_logout, name='logout'),
-    #path('', include('booking.urls')),
+    path('', include('booking.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 
@@ -10,7 +11,9 @@ class Image(models.Model):
         verbose_name_plural = 'Category Images'
         db_table = 'Image'
 
-        #user = models.OneToOneField(User, on_delete=models.CASCADE)
+    def __str__(self):
+        return str(self.img)
+
 
 class Category(models.Model):
         c_id = models.AutoField(primary_key=True)
@@ -26,7 +29,10 @@ class Category(models.Model):
             db_table = 'Category'
 
         def __str__(self):
-            return 'Category {}'.format(self.c_id)
+            return self.category_name
+
+        def get_absolute_url(self):
+            return reverse('booking:category_list', args=[self.c_id, self.slug])
 
 
 

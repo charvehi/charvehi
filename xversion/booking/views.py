@@ -1,11 +1,9 @@
-# Create your views here.
-from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from time import gmtime, strftime
 from django.shortcuts import render, get_object_or_404
 from booking.models import Category, Image
-#from cart.forms import CartAddProductForm
+
 
 def index(request):
     return render(request,'booking/index.html')
@@ -24,7 +22,7 @@ def category_list(request, category_slug=None):
     category = Category.objects.filter(status=True)
     if category_slug:
         category = get_object_or_404(Category, slug=category_slug)
-        category = Category.objects.filter(category=category)
+        category = Category.objects.filter(status=True)
 
     context = {
         'category': category,
