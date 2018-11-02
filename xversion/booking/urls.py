@@ -5,12 +5,11 @@ import uaccounts.views as acc
 app_name = 'booking'
 #app_name = 'uaccounts'
 
-# Be careful setting the name to just /login use userlogin instead!
-urlpatterns=[
-    url(r'^ride/$', views.index, name='index'),
-    url(r'^category/$', views.category_list, name='sort_by_category'),
-    #url(r'^signup/$', acc.register, name='register'),
-    #url(r'^make/$', book.index, name='index'),
-]
+# Be careful setting the name to just /login use userlogin instead
 
-#(?P<category_slug>[-\w]+)
+urlpatterns = [
+    url(r'^ride/$', views.index, name='index'),
+    url(r'^$', views.model_list, name='model_list'),
+    url(r'^(?P<category_slug>[-\w]+)/$', views.model_list, name='model_list_by_category'),
+    url(r'^(?P<id>\d+)/(?P<slug>[-\w]+)/$', views.CategoryModel_detail, name='CategoryModel_detail'),
+]

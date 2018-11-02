@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from time import gmtime, strftime
 from django.shortcuts import render, get_object_or_404
-from booking.models import Category, Image
+from booking.models import Category, Image, CategoryModel, CategoryModelImage
 
 
 def index(request):
@@ -16,27 +16,27 @@ def datetime(request):
             return HttpResponseRedirect(reverse('portal_sec2'))
 
 
-def category_list(request, category_slug=None):
-    #category = None
-    #categories = Category.objects.all()
-    category = Category.objects.filter(status=True)
+def model_list(request, category_slug=None):
+    category = None
+    categories = Category.objects.all()
+    models = CategoryModel.objects.filter(status=1)
     if category_slug:
         category = get_object_or_404(Category, slug=category_slug)
-        category = Category.objects.filter(status=True)
+        models = CategoryModel.objects.filter(category=category)
 
     context = {
         'category': category,
-        #'categories': categories,
-        #'products': products
+        'categories': categories,
+        'models': models
     }
     return render(request, 'booking/category/list.html', context)
 
 
-'''def product_detail(request, id, slug):
-    product = get_object_or_404(Product, id=id, slug=slug, available=True)
-    cart_product_form = CartAddProductForm()
+def CategoryModel_detail(request, id, slug):
+    CategoryModel = get_object_or_404(CategoryModel, id=id, slug=slug, available=True)
+    cart_CategoryModel_form = CartAddCategoryModelForm()
     context = {
-        'product': product,
-        'cart_product_form': cart_product_form
+        'CategoryModel': CategoryModel,
+        'cart_CategoryModel_form': cart_CategoryModel_form
     }
-    return render(request, 'shop/product/detail.html', context)'''
+    return render(request, 'shop/CategoryModel/detail.html', context)

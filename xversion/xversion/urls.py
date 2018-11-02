@@ -26,12 +26,12 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('booking/', TemplateView.as_view(template_name='index.html'), name='index'),
+    #path('booking/', TemplateView.as_view(template_name='index.html'), name='index'),
     url(r'^$',book.index,name='index'),
     url(r'^$', acc.index, name='index'),
     url(r'^special/',acc.special,name='special'),
     url(r'^uaccounts/', include('uaccounts.urls')),
-    url(r'^booking/', include('booking.urls')),
+    url(r'^category/', include('booking.urls')),
     url(r'^signout/$', acc.user_logout, name='logout'),
-    path('', include('booking.urls')),
+    #path('', include('booking.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
