@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'uaccounts.apps.UaccountsConfig',
     'booking.apps.BookingConfig',
+    'dealer.apps.DealerConfig',
     'localflavor',
 
 ]

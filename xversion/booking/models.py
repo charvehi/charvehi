@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from dealer.models import Dealer
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 
@@ -33,7 +34,7 @@ class Category(models.Model):
             return self.category_name
 
         def get_absolute_url(self):
-            return reverse('booking:model_list_by_category', args=[self.slug])
+            return reverse('booking:model_list_by_category', args=[self.c_id, self.slug])
 
 
 class CategoryModelImage(models.Model):
@@ -50,8 +51,9 @@ class CategoryModelImage(models.Model):
 class CategoryModel(models.Model):   #Model storage table
     m_id = models.AutoField(primary_key=True)
     c_id = models.ForeignKey(Category, null=True, db_column='c_id', on_delete=models.CASCADE)
-    #dealer_id=models.ForeignKey()
+    d_id = models.ForeignKey(Dealer, null=True, db_column='d_id', on_delete=models.CASCADE)
     model_name = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=150, unique=True, db_index=True)
     price = models.IntegerField()
     model_image = models.ForeignKey(CategoryModelImage, db_column='image', null=True, on_delete=models.CASCADE)
     rating = models.IntegerField()
@@ -70,7 +72,11 @@ class CategoryModel(models.Model):   #Model storage table
         return self.model_name
 
     def get_absolute_url(self):
-        return reverse('booking:model_list', args=[self.m_id, self.slug])
+        return reverse('booking:category_model_details', args=[self.m_id, self.slug])
+
+
+    def get_detail_url(self):
+        return reverse('booking:category_model_details', args=[self.m_id, self.slug])
 
 
 

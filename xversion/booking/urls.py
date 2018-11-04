@@ -9,7 +9,8 @@ app_name = 'booking'
 
 urlpatterns = [
     url(r'^ride/$', views.index, name='index'),
-    url(r'^$', views.model_list, name='model_list'),
-    url(r'^(?P<category_slug>[-\w]+)/$', views.model_list, name='model_list_by_category'),
-    url(r'^(?P<id>\d+)/(?P<slug>[-\w]+)/$', views.CategoryModel_detail, name='CategoryModel_detail'),
+    url(r'^$', views.category_list, name='model_list'),
+    url(r'^category/$', views.category_list, name='model_list'),
+    url(r'^models/(?P<category_id>[-\w]+)/(?P<category_slug>[-\w]+)/$', views.category_model_list, name='model_list_by_category'),
+    url(r'^details/(?P<model_id>\d+)/(?P<model_slug>[-\w]+)/$', views.category_model_details, name='category_model_details'),
 ]

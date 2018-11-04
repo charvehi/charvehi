@@ -1,0 +1,37 @@
+{% load static %}
+{% block title %}
+    {% if category %}{{ category.name }} {% else %} Products {% endif %}
+{% endblock %}
+
+{% block content %}
+   <div class="container-fluid">
+      <div class="row" style="margin-top: 6%">
+
+        <div class="col-sm-8 blog-main">
+
+          <div class="blog-post">
+              <div class="row">
+                  {% for model in models %}
+                      <div class="col-md-4">
+                        <div class="thumbnail">
+                            <a href="{{ model.get_absolute_url }}">
+                                <img src="{% if model.image %} {{ model.image.url }} {% else %} {% static 'img/default.jpg' %} {% endif %}" alt="..." style="height: 130px; width: auto">
+                            </a>
+                            <div class="caption">
+                                <h3 class="text-center">
+                                    <a href="{{ model.get_detail_url }}">{{ model.model_name }}</a>
+                                </h3>
+                                <p class="text-center">Rs. {{ model.price }}</p>
+                            </div>
+                            <div class="caption">{{ model.dealer_name }}</div>
+                            <div class="caption">{{ model.dealer_address }}</div>
+                        </div>
+                      </div>
+                  {% endfor %}
+              </div>
+          </div><!-- /.blog-post -->
+
+        </div><!-- /.blog-main -->
+      </div>
+   </div>
+{% endblock %}
