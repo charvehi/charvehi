@@ -5,7 +5,7 @@ from django.core.validators import RegexValidator
 
 class UserProfileInfo(models.Model):
         #user = models.OneToOneField(User, on_delete=models.CASCADE)
-        uid =  models.BigIntegerField(primary_key=True, default=0)
+        uid =  models.AutoField(primary_key=True)
         name = models.CharField(max_length=60, default=0)
         email = models.EmailField(default=0, blank=False)
         password = models.CharField(max_length=50, default=0, blank=False)

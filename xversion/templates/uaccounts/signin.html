@@ -1,5 +1,6 @@
 {% extends 'uaccounts/base.html' %}
 {% block body_block %}
+{% if email is None %}
   <div class="container">
     <div class="jumbotron">
       <h1>Login here :</h1>
@@ -20,4 +21,21 @@
 
 </div>
   </div>
+{% else %}
+
+<div class="container">
+  <div class="jumbotron">
+    <h1>Welcome to the Xsite !</h1>
+    {% if email is not None%}
+        <h2>Hello {{ email }}</h2>
+    {% else %}
+        <h2>You are not authenticated.</h2>
+    {% endif %}
+  </div>
+</div>
+
+{% block signout %}
+<li><a href = "{% url 'uaccounts:user_login' %}?action=logout">Logout</a></li>
+{% endblock %}
+{% endif %}
 {% endblock %}

@@ -1,6 +1,8 @@
 {% extends "booking/base.html" %}
 {% load staticfiles %}
 
+
+
 {% block body_block %}
   <div class="container">
     <div class="jumbotron">
@@ -21,6 +23,10 @@
         </form>
 
       {% endif %}
+
     </div>
+       <img src='{% static "img2.jpg" %}' alt="wallpaper" >
   </div>
 {% endblock %}
+
+<li><a href = "{% url 'uaccounts:user_login' %}?action=logout">Logout</a></li>

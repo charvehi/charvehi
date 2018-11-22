@@ -30,8 +30,8 @@ urlpatterns = [
     url(r'^$',book.index,name='index'),
     url(r'^$', acc.index, name='index'),
     url(r'^special/',acc.special,name='special'),
-    url(r'^uaccounts/', include('uaccounts.urls')),
-    url(r'^category/', include('booking.urls')),
+    url(r'^uaccounts/', include('uaccounts.urls'),name='uaccounts'),
+    url(r'^category/', include('booking.urls'),name="booking"),
     url(r'^signout/$', acc.user_logout, name='logout'),
     #path('', include('booking.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
