@@ -1,6 +1,6 @@
-from django.shortcuts import render
-from uaccounts.forms import UserForm, UserProfileInfoForm
-from uaccounts.models import UserProfileInfo
+from django.shortcuts import render, redirect
+from .forms import UserForm, UserProfileInfoForm
+from .models import UserProfileInfo
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
@@ -10,7 +10,7 @@ from django.contrib import auth
 
 def index(request):
     if request.session._session:
-        return render(request, 'booking/index.html')
+        return render(request, 'booking/aindex/index.html')
 
 
 @login_required
@@ -35,10 +35,20 @@ def register(request):
 
 
 def user_login(request):
-    if request.method == 'POST':
+    email = None
+
+    form = UserProfileInfoForm()
+    if request.method == 'GET':
+        if 'email' in request.session:
+            email = request.session['email']
+
+    elif request.method == 'POST':
         form = UserProfileInfoForm(request.POST or None)
         if form.is_valid():
             #cd = form.cleaned_data
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+
             email = request.POST.get("email")
             password = request.POST.get("password")
             print(email)
@@ -48,11 +58,12 @@ def user_login(request):
                 if user.is_active:
                     login(request, user)
                     user.is_authenticated = True
-                    #return render(request, 'uaccounts/home.html')
-                    request.session.set_expiry(86400)  # sets the exp. value of the session
-                    return index(request)
+                    request.session['email'] = email
+                    request.session.set_expiry(300)
+                    #return HttpResponseRedirect(reverse('index'))
+                    #request.session.set_expiry(300)
                 else:
-                    return HttpResponse("Your account was inactive.")
+                    email = None
             else:
                 print("Someone tried to login and failed.")
                 print("They used username: {} and password: {}".format(email, password))
@@ -60,9 +71,21 @@ def user_login(request):
         else:
             return HttpResponse("Form Invalid.")
 
+    if email is not None:
+        return HttpResponseRedirect(reverse('index'))
     else:
-        return render(request, 'uaccounts/signin.html', {})
+        return render(request, 'uaccounts/signin.html', {'email': email})
 
+
+def user_logout(request):
+    if request.method == 'GET':
+        if 'action' in request.GET:
+            action = request.GET.get('action')
+            if action == 'logout':
+                if request.session.has_key('email'):
+                    request.session.flush()
+                #return redirect('uaccounts:user_logout')
+        return render(request, 'uaccounts/signin.html')
 '''
 def index(request):
     return render(request,'uaccounts/home.html')

@@ -2,12 +2,18 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from time import gmtime, strftime
 from django.shortcuts import render, get_object_or_404
+from booking.forms import IndexBookForm
 from booking.models import Category, Image, CategoryModel, CategoryModelImage
 from dealer.models import Dealer
 
 
 def index(request):
-    return render(request,'booking/index.html')
+    return render(request, 'booking/aindex/index.html')
+
+
+def location(request):
+    return render(request, 'booking/aindex/map.html')
+
 
 def datetime(request):
     if request.method == 'POST':
@@ -15,6 +21,28 @@ def datetime(request):
             return strftime("%Y-%m-%d %H:%M:%S", gmtime())
         elif request.POST.get("schedule"):
             return HttpResponseRedirect(reverse('portal_sec2'))
+
+
+def index_book_form(request):
+    '''if request.method == 'POST':
+        form = IndexBookForm(request.POST)
+        if form.is_valid():
+            return HttpResponse('Form is valid')
+        return render(request, 'booking/catmodel/model_list.html')
+    else:
+        #form = IndexBookForm(request.POST)
+        #form = IndexBookForm()'''
+    form = IndexBookForm
+    return render(request, 'booking/aindex/index.html', {'form': form})
+
+'''def product_detail(request, id, slug):
+    product = get_object_or_404(Product, id=id, slug=slug, available=True)
+    cart_product_form = CartAddProductForm()
+    context = {
+        'product': product,
+        'cart_product_form': cart_product_form
+    }
+    return render(request, 'shop/product/detail.html', context)'''
 
 
 def category_list(request, category_id=None, category_slug=None):

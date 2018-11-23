@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'uaccounts.apps.UaccountsConfig',
     'booking.apps.BookingConfig',
     'dealer.apps.DealerConfig',
+    'orders.apps.OrdersConfig',
     'localflavor',
 
 ]
@@ -140,3 +141,7 @@ MEDIA_URL = '/media/'
 LOGIN_URL = '/uaccounts/signin/'
 LOGIN_REDIRECT_URL = '/booking/'
 LOGOUT_REDIRECT_URL = 'home'
+
+STATIC_URL = '/static/'
+
+CART_SESSION_ID = 'cart'
