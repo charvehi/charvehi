@@ -1,0 +1,37 @@
+{% load static %}
+{% block title %}
+    {% if modeldetails %}{{ modeldetails.model_name }} {% else %} Details {% endif %}
+{% endblock %}
+
+{% block content %}
+   <div class="container-fluid">
+      <div class="row" style="margin-top: 6%">
+
+        <div class="col-sm-8 blog-main">
+
+          <div class="blog-post">
+              <div class="row">
+                  {% for model in modeldetails %}
+                      <div class="col-md-4">
+                        <div class="thumbnail">
+                            <a href="{{ model.get_absolute_url }}">
+                                <img src="{% if model.image %} {{ model.image.url }} {% else %} {% static 'img/default.jpg' %} {% endif %}" alt="..." style="height: 130px; width: auto">
+                            </a>
+                            <div class="caption">
+                                <h3 class="text-center">
+                                    {{ model.model_name }}
+                                </h3>
+                                <p class="text-center">Rs. {{ model.price }}</p>
+                            </div>
+                            <div>{{ model.model_name }}</div>
+                            <div>{{ model.specification }}</div>
+                        </div>
+                      </div>
+                  {% endfor %}
+              </div>
+          </div><!-- /.blog-post -->
+
+        </div><!-- /.blog-main -->
+      </div>
+   </div>
+{% endblock %}
