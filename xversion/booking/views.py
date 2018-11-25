@@ -8,7 +8,12 @@ from dealer.models import Dealer
 
 
 def index(request):
-    return render(request, 'booking/aindex/index.html')
+    index_form = IndexBookForm(request.POST or None)
+    if index_form.is_valid():
+        index_form.save()
+
+    context = {'form': index_form}
+    return render(request, 'booking/aindex/index.html', context)
 
 
 def location(request):
@@ -24,16 +29,12 @@ def datetime(request):
 
 
 def index_book_form(request):
-    '''if request.method == 'POST':
-        form = IndexBookForm(request.POST)
-        if form.is_valid():
-            return HttpResponse('Form is valid')
-        return render(request, 'booking/catmodel/model_list.html')
-    else:
-        #form = IndexBookForm(request.POST)
-        #form = IndexBookForm()'''
-    form = IndexBookForm
-    return render(request, 'booking/aindex/index.html', {'form': form})
+    index_form = IndexBookForm(request.POST or None)
+    if index_form.is_valid():
+        index_form.save()
+
+    context = {'form': index_form}
+    return render(request, 'booking/aindex/index.html', context)
 
 '''def product_detail(request, id, slug):
     product = get_object_or_404(Product, id=id, slug=slug, available=True)

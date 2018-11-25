@@ -21,7 +21,7 @@ class UserForm(forms.ModelForm):
     email = forms.EmailField(required=True)
     password = forms.CharField(widget=forms.PasswordInput(), required=True)
     #phone_regex = RegexValidator(regex=r'^d{6,10}$', message="Invalid number.")
-    mobile = INZipCodeField(required=False)
+    #mobile = INZipCodeField(required=False)
     #gender = Gender
     #dob = forms.DateField(label='Birthday: ', initial="1990-06-21")
     #lat = forms.DecimalField(max_digits=9, decimal_places=6)
