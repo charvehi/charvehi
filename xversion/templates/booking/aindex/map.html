@@ -115,7 +115,7 @@
     <div id="button-layer">
 	<button id="btnAction" onclick="getLocation()">My Current Location</button>
 </div>
-    <p id="demo"></p>
+    <p id="demo" style="display: none"></p>
 
 <script>
 var x = document.getElementById("demo");
@@ -222,6 +222,12 @@ function showPosition(position) {
               bounds.extend(place.geometry.location);
             }
             document.getElementById('demo').innerHTML = place.geometry.location;
+            /*var cod1 = place.geometry.location.lat();
+            var cod2 = place.geometry.location.lng();
+            $.cookie('back_to_url_onPage_referesh', 1);
+            $.cookie('lat',cod1);
+            $.cookie('lng',cod2);
+            alert(cod1);*/
           });
           map.fitBounds(bounds);
         });

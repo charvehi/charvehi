@@ -140,7 +140,7 @@ MEDIA_URL = '/media/'
 
 LOGIN_URL = '/uaccounts/signin/'
 LOGIN_REDIRECT_URL = '/booking/'
-LOGOUT_REDIRECT_URL = 'home'
+#LOGOUT_REDIRECT_URL = 'home'
 
 STATIC_URL = '/static/'
 

@@ -1,33 +1,202 @@
-{% include "booking/aindex/base.html" %}
 {% load staticfiles %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Places Search Box</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 60%;
+        width: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #description {
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+      }
 
+      #infowindow-content .title {
+        font-weight: bold;
+      }
 
+      #infowindow-content {
+        display: none;
+      }
 
-{% block body_block %}
+      #map #infowindow-content {
+        display: inline;
+          position: absolute;
+          top: 20%;
+      }
+
+      .pac-card {
+        margin: 10px 10px 0 0;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        background-color: #fff;
+        font-family: Roboto;
+      }
+
+      #pac-container {
+        padding-bottom: 12px;
+        margin-right: 12px;
+      }
+
+      .pac-controls {
+        display: inline-block;
+        padding: 5px 11px;
+      }
+
+      .pac-controls label {
+        font-family: Roboto;
+        font-size: 13px;
+        font-weight: 300;
+      }
+
+      #pac-input {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 12px;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        border-radius: 0.5em;
+        border: 1px solid;
+        height: 2em;
+        width: 80%;
+      }
+
+      #pac-input:focus {
+        border-color: #4d90fe;
+      }
+
+      #title {
+        color: #fff;
+        background-color: #4d90fe;
+        font-size: 25px;
+        font-weight: 500;
+        padding: 6px 12px;
+      }
+      #target {
+        width: 345px;
+      }
+
+      /*Current location button*/
+      #btnAction {
+	    background: #3878c7;
+        padding: 10px 40px;
+        border: #3672bb 1px solid;
+        border-radius: 2px;
+        color: #FFF;
+        font-size: 0.9em;
+        cursor:pointer;
+        display:block;
+      }
+      #btnAction:disabled {
+        background: #6c99d2;
+      }
+    </style>
+    {% include "booking/aindex/base.html" %}
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
+    <script type="text/javascript" src="{% static 'js/gmaps.js' %}"></script>
+          <script>
+    $(document).ready(function() {
+        //$('#map').hide();
+        //$('#pac-input').hide();
+        //$('#btnAction').hide();
+    $('#id_location').focus(function() {
+        //$('#map').show();
+        //$('#pac-input').show();
+        //$('#btnAction').show();
+        //$('#book_form').hide();
+
+    });
+});
+    </script>
+
+      <script>
+        $(document).ready(function () {
+            $("#pac-input").keyup(function () {
+                var value = $(this).val();
+                $("#loc").val(value);
+            });
+        });
+      </script>
+
+    <script type="text/javascript">
+    window.onload = function(){
+      var form = document.getElementById("form-submit-btn");
+      form.onclick = function(){
+        var location = document.getElementById("loc");
+        var location_enc = encodeURIComponent(location.value);
+        var start = document.getElementById("start");
+        var end = document.getElementById("end");
+        var cord1 = document.getElementById("cord1");
+        var cord2 = document.getElementById("cord2");
+        window.location = "bike/category/?current_loc=" + location_enc + "&start=" + start.value + "&end=" + end.value + "&lat=" + cord1.value + "&lon=" + cord2.value;
+        return false;
+      };
+    };
+    </script>
+  </head>
+  <body>
+  {% block body_block %}
   <div class="container">
-    <div class="jumbotron">
+    <div class="jumbotron" id="book_form">
       {% if registered %}
         <h1>Welcome to the Xsite!</h1>
       {% else %}
         <h1>Book your bike now</h1>
         <h3>India on Wheels.</h3>
-                <h4>Join Us</h4>
-                            <li><a href="">{{ user.as_p }}</a></li>
-
-<form enctype="multipart/form-data" method="POST">
+<!--<form enctype="multipart/form-data" method="POST" action="{% url 'booking:model_list'%}">-->
           {% csrf_token %}
           {{ form.as_p }}
           {{ profile_form.as_p }}
-    <button type="submit" name="now" value="Now">Now</button>
-    <button type="submit" name="schedule" value="Schedule">Schedule</button>
-          <input type="submit" name="" value="Book Ride">
-        </form>
+    <button type="button" id="form-submit-btn" name="search-bike" tabindex="1" onclick="submitInput()">Book Ride</button>
+<!--</form>-->
 
       {% endif %}
 
     </div>
-       <img src='{% static "img2.jpg" %}' alt="wallpaper" >
   </div>
-{% endblock %}
+  {% endblock %}
+    <input id="pac-input" class="controls" type="text" placeholder="Search your location" style="position: absolute; top: 40px;">
+    <div id="map"></div>
+    <div id="button-layer">
+	<button id="btnAction" onclick="getLocation()">My Current Location</button>
+</div>
+    <p id="demo" style="display: none"></p>
+    <input id="cord1">
+    <input id="cord2">
+<script>
+var x = document.getElementById("demo");
 
-<li><a href = "{% url 'uaccounts:user_login' %}?action=logout">Logout</a></li>
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.watchPosition(showPosition);
+    } else {
+        x.innerHTML = "Geolocation is not supported by this browser.";}
+    }
+
+function showPosition(position) {
+    x.innerHTML="Latitude: " + position.coords.latitude +
+    "<br>Longitude: " + position.coords.longitude;
+}
+</script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2wop3hW2RdVnIKchqEdtxEVDkWSAMK5E&libraries=places&callback=initAutocomplete"
+         async defer></script>
+  </body>
+</html>

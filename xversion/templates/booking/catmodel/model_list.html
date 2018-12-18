@@ -1,9 +1,37 @@
 {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Choose model</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.4.0/bootstrap-slider.min.js" type="text/javascript"></script>
+    <link rel="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.4.0/css/bootstrap-slider.min.css" type="text/css">
+    <script>
+        // With JQuery
+$("#ex6").slider();
+$("#ex6").on("slide", function(slideEvt) {
+	$("#ex6SliderVal").text(slideEvt.value);
+});
+
+// Without JQuery
+var slider = new Slider("#ex6");
+slider.on("slide", function(sliderValue) {
+	document.getElementById("ex6SliderVal").textContent = sliderValue;
+});
+    </script>
+</head>
+
+<body>
 {% block title %}
     {% if category %}{{ category.name }} {% else %} Products {% endif %}
 {% endblock %}
 
 {% block content %}
+<input id="ex6" type="text" data-slider-min="-5" data-slider-max="20" data-slider-step="1" data-slider-value="3"/>
+<span id="ex6CurrentSliderValLabel">Current Slider Value: <span id="ex6SliderVal">3</span></span>
    <div class="container-fluid">
       <div class="row" style="margin-top: 6%">
 
@@ -12,6 +40,7 @@
           <div class="blog-post">
               <div class="row">
                   {% for model in models %}
+                    {% for m in model %}
                       <div class="col-md-4">
                         <div class="thumbnail">
                             <a href="{{ model.get_absolute_url }}">
@@ -19,14 +48,15 @@
                             </a>
                             <div class="caption">
                                 <h3 class="text-center">
-                                    <a href="{{ model.get_detail_url }}">{{ model.model_name }}</a>
+                                    <a href="{{ m.get_detail_url }}">{{ m.model_name }}</a>
                                 </h3>
-                                <p class="text-center">Rs. {{ model.price }}</p>
+                                <p class="text-center">Rs. {{ m.price }}</p>
                             </div>
-                            <div class="caption">{{ model.dealer_name }}</div>
-                            <div class="caption">{{ model.dealer_address }}</div>
+                            <div class="caption">{{ m.dealer_name }}</div>
+                            <div class="caption">{{ m.dealer_address }}</div>
                         </div>
                       </div>
+                    {% endfor %}
                   {% endfor %}
               </div>
           </div><!-- /.blog-post -->
@@ -35,3 +65,5 @@
       </div>
    </div>
 {% endblock %}
+</body>
+</html>
