@@ -44,8 +44,8 @@ INSTALLED_APPS = [
     'booking.apps.BookingConfig',
     'dealer.apps.DealerConfig',
     'orders.apps.OrdersConfig',
+    'review.apps.ReviewConfig',
     'localflavor',
-
 ]
 
 MIDDLEWARE = [
@@ -133,7 +133,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [STATIC_DIR,]
+STATICFILES_DIRS = [STATIC_DIR, ]
 
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
@@ -141,7 +141,5 @@ MEDIA_URL = '/media/'
 LOGIN_URL = '/uaccounts/signin/'
 LOGIN_REDIRECT_URL = '/booking/'
 #LOGOUT_REDIRECT_URL = 'home'
-
-STATIC_URL = '/static/'
 
 CART_SESSION_ID = 'cart'

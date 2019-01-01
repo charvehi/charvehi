@@ -3,6 +3,7 @@ from django.urls import reverse
 from dealer.models import Dealer
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
+import numpy as np
 
 
 class Image(models.Model):
@@ -39,6 +40,9 @@ class Category(models.Model):
 
 class CategoryModelImage(models.Model):
     img = models.ImageField(upload_to="bike/models/", null=True, blank=True)
+    img1 = models.ImageField(upload_to="bike/models/", null=True, blank=True)
+    img2 = models.ImageField(upload_to="bike/models/", null=True, blank=True)
+    img3 = models.ImageField(upload_to="bike/models/", null=True, blank=True)
 
     class Meta:
         verbose_name_plural = 'Model Images'
@@ -54,7 +58,7 @@ class CategoryModel(models.Model):   #Model storage table
     d_id = models.ForeignKey(Dealer, null=True, db_column='d_id', on_delete=models.CASCADE)
     model_name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=150, unique=True, db_index=True)
-    price = models.IntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
     model_image = models.ForeignKey(CategoryModelImage, db_column='image', null=True, on_delete=models.CASCADE)
     rating = models.IntegerField()
     status = models.BooleanField(default=False)
@@ -68,15 +72,24 @@ class CategoryModel(models.Model):   #Model storage table
         verbose_name_plural ='Models/Variants'
         db_table = 'category_model'
 
+    def average_rating(self):
+        all_ratings = map(lambda x: x.rating, self.review_set.all())
+        return np.mean(all_ratings)
+
+    def __unicode__(self):
+        return self.name
+
     def __str__(self):
         return self.model_name
 
     def get_absolute_url(self):
         return reverse('booking:category_model_details', args=[self.m_id, self.slug])
 
-
     def get_detail_url(self):
         return reverse('booking:category_model_details', args=[self.m_id, self.slug])
+
+    def get_order_url(self):
+        return reverse('orders:cart_add', args=[self.m_id, self.slug])
 
 
 

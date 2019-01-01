@@ -1,0 +1,35 @@
+{% load static %}
+
+      <button class="btn btn-info pull-right">
+            {% with totail_items=cart|length %}
+                {% if cart|length > 0 %}
+                    My Shopping Order:
+                    <a href="{% url "orders:cart_detail" %}">
+                        {{ totail_items }} item{{ totail_items|pluralize }}, Rs. {{ cart.get_total_price }}
+                    </a>
+                    {% else %}
+                    Your cart is empty.
+                {% endif %}
+            {% endwith %}
+      </button>
+
+                {% for item in cart %}
+                    {% with model=item.model  %}
+                        <tr>
+                            <td>
+                                <a href="{{ model.get__absolute_url }}">
+                                    <img src="{% if model.model_image %} {{ media_url }}{{ model.model_image.img }} {% else %} {% static 'img/default.jpg' %} {% endif %}" alt="..." style="height: 130px; width: auto">
+                                </a>
+                            </td>
+                            <td>{{ model.m_id }}</td>
+                            <td>{{ model.model_name }}</td>
+                            <a href="{% url "orders:cart_remove" model.m_id %}">Remove</a>
+                            <td>Rs. {{ item.price }}</td>
+                            <td>Rs. {{ item.total_price }}</td>
+                        </tr>
+                    {% endwith %}
+                {% endfor %}
+                    <td colspan="num"><b>Rs. {{ cart.get_total_price }}</b></td>
+
+            <a href="{% url "booking:model_list" %}" class="btn btn-default">Continue Shopping</a>
+            <a href="checkout.html" class="btn btn-primary">Checkout</a>

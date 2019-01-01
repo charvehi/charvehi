@@ -1,8 +1,25 @@
 {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Details</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+    .checked {
+        color: orange;
+    }
+    </style>
+</head>
+
+<body>
 {% block title %}
     {% if modeldetails %}{{ modeldetails.model_name }} {% else %} Details {% endif %}
 {% endblock %}
-
 {% block content %}
    <div class="container-fluid">
       <div class="row" style="margin-top: 6%">
@@ -15,23 +32,142 @@
                       <div class="col-md-4">
                         <div class="thumbnail">
                             <a href="{{ model.get_absolute_url }}">
-                                <img src="{% if model.image %} {{ model.image.url }} {% else %} {% static 'img/default.jpg' %} {% endif %}" alt="..." style="height: 130px; width: auto">
+                                <img src="{% if model.model_image %} {{ media_url }}{{ model.model_image.img }} {% else %} {% static 'img/default.jpg' %} {% endif %}" alt="..." style="height: 130px; width: auto">
+                                <img src="{% if model.model_image %} {{ media_url }}{{ model.model_image.img1 }} {% else %} {% static 'img/default.jpg' %} {% endif %}" alt="..." style="height: 130px; width: auto">
+                                <img src="{% if model.model_image %} {{ media_url }}{{ model.model_image.img2 }} {% else %} {% static 'img/default.jpg' %} {% endif %}" alt="..." style="height: 130px; width: auto">
+                                <img src="{% if model.model_image %} {{ media_url }}{{ model.model_image.img3 }} {% else %} {% static 'img/default.jpg' %} {% endif %}" alt="..." style="height: 130px; width: auto">
                             </a>
                             <div class="caption">
                                 <h3 class="text-center">
                                     {{ model.model_name }}
                                 </h3>
-                                <p class="text-center">Rs. {{ model.price }}</p>
+                                <p class="text-center fa" >&#xf156; {{ model.price }}</p>
                             </div>
-                            <div>{{ model.model_name }}</div>
+                            <input id="rtg" value="{{ model.rating }}" hidden>
+                            <div id="rating" class="rating"></div>
+                            <p class="text-center">{{ model.d_id.dealer_address }}</p>
+                            <p class="text-center">{{ distance }} {{ unit }}</p>
                             <div>{{ model.specification }}</div>
                         </div>
+                          <div class="mk-bkng-btn"><a href="{{ model.get_order_url}}?current_loc={{ loc }}&start={{ start }}&end={{ end }}&lat={{ lat }}&lon={{ lon }}"><button>Book</button></a></div>
                       </div>
                   {% endfor %}
               </div>
           </div><!-- /.blog-post -->
 
         </div><!-- /.blog-main -->
+
+<h5>{{ model.review_set.count }} reviews ({{ model.average_rating | floatformat }} average rating)</h5>
+<h2>Latest reviews</h2>
+{% if latest_review_list %}
+<div>
+              {% for model in modeldetails %}
+    {% for review in latest_review_list %}
+    <div>
+        <h6>rated {{ review.rating }} of 5 by {{ review.user_name }}</h6>
+        <a href="{{ review.get_detail_url }}" style="text-decoration: none"><div>{{ review.comment }}</div></a>
+        <a class="review_edit_btn" name="{{ review.id }}" href="">Edit</a>
+        <button class="review_del_btn" name="{{ review.id }}">Delete</button>
+    </div>
+    {% endfor %}
+            {% endfor %}
+</div>
+{% else %}
+<p>No reviews are available.</p>
+{% endif %}
+
+<!---Form start-->
+<h3>Add your review</h3>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+          {% for model in modeldetails %}
+<form id="review-form" action="">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <!--<button type="button" id="upload-files-btn">Add</button>-->
+    <input type="submit" value="Add" />
+</form>
+          {% endfor %}
+<!--Form end-->
       </div>
    </div>
+    <script>
+    function displayrating() {
+        let stars = '';
+        let sn = document.getElementById('rtg').value;
+        let rmg = 5 - sn;
+        for (let i = 0; i < sn; i++) {
+            stars += "<span class='fa fa-star checked'></span>";
+        }
+        for (let i = 0; i < rmg; i++) {
+            stars += "<span class='fa fa-star unchecked'></span>";
+        }
+        document.getElementById("rating").innerHTML = stars;
+    }
+    window.onload = displayrating;
+    </script>
+
+          {% for model in modeldetails %}
+<script type="text/javascript">
+$(document).ready(function() {
+    var token = '{{csrf_token}}';
+    var m_id = '{{ model.m_id }}';
+    var reviewForm = $('#review-form');
+    reviewForm.submit(function(event) {
+        event.preventDefault();
+        var formData = reviewForm.serialize();
+        //var frm = $('#review-form');
+        //var btn = $('#upload-files-btn');
+        //btn.bind('click', handleClick);
+        //var formData = new FormData(); // Use FormData instead
+        //formData.append('file', frm.files[0], frm.files[0].name) // The first argument is the 'key' of the form data so change it to whatever works.
+        //var handleClick = function (event) {
+          //  event.preventDefault();
+            $.ajax({
+                headers: { "X-CSRFToken": token },
+                type: 'POST',
+                url: 'http://127.0.0.1:8000/bike/reviews/model/'+m_id+'/add_review/',
+                data: formData,
+                //contentType: false,  // add this to indicate 'multipart/form-data'
+                success: function (data) {
+                    alert('Form Submitted');
+                },
+                error: function (data) {
+                    alert('Form submission failed');
+                }
+            });
+        //}
+    });
+});
+
+$(document).ready(function() {
+    var reviewDelete = $('.review_del_btn');
+    var m_id = '{{ model.m_id }}';
+    var btn = reviewDelete.attr('name');
+    reviewDelete.click(function(event) {
+        //alert(btn);
+        event.preventDefault();
+            $.ajax({
+                //type: 'GET',
+                url: 'http://127.0.0.1:8000/bike/reviews/model/'+m_id+'/delete_review/'+btn,
+                data: null,
+                success: function (data) {
+                    alert('Deleted');
+                },
+                error: function (data) {
+                    alert('Not deleted');
+                }
+            });
+        //}
+    });
+});
+
+</script>
+          {% endfor %}
 {% endblock %}
+<script type="text/javascript">
+//$(".mk-bkng-btn").click(function(){
+  //document.location.href = "http://127.0.0.1:8000/bike/book/make_purchase/m_id/model_name/?ref=&current_loc=&start=&end=&lat=&lon=";
+//});
+</script>
+</body>
+</html>

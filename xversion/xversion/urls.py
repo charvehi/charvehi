@@ -32,6 +32,8 @@ urlpatterns = [
     url(r'^special/', acc.special,name='special'),
     url(r'^uaccounts/', include('uaccounts.urls')),
     url(r'^bike/', include('booking.urls'), name='category'),
+    url(r'^bike/book/', include('orders.urls'), name='orders'),
+    url(r'^bike/reviews/', include('review.urls', namespace="review")),
     url(r'^signout/$', acc.user_logout, name='logout'),
     #path('', include('booking.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

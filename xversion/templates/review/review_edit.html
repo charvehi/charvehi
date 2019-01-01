@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h3>Edit your review</h3>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+          {% for model in modeldetails %}
+<form id="review-form" action="">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Add" />
+</form>
+          {% endfor %}
+<script>
+$(document).ready(function() {
+    var reviewEdit = $('.review_edit_btn');
+    var m_id = '{{ model.m_id }}';
+    var btn = reviewEdit.attr('name');
+    reviewEdit.click(function(event) {
+        //alert(btn);
+        event.preventDefault();
+            $.ajax({
+                //type: 'GET',
+                url: 'http://127.0.0.1:8000/bike/reviews/model/'+m_id+'/edit_review/'+btn,
+                data: null,
+                success: function (data) {
+                    alert('Deleted');
+                },
+                error: function (data) {
+                    alert('Not deleted');
+                }
+            });
+        //}
+    });
+});
+</script>
+</body>
+</html>

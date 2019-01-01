@@ -25,5 +25,5 @@ class UserProfileInfo(models.Model):
                 #fields = ('email', 'password')
                 db_table = 'uaccounts_userprofileinfo'
 
-def __str__(self):
-  return self.user.email
+        def __str__(self):
+                return self.email

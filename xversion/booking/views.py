@@ -1,11 +1,16 @@
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
+from django.conf import settings
 from time import gmtime, strftime
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from booking.forms import IndexBookForm
 from booking.models import Category, Image, CategoryModel, CategoryModelImage
 from dealer.models import Dealer
+from review.models import Review
+from review.forms import ReviewForm
 import math
+
+#import mpu
 #from Collections import defaultdict
 #from django.db.models.functions import Cos, ASin
 from decimal import Decimal
@@ -66,19 +71,11 @@ def category_list(request, category_id=None, category_slug=None):
     return render(request, 'booking/category/list.html', context)
 
 
-def category_model_details(request, model_id, model_slug=None):
-    details = CategoryModel.objects.filter(status=1)
-    if model_slug:
-        details = CategoryModel.objects.filter(m_id=model_id)
-
-    context = {
-        'modeldetails': details,
-    }
-    return render(request, 'booking/catmodel/model_detail.html', context)
-
-
-def category_model_list(request, category_id, category_slug=None):
+def category_model_list(request):
     models = CategoryModel.objects.filter(status=1)
+    loc = request.GET.get('current_loc', '')
+    start = request.GET.get('start', '')
+    end = request.GET.get('end', '')
     lat = float(request.GET.get('lat', ''))
     lon = float(request.GET.get('lon', ''))
     area = float(request.GET.get('area', ''))
@@ -87,16 +84,14 @@ def category_model_list(request, category_id, category_slug=None):
     minLat = lat - math.degrees(area / r)
     maxLon = lon + math.degrees(math.asin(area / r) / math.cos(math.radians(lat)))
     minLon = lon - math.degrees(math.asin(area / r) / math.cos(math.radians(lat)))
-    if category_slug:
-        category = get_object_or_404(Category, c_id=category_id, status=1)
-        #dealers = get_object_or_404(Dealer, dealer_lat__range=(minLat, maxLat), dealer_lon__range=(minLon, maxLon))
+    if models:
         dealers = Dealer.objects.filter(dealer_lat__range=(minLat, maxLat), dealer_lon__range=(minLon, maxLon))
         dealers_li = list(dealers)
         print(dealers_li)
         models_li = []
 
         for dl in dealers_li:
-            models = CategoryModel.objects.all().filter(c_id=category, d_id=dl)
+            models = CategoryModel.objects.all().filter(d_id=dl)
             print(models)
             models_li.append(models)
 
@@ -105,10 +100,66 @@ def category_model_list(request, category_id, category_slug=None):
 
         context = {
             'models': models_li,
+            'media_url': settings.MEDIA_URL,
+            'loc': loc,
+            'start': start,
+            'end': end,
+            'lat': lat,
+            'lon': lon,
+            'area': area,
         }
         print(context)
         #return render_to_response('booking/catmodel/model_list.html', context, context_instance=RequestContext(request))
         return render(request, 'booking/catmodel/model_list.html', context)
 
 
+def category_model_details(request, model_id, model_slug=None):
+    loc = request.GET.get('current_loc', '')
+    start = request.GET.get('start', '')
+    end = request.GET.get('end', '')
+    lat_o = float(request.GET.get('lat', ''))
+    lon_o = float(request.GET.get('lon', ''))
 
+    lat = math.radians(float(lat_o))
+    lon = math.radians(float(lon_o))
+    r = 6371.0
+    details = CategoryModel.objects.filter(status=1)
+    if model_slug:
+        details = CategoryModel.objects.filter(m_id=model_id)
+        dealer = get_object_or_404(CategoryModel, m_id=model_id)
+        #photo = get_object_or_404(CategoryModelImage, id=model_id)
+        d_lat = math.radians(float(dealer.d_id.dealer_lat))
+        d_lon = math.radians(float(dealer.d_id.dealer_lon))
+
+        dlon = d_lon - lon
+        dlat = d_lat - lat
+
+        a = math.sin(dlat / 2) ** 2 + math.cos(lat) * math.cos(d_lat) * math.sin(dlon / 2) ** 2
+        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+
+        distance = r * c
+        if distance < 1:
+            distance *= 1000
+            distance = int(distance)
+            unit = 'm'
+        else:
+            distance = round(distance, 1)
+            unit = 'km'
+        print(distance)
+
+        latest_review_list = Review.objects.filter(model=model_id).order_by('-pub_date')[:9]
+        form = ReviewForm()
+    context = {
+        'media_url': settings.MEDIA_URL,
+        'modeldetails': details,
+        'form': form,
+        'latest_review_list': latest_review_list,
+        'loc': loc,
+        'start': start,
+        'end': end,
+        'lat': lat_o,
+        'lon': lon_o,
+        'distance': distance,
+        'unit': unit,
+    }
+    return render(request, 'booking/catmodel/model_detail.html', context)

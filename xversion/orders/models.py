@@ -1,4 +1,6 @@
 from django.db import models
+from django.urls import reverse
+
 
 class UserOrderInfo(models.Model):
     uid = models.BigIntegerField(primary_key=True, default=0)
@@ -13,3 +15,10 @@ class UserOrderInfo(models.Model):
     class Meta:
         verbose_name_plural = 'Orders'
         db_table = 'orders'
+
+    def get_add_url(self):
+        return reverse('orders:cart_detail', args=[self.m_id, self.slug])
+
+    def get_remove_url(self):
+        return reverse('orders:cart_removes', args=[self.m_id, self.slug])
+
