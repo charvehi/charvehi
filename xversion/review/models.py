@@ -15,7 +15,7 @@ class Review(models.Model):
     pub_date = models.DateTimeField('date published')
     user_name = models.CharField(max_length=100)
     comment = models.CharField(max_length=200)
-    rating = models.IntegerField(choices=RATING_CHOICES)
+    rating = models.DecimalField(choices=RATING_CHOICES, max_digits=2, decimal_places=1)
 
     def get_detail_url(self):
         return reverse('review:review_detail', args=[self.id])

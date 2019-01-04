@@ -1,10 +1,17 @@
-{% load staticfiles %}
+{% load static %}
 <!DOCTYPE html>
 <html>
   <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <title>Places Search Box</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type="text/javascript" src="static/js/jonthornton-timepicker/jquery.timepicker.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="static/stylesheet/jonthornton-timepicker/jquery.timepicker.css" />
+	<script type="text/javascript" src="static/js/jonthornton-timepicker/lib/bootstrap-datepicker.js"></script>
+	<link rel="stylesheet" type="text/css" href="static/stylesheet/jonthornton-timepicker/lib/bootstrap-datepicker.css" />
+	<script type="text/javascript" src="static/js/jonthornton-timepicker/lib/site.js"></script>
+	<link rel="stylesheet" type="text/css" href="static/stylesheet/jonthornton-timepicker/lib/site.css" />
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
@@ -142,11 +149,14 @@
       form.onclick = function(){
         var location = document.getElementById("loc");
         var location_enc = encodeURIComponent(location.value);
-        var start = document.getElementById("start");
-        var end = document.getElementById("end");
+        var start_d = document.getElementById("id_start_date")
+        var start_t = document.getElementById("id_start_time");
+        var end_d = document.getElementById("id_end_date")
+        var end_t = document.getElementById("id_end_time");
         var cord1 = document.getElementById("cord1");
         var cord2 = document.getElementById("cord2");
-        window.location = "bike/models/?current_loc=" + location_enc + "&start=" + start.value + "&end=" + end.value + "&lat=" + cord1.value + "&lon=" + cord2.value + "&area=" + 1;
+        window.location = "bike/models/?current_loc=" + location_enc + "&start=" + start_d.options[start_d.selectedIndex].text + "_"
+                + start_t.value + "&end=" + end_d.options[end_d.selectedIndex].text + "_" + end_t.value + "&lat=" + cord1.value + "&lon=" + cord2.value + "&area=" + 1;
         return false;
       };
     };
@@ -163,7 +173,31 @@
         <h3>India on Wheels.</h3>
 <!--<form enctype="multipart/form-data" method="POST" action="{% url 'booking:model_list'%}">-->
           {% csrf_token %}
-          {{ form.as_p }}
+        <div class="first_form_elem">
+        <label for="loc">Location: </label>{{ form.location }}
+        </div>
+        <div class="first_form_elem">
+          <label for="id_start_date setTimeExample">Start: </label>
+        {{ form.start_date }}{{ form.start_time }}
+        </div>
+        <div class="first_form_elem">
+        <label for="id_end_date setTimeExample">End: </label>
+        {{ form.end_date }}{{ form.end_time }}
+        </div>
+            <div class="demo">
+				<p>
+					<!--<input id="setTimeExample" type="text" class="time" />
+					<button id="setTimeButton">Set current time</button>-->
+				</p>
+			</div>
+			<script>
+			$(function() {
+				$('.time').timepicker();
+				$('#setTimeButton').on('click', function() {
+					$('.time').timepicker('setTime', new Date());
+				});
+			});
+			</script>
           {{ profile_form.as_p }}
     <button type="button" id="form-submit-btn" name="search-bike" tabindex="1" onclick="submitInput()">Book Ride</button>
 <!--</form>-->
@@ -171,7 +205,7 @@
       {% endif %}
 
     </div>
-  </div>
+  </div>.
   {% endblock %}
     <input id="pac-input" class="controls" type="text" placeholder="Search your location" style="position: absolute; top: 40px;">
     <div id="map"></div>

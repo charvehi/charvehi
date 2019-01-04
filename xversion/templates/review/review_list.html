@@ -5,6 +5,23 @@
     <title>Title</title>
 </head>
 <body>
-
+{% if latest_review_list %}
+                {% for model in modeldetails %}
+<div>
+    <div id="usr_cmnt_tb">
+    {% for review in latest_review_list %}
+        <h6>rated {{ review.rating }} of 5 by {{ review.user_name }}</h6>
+        <a href="{{ review.get_detail_url }}" style="text-decoration: none"><div>{{ review.comment }}</div></a>
+        <a class="review_edit_btn" name="{{ review.id }}" href="{% url 'review:edit_review' model.m_id review.id %}?comment={{ review.comment }}">Edit</a>
+        <button class="review_del_btn" name="{{ review.id }}">Delete</button>
+    {% endfor %}
+        <div><a href="{% url 'review:review_list' model.m_id %}">More reviews</a></div>
+    </div>
+    <div id="usr_cmnt_tb_liv"></div>
+</div>
+                {% endfor %}
+          {% else %}
+<p>No reviews are available.</p>
+{% endif %}
 </body>
 </html>

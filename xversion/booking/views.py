@@ -147,7 +147,7 @@ def category_model_details(request, model_id, model_slug=None):
             unit = 'km'
         print(distance)
 
-        latest_review_list = Review.objects.filter(model=model_id).order_by('-pub_date')[:9]
+        latest_review_list = Review.objects.filter(model=model_id).order_by('-pub_date')[:3]
         form = ReviewForm()
     context = {
         'media_url': settings.MEDIA_URL,

@@ -43,8 +43,11 @@
                                 </h3>
                                 <p class="text-center fa" >&#xf156; {{ model.price }}</p>
                             </div>
-                            <input id="rtg" value="{{ model.rating }}" hidden>
-                            <div id="rating" class="rating"></div>
+                            <!--<input id="rtg" value="{{ model.rating }}" hidden>
+                            <div id="rating" class="rating"></div>-->
+                                            {% for model in modeldetails %}
+                            <span class="stars" data-rating="{{ model.average_rating | floatformat }}" data-num-stars="5" ></span>
+                                            {% endfor %}
                             <p class="text-center">{{ model.d_id.dealer_address }}</p>
                             <p class="text-center">{{ distance }} {{ unit }}</p>
                             <div>{{ model.specification }}</div>
@@ -56,26 +59,27 @@
           </div><!-- /.blog-post -->
 
         </div><!-- /.blog-main -->
-
+{% if latest_review_list %}
+                {% for model in modeldetails %}
 <h5>{{ model.review_set.count }} reviews ({{ model.average_rating | floatformat }} average rating)</h5>
 <h2>Latest reviews</h2>
-{% if latest_review_list %}
+<h6>(You can review after riding this bike)</h6>
 <div>
-              {% for model in modeldetails %}
+    <div id="usr_cmnt_tb">
     {% for review in latest_review_list %}
-    <div>
         <h6>rated {{ review.rating }} of 5 by {{ review.user_name }}</h6>
         <a href="{{ review.get_detail_url }}" style="text-decoration: none"><div>{{ review.comment }}</div></a>
-        <a class="review_edit_btn" name="{{ review.id }}" href="">Edit</a>
+        <a class="review_edit_btn" name="{{ review.id }}" href="{% url 'review:edit_review' model.m_id review.id %}?comment={{ review.comment }}">Edit</a>
         <button class="review_del_btn" name="{{ review.id }}">Delete</button>
-    </div>
     {% endfor %}
-            {% endfor %}
+        <div><a href="{% url 'review:review_list' model.m_id %}">More reviews</a></div>
+    </div>
+    <div id="usr_cmnt_tb_liv"></div>
 </div>
-{% else %}
+                {% endfor %}
+          {% else %}
 <p>No reviews are available.</p>
 {% endif %}
-
 <!---Form start-->
 <h3>Add your review</h3>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
@@ -83,13 +87,33 @@
 <form id="review-form" action="">
     {% csrf_token %}
     {{ form.as_p }}
-    <!--<button type="button" id="upload-files-btn">Add</button>-->
     <input type="submit" value="Add" />
 </form>
           {% endfor %}
 <!--Form end-->
       </div>
    </div>
+<script>
+    $.fn.stars = function() {
+        return $(this).each(function() {
+
+            var rating = $(this).data("rating");
+
+            var numStars = $(this).data("numStars");
+
+            var fullStar = new Array(Math.floor(rating + 1)).join('<i class="fa fa-star"></i>');
+
+            var halfStar = ((rating%1) !== 0) ? '<i class="fa fa-star-half-empty"></i>': '';
+
+            var noStar = new Array(Math.floor(numStars + 1 - rating)).join('<i class="fa fa-star-o"></i>');
+
+            $(this).html(fullStar + halfStar + noStar);
+
+        });
+    }
+
+    $('.stars').stars();
+</script>
     <script>
     function displayrating() {
         let stars = '';
@@ -129,7 +153,10 @@ $(document).ready(function() {
                 data: formData,
                 //contentType: false,  // add this to indicate 'multipart/form-data'
                 success: function (data) {
+                    document.getElementById('review-form').reset();
                     alert('Form Submitted');
+                    my_comment();
+                    $('#usr_cmnt_tb').hide();
                 },
                 error: function (data) {
                     alert('Form submission failed');
@@ -139,9 +166,21 @@ $(document).ready(function() {
     });
 });
 
-$(document).ready(function() {
-    var reviewDelete = $('.review_del_btn');
+function my_comment() {
     var m_id = '{{ model.m_id }}';
+    $.ajaxSetup({cache: false}); // This part addresses an IE bug.  without it, IE will only load the first number and will never refresh
+    var my_refresh = setInterval(function () {
+        //clearInterval(my_refresh);
+        $('#usr_cmnt_tb_liv').load('http://127.0.0.1:8000/bike/reviews/model/' + m_id + '/review_list/?comment_added=true');
+        //clearInterval(my_refresh);
+    }, 1000); // the "1000"
+}
+</script>
+
+<script>
+$(document).ready(function() {
+    var m_id = '{{ model.m_id }}';
+    var reviewDelete = $('.review_del_btn');
     var btn = reviewDelete.attr('name');
     reviewDelete.click(function(event) {
         //alert(btn);

@@ -2,40 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Edit your review</title>
 </head>
 <body>
+{% block title %}
 <h3>Edit your review</h3>
+{% endblock %}
+{% block content %}
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-          {% for model in modeldetails %}
-<form id="review-form" action="">
+<form id="review-form" action="{% url 'review:edit_review' m_id r_id %}?commit=true" method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Add" />
+    {{ form_edit.comment }}
+    <input type="submit" value="Done" />
 </form>
-          {% endfor %}
+
+{% block javascript %}
 <script>
-$(document).ready(function() {
-    var reviewEdit = $('.review_edit_btn');
-    var m_id = '{{ model.m_id }}';
-    var btn = reviewEdit.attr('name');
-    reviewEdit.click(function(event) {
-        //alert(btn);
-        event.preventDefault();
-            $.ajax({
-                //type: 'GET',
-                url: 'http://127.0.0.1:8000/bike/reviews/model/'+m_id+'/edit_review/'+btn,
-                data: null,
-                success: function (data) {
-                    alert('Deleted');
-                },
-                error: function (data) {
-                    alert('Not deleted');
-                }
-            });
-        //}
-    });
-});
+window.onload = function() {
+      document.getElementById('reviewComment').value = '{{ review }}';
+};
 </script>
+{% endblock %}
+
+{% endblock %}
 </body>
 </html>

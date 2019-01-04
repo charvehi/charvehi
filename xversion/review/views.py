@@ -1,16 +1,26 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import redirect
 from django.views.decorators.http import require_POST
 from django.urls import reverse, reverse_lazy
 from .models import Review, CategoryModel
 from review.forms import ReviewForm
 import datetime
+from booking.views import category_model_list
 import json
 
 
-def review_list(request):
-    latest_review_list = Review.objects.order_by('-pub_date')[:9]
-    context = {'latest_review_list': latest_review_list}
+def review_list(request, model_id):
+    comment_added = request.GET.get('comment_added')
+    details = CategoryModel.objects.filter(m_id=model_id)
+    if comment_added == 'true':
+        latest_review_list = Review.objects.filter(model=model_id).order_by('-pub_date')[:3]
+    else:
+        latest_review_list = Review.objects.filter(model=model_id).order_by('-pub_date')[:9]
+    context = {
+        'latest_review_list': latest_review_list,
+        'modeldetails': details,
+    }
     return render(request, 'review/review_list.html', context)
 
 
@@ -52,11 +62,31 @@ def add_review(request, model_id):
 
 
 def del_review(request, model_id, comment_id):
-    instance = Review.objects.get(id=comment_id, model=model_id)
-    instance.delete()
+    review = Review.objects.get(id=comment_id, model=model_id)
+    review.delete()
     return HttpResponse(request)
 
 
 def edit_review(request, model_id, comment_id):
+    commit = request.GET.get('commit')
+    db_comment = request.GET.get('comment')
+
+    if request.method == 'POST':
+        print("data posted")
+        form = ReviewForm(request.POST)
+        #if form.is_valid():
+        review = Review.objects.get(id=comment_id, model=model_id)
+        comment = form.data['comment']
+        review.comment = comment
+        review.save(update_fields=['comment'])
+        if commit == 'true':
+            return HttpResponse("Changes made")
+
     form = ReviewForm()
-    return render(request, 'review/review_edit.html', {'form': form})
+    context = {
+            'form_edit': form,
+            'm_id': model_id,
+            'r_id': comment_id,
+            'review': db_comment,
+        }
+    return render(request, 'review/review_edit.html', context)

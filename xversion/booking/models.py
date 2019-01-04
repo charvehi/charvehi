@@ -66,14 +66,8 @@ class CategoryModel(models.Model):   #Model storage table
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
-
-    class Meta:
-        ordering = ('-created',)
-        verbose_name_plural ='Models/Variants'
-        db_table = 'category_model'
-
     def average_rating(self):
-        all_ratings = map(lambda x: x.rating, self.review_set.all())
+        all_ratings = list(map(lambda x: x.rating, self.review_set.all()))
         return np.mean(all_ratings)
 
     def __unicode__(self):
@@ -81,6 +75,12 @@ class CategoryModel(models.Model):   #Model storage table
 
     def __str__(self):
         return self.model_name
+
+    class Meta:
+        ordering = ('-created',)
+        verbose_name_plural ='Models/Variants'
+        db_table = 'category_model'
+
 
     def get_absolute_url(self):
         return reverse('booking:category_model_details', args=[self.m_id, self.slug])
