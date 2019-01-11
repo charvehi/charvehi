@@ -1,6 +1,42 @@
 {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
 
-      <button class="btn btn-info pull-right">
+{% block content %}
+  {% include "uaccounts/base.html" %}
+            <section id="content-section5" class="content-section5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                {% for item in cart %}
+                    {% with model=item.model  %}
+                        <div><a href="{% url "booking:model_list" %}" class="btn btn-default">Book more</a></div>
+                                         <div style="font-size: 1.5em">You are riding:</div>
+                        <div>
+                            <div>
+                                <a href="{{ model.get__absolute_url }}">
+                                    <img src="{% if model.model_image %} {{ media_url }}{{ model.model_image.img }} {% else %} {% static 'img/default.jpg' %} {% endif %}" alt="..." style="height: 130px; width: auto">
+                                </a>
+                            </div>
+                            <!--<td>{{ model.m_id }}</td>-->
+                            <div>{{ model.model_name }}</div>
+                            <div>Rs. {{ item.price }}</div>
+                            <a href="{% url "orders:cart_remove" model.m_id %}">Remove</a>
+                            <!--<td>Rs. {{ item.total_price }}</td>-->
+                        </div>
+                    {% endwith %}
+                {% endfor %}
+                    <!--<td colspan="num"><b>Rs. {{ cart.get_total_price }}</b></td>-->
+                     <button class="btn btn-info pull-right" style="background: #d4d4d4">
             {% with totail_items=cart|length %}
                 {% if cart|length > 0 %}
                     My Shopping Order:
@@ -12,24 +48,11 @@
                 {% endif %}
             {% endwith %}
       </button>
-
-                {% for item in cart %}
-                    {% with model=item.model  %}
-                        <tr>
-                            <td>
-                                <a href="{{ model.get__absolute_url }}">
-                                    <img src="{% if model.model_image %} {{ media_url }}{{ model.model_image.img }} {% else %} {% static 'img/default.jpg' %} {% endif %}" alt="..." style="height: 130px; width: auto">
-                                </a>
-                            </td>
-                            <td>{{ model.m_id }}</td>
-                            <td>{{ model.model_name }}</td>
-                            <a href="{% url "orders:cart_remove" model.m_id %}">Remove</a>
-                            <td>Rs. {{ item.price }}</td>
-                            <td>Rs. {{ item.total_price }}</td>
-                        </tr>
-                    {% endwith %}
-                {% endfor %}
-                    <td colspan="num"><b>Rs. {{ cart.get_total_price }}</b></td>
-
-            <a href="{% url "booking:model_list" %}" class="btn btn-default">Continue Shopping</a>
             <a href="checkout.html" class="btn btn-primary">Checkout</a>
+                    </div><!-- end row -->
+                </div><!-- end container -->
+                </div>
+            </section>
+{% endblock %}
+</body>
+</html>

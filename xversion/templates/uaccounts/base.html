@@ -5,32 +5,39 @@
     <title>Base</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
+<style>
+.navbar-default {
+    background: #131f3e;;
+}
+</style>
 </head>
   <body>
-    <nav class="navbar navbar-default navbar-static-top">
-      <div class="container">
-        <ul class="nav navbar-nav">
-          <li><a class="navbar-brand" href="{% url 'index' %}">Xsite</a></li>
-          <li><a class="navbar-link" href="{% url 'admin:index' %}">Admin</a></li>
-          {# Some logic on what to display for last item#}
+       <nav role="navigation" class="navbar navbar-default">
+                    <div class="container">
+                    <div class="navbar-header">
+                        <button data-target="#navbar-collapse-02" data-toggle="collapse" class="navbar-toggle" type="button" data-selector="Footers" style="">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a href="#" class="navbar-brand brand" data-selector="nav a, a.edit" style=""><i class="fa fa-codepen"></i><span>Website</span></a>
+                    </div>
 
-          {% if email is not None  %}
-            {% block signout %}
-            <li><a href="{% url 'uaccounts:user_login' %}">Signout</a></li>
-            {% endblock %}
-          {% else %}
-            <li><a class="navbar-link" href="{% url 'uaccounts:register' %}">Register</a></li>
-            <li><a class="navbar-link" href="{% url 'uaccounts:user_login' %}">Login</a></li>
-</ul>
-          {% endif %}
-
-
-      </div>
-    </nav>
-    <div class="container">
-    {% block body_block %}
-    {% endblock %}
-    </div>
+                    <div id="navbar-collapse-02" class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav navbar-right">
+                                {% if email is not None%}
+                            <li><a href="#" data-selector="nav a, a.edit" style="">Hello {{ email }}</a></li>
+                                {% else %}
+                            <li><a href="#" data-selector="nav a, a.edit" style="">You are not authenticated</a></li>
+                                {% endif %}
+                            <li class="active"><a href="#" data-selector="nav a, a.edit" style="">Home</a></li>
+                            <li><a href="#" data-selector="nav a, a.edit" style="">About</a></li>
+                            <li><a href="#" data-selector="nav a, a.edit" style="">Contact</a></li>
+                            <li><a class="nav-button" href="#" data-selector="nav a, a.edit" style="">Log In</a></li>
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                    </div>
+                </nav>
   </body>
 </html>

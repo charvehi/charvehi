@@ -1,98 +1,93 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1>
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>Choose model</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-    .checked {
-        color: orange;
-    }
-    </style>
-</head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+ <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+  .thumbnail .caption{
+    padding: 1px;
+    text-align: center;
+  }
+  .mk-bkng-btn-sec{
+    text-align: center;
+  }
+  .mk-bkng-btn{
+
+  }
+</style>
+</head>
 <body>
+
 {% block content %}
 
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">WebSiteName</a>
-    </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Page 1-1</a></li>
-            <li><a href="#">Page 1-2</a></li>
-            <li><a href="#">Page 1-3</a></li>
-          </ul>
-        </li>
-        <li><a href="#">Page 2</a></li>
-        <li><a href="#">Page 3</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
+            <header class="header7" id="header7">
+
+  {% include "uaccounts/base.html" %}
+
+
+            </header><!-- header -->
+
 
 {% block title %}
-    {% if category %}{{ category.name }} {% else %} Products list {% endif %}
+    {% if category %}{{ category.name }} {% else %} {% endif %}
 {% endblock %}
-   <div class="container-fluid">
-      <div class="row" style="margin-top: 6%">
-
-        <div class="col-sm-8 blog-main">
-
-          <div class="blog-post">
-                  {% for model in models %}
-                    {% for m in model %}
-                      <div class="col-md-4">
+            <section id="content-section5" class="content-section5">
+                <div class="container">
+                    <div class="row">
+                        {% for m in models %}
+                      <div class="col-md-3">
                         <div class="thumbnail">
                             <a href="{{ m.get_absolute_url }}">
                                 <img src="{% if m.model_image %} {{ media_url }}{{ m.model_image }} {% else %} {% static 'img/default.jpg' %} {% endif %}" alt="..." style="height: 130px; width: auto">
                             </a>
                             <div class="caption">
-                                <h3 class="text-center">
+                                <h3 class="text-center" style="color: #0B1022">
                                     <a href="{{ m.get_detail_url }}?current_loc={{ loc }}&start={{ start }}&end={{ end }}&lat={{ lat }}&lon={{ lon }}&area={{ area }}">{{ m.model_name }}</a>
                                 </h3>
                                 <p class="text-center fa" >&#xf156; {{ m.price }}</p>
                             </div>
                             <div class="caption">{{ m.dealer_name }}</div>
                             <div class="caption">{{ m.d_id.dealer_address }}</div>
+                            <div class="mk-bkng-btn-sec"><a href="{{ m.get_order_url }}?current_loc={{ loc }}&start={{ start }}&end={{ end }}&lat={{ lat }}&lon={{ lon }}"><button class="mk-bkng-btn">Book</button></a></div>
+
                         </div>
-                          <div class="mk-bkng-btn"><a href="{{ m.get_order_url }}?current_loc={{ loc }}&start={{ start }}&end={{ end }}&lat={{ lat }}&lon={{ lon }}"><button>Book</button></a></div>
                       </div>
                     {% endfor %}
-                  {% endfor %}
-          </div><!-- /.blog-post -->
+                    </div><!-- end row -->
+                </div><!-- end container -->
+            </section>
+     {% if models.has_other_pages %}
+  <ul class="pagination">
+    {% if models.has_previous %}
+      <li><a href="?current_loc={{ loc }}&start={{ start }}&end={{ end }}&lat={{ lat }}&lon={{ lon }}&area={{ area }}&page={{ models.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in models.paginator.page_range %}
+      {% if models.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?current_loc={{ loc }}&start={{ start }}&end={{ end }}&lat={{ lat }}&lon={{ lon }}&area={{ area }}&page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if models.has_next %}
+      <li><a href="?current_loc={{ loc }}&start={{ start }}&end={{ end }}&lat={{ lat }}&lon={{ lon }}&area={{ area }}&page={{ models.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
 
-        </div><!-- /.blog-main -->
-      </div>
-   </div>
 {% endblock %}
-<script type="text/javascript">
-//$(".mk-bkng-btn").click(function(){
-  //document.location.href = "http://127.0.0.1:8000/bike/book/make_purchase/m_id/model_name/?ref=&current_loc=&start=&end=&lat=&lon=";
-//});
-</script>
 </body>
 </html>

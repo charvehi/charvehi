@@ -9,10 +9,12 @@ from dealer.models import Dealer
 from review.models import Review
 from review.forms import ReviewForm
 import math
-
-#import mpu
-#from Collections import defaultdict
-#from django.db.models.functions import Cos, ASin
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.generic.list import ListView
+from endless_pagination.decorators import page_template
+# import mpu
+# from Collections import defaultdict
+# from django.db.models.functions import Cos, ASin
 from decimal import Decimal
 
 
@@ -42,9 +44,10 @@ def index_book_form(request):
     if index_form.is_valid():
         index_form.save()
         print("Form is valid")
-        
+
     context = {'form': index_form}
     return render(request, 'booking/aindex/index.html', context)
+
 
 '''def product_detail(request, id, slug):
     product = get_object_or_404(Product, id=id, slug=slug, available=True)
@@ -59,10 +62,10 @@ def index_book_form(request):
 def category_list(request, category_id=None, category_slug=None):
     category = None
     categories = Category.objects.all()
-    #models = CategoryModel.objects.filter(status=1)
+    # models = CategoryModel.objects.filter(status=1)
     if category_slug:
         category = get_object_or_404(Category, c_id=category_id, slug=category_slug)
-        #models = CategoryModel.objects.filter(category=category)
+        # models = CategoryModel.objects.filter(category=category)
 
     context = {
         'category': category,
@@ -89,17 +92,29 @@ def category_model_list(request):
         dealers_li = list(dealers)
         print(dealers_li)
         models_li = []
-
+        models_list = []
         for dl in dealers_li:
             models = CategoryModel.objects.all().filter(d_id=dl)
             print(models)
             models_li.append(models)
 
+        for model in models_li:
+            for m in model:
+                models_list.append(m)
         print("models are")
-        print(models_li)
+        print(models_list)
+
+        page = request.GET.get('page')
+        paginator = Paginator(models_list, 4)
+        try:
+            m_li = paginator.get_page(page)
+        except PageNotAnInteger:
+            m_li = paginator.get_page(1)
+        except EmptyPage:
+            m_li = paginator.get_page(paginator.num_pages)
 
         context = {
-            'models': models_li,
+            'models': m_li,
             'media_url': settings.MEDIA_URL,
             'loc': loc,
             'start': start,
@@ -108,8 +123,7 @@ def category_model_list(request):
             'lon': lon,
             'area': area,
         }
-        print(context)
-        #return render_to_response('booking/catmodel/model_list.html', context, context_instance=RequestContext(request))
+
         return render(request, 'booking/catmodel/model_list.html', context)
 
 
@@ -127,7 +141,7 @@ def category_model_details(request, model_id, model_slug=None):
     if model_slug:
         details = CategoryModel.objects.filter(m_id=model_id)
         dealer = get_object_or_404(CategoryModel, m_id=model_id)
-        #photo = get_object_or_404(CategoryModelImage, id=model_id)
+        # photo = get_object_or_404(CategoryModelImage, id=model_id)
         d_lat = math.radians(float(dealer.d_id.dealer_lat))
         d_lon = math.radians(float(dealer.d_id.dealer_lon))
 

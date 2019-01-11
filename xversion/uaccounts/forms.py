@@ -18,8 +18,8 @@ class Gender(forms.Form):
 
 class UserForm(forms.ModelForm):
     #name = forms.CharField(max_length=60)
-    email = forms.EmailField(required=True)
-    password = forms.CharField(widget=forms.PasswordInput(), required=True)
+    email = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control input-lg', 'placeholder': 'Email'}), required=True)
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control input-lg', 'placeholder': 'Password'}), required=True)
     #phone_regex = RegexValidator(regex=r'^d{6,10}$', message="Invalid number.")
     #mobile = INZipCodeField(required=False)
     #gender = Gender
