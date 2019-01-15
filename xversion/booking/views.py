@@ -1,3 +1,4 @@
+from django.db.models import Max, Min
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.conf import settings
@@ -6,8 +7,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from booking.forms import IndexBookForm
 from booking.models import Category, Image, CategoryModel, CategoryModelImage
 from dealer.models import Dealer
+from numpy.ma import empty
 from review.models import Review
 from review.forms import ReviewForm
+from datetime import datetime as dt
+import datetime
 import math
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic.list import ListView
@@ -75,13 +79,55 @@ def category_list(request, category_id=None, category_slug=None):
 
 
 def category_model_list(request):
+
     models = CategoryModel.objects.filter(status=1)
     loc = request.GET.get('current_loc', '')
-    start = request.GET.get('start', '')
-    end = request.GET.get('end', '')
+    start = str(request.GET.get('start', ''))
+    end = str(request.GET.get('end', ''))
     lat = float(request.GET.get('lat', ''))
     lon = float(request.GET.get('lon', ''))
     area = float(request.GET.get('area', ''))
+    filter = str(request.GET.get('filter', ''))
+    #checking format according to the url takes value
+    #check = dt.strptime('1 jan 12:00 am','%d %b %I:%M %p')
+    datetimeFormat1='%d %b %I:%M%p'
+    check=dt.strptime(start,datetimeFormat1)
+    check.strftime('%d %m %H:%M')
+
+
+    #check1 = dt.strptime('2 jan 01:30 am', '%d %b %I:%M %p')
+    check1=dt.strptime(end,datetimeFormat1)
+    check1.strftime('%d %m %H:%M')
+    newdiff = check1 \
+           - check
+    days, hours, minutes = newdiff.days, newdiff.seconds // 3600, newdiff.seconds % 3600 / 60.0
+    print(days,hours,minutes)
+    '''
+    datetimeFormat = '%m-%d %I:%M %p'
+    end_time=dt.strptime(end, datetimeFormat)
+    end_time.strftime("%H:%M")
+    start_time=dt.strptime(start, datetimeFormat)
+    start_time.strftime("%H:%M")
+    diff = end_time \
+           - start_time
+    days, hours, minutes = diff.days, diff.seconds // 3600, diff.seconds % 3600 / 60.0
+    print(days,hours,minutes)
+    print("Difference:", diff)
+    print("Days:", diff.days)
+
+    print("Microseconds:", diff.microseconds)
+    print("Seconds:", diff.seconds)
+
+    
+     diff = end - start
+
+    days, seconds = diff.days, diff.seconds
+    hours = days * 24 + seconds // 3600
+    minutes = (seconds % 3600) // 60
+    seconds = seconds % 60
+
+    print
+    hours, minutes, second'''
     r = 6371
     maxLat = lat + math.degrees(area / r)
     minLat = lat - math.degrees(area / r)
@@ -94,7 +140,24 @@ def category_model_list(request):
         models_li = []
         models_list = []
         for dl in dealers_li:
-            models = CategoryModel.objects.all().filter(d_id=dl)
+            min=CategoryModel.objects.all().filter(d_id=dl).aggregate(Min('price'))
+            max=CategoryModel.objects.all().filter(d_id=dl).aggregate(Max('price'))
+            if filter == 'All':
+                min_price = min['price__min']
+                max_price = max['price__max']
+            if filter == 'less_price':
+                min_price = min['price__min']
+                max_price = 200
+
+            if filter == 'medium_price':
+                min_price = 200
+                max_price = 500
+
+            #print(min,max)
+            if filter != None and filter != '':
+                models = CategoryModel.objects.all().filter(price__range=(min_price, max_price),d_id=dl,status=1).order_by('price')
+            else:
+                models = CategoryModel.objects.all().filter(d_id=dl,status=1).order_by('price')
             print(models)
             models_li.append(models)
 
@@ -122,6 +185,10 @@ def category_model_list(request):
             'lat': lat,
             'lon': lon,
             'area': area,
+            'days':days,
+            'hour':hours,
+            'min':minutes,
+
         }
 
         return render(request, 'booking/catmodel/model_list.html', context)
