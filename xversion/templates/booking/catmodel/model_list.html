@@ -12,6 +12,10 @@
 
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!--bootstrap slider script,css -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/bootstrap-slider.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/css/bootstrap-slider.min.css" />
+    <!--end css,script bootstrap slider -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
   .thumbnail .caption{
@@ -24,6 +28,52 @@
   .mk-bkng-btn{
 
   }
+
+    #ex1Slider .slider-selection, #ex1Slider .slider-track-high{
+  background: white;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  height: 7px;
+
+}
+#ex1Slider {
+  width: 100%;
+}
+
+/* .tooltip - background of tooltip */
+#ex1Slider  .tooltip-inner {
+  background-color: #FFF9C4;
+  border-radius: 15px;
+  color: #000;
+  font-weight: bold;
+  margin-left: -3.5px;
+  cursor: pointer;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+#ex1Slider .slider-handle {
+  background: #FFF9C4;
+  width: 16px;
+  height: 16px;
+  box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.3), 0px 0px 1px rgba(13, 13, 13, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0);
+}
+
+/* This sets the color of the arrow that connects the tooltip to the handle */
+#ex1Slider .tooltip-arrow {
+  border-top-color: #fafafa;
+  margin-left: -7px;
+  display: none;
+}
+
+body {
+  background-color: #fff;
+}
+
+
+
+h2 {
+  padding: 15px 0px 30px 0px;
+}
 </style>
 </head>
 <body>
@@ -32,7 +82,7 @@
 
             <header class="header7" id="header7">
 
-  {% include "uaccounts/base.html" %}
+  {% include "useraccounts/base.html" %}
 
 
             </header><!-- header -->
@@ -44,8 +94,37 @@
             <section id="content-section5" class="content-section5">
                 <div class="container">
                     <div class="row">
+                        <div class="col-sm-4">
+
+                        </div>
+                        <div class="col-sm-4">
+                             <input id="ex1" data-slider-id='ex1Slider' type="range"
+                             data-slider-min="1"
+                            data-slider-max="5"
+                            data-slider-step="1"
+                            data-slider-value= "1"
+                            tooltip="always"
+
+		  />&nbsp&nbsp<span id="valuecontain" style="color:green;">  </span><br>
+ <span class="label label-success">{{days }}days,&nbsp{{hour}}hours,&nbsp{{ min}}minutes.</span>&nbsp;
+                    <!--filters -->
+                    <select class="mdb-select md-form colorful-select dropdown-primary" id="name" onchange="myFunction()" >
+<option value="All" >Select price</option>
+<option value="less_price" >Price: 100-200</option>
+<option value="medium_price" >Price: 200-300</option>
+</select>
+                    <!--end filters-->
+                        </div>
+                        <div class="col-sm-4">
+
+                        </div>
+                    </div>
+
+
+                    <div class="row">
                         {% for m in models %}
                       <div class="col-md-3">
+
                         <div class="thumbnail">
                             <a href="{{ m.get_absolute_url }}">
                                 <img src="{% if m.model_image %} {{ media_url }}{{ m.model_image }} {% else %} {% static 'img/default.jpg' %} {% endif %}" alt="..." style="height: 130px; width: auto">
@@ -66,7 +145,12 @@
                     </div><!-- end row -->
                 </div><!-- end container -->
             </section>
-     {% if models.has_other_pages %}
+<div class="container">
+<div class="row">
+    <div class="col-sm-4">
+   </div>
+    <div class="col-sm-4">
+          {% if models.has_other_pages %}
   <ul class="pagination">
     {% if models.has_previous %}
       <li><a href="?current_loc={{ loc }}&start={{ start }}&end={{ end }}&lat={{ lat }}&lon={{ lon }}&area={{ area }}&page={{ models.previous_page_number }}">&laquo;</a></li>
@@ -87,7 +171,80 @@
     {% endif %}
   </ul>
 {% endif %}
+    </div>
+    <div class="col-sm-4"></div>
+</div>
+    </div>
+
 
 {% endblock %}
+
+<!--slider scripts -->
+<script type="text/javascript" >
+var current = window.location.href;
+var url = new URL(current);
+var area_value = url.searchParams.get("area");
+//window.alert(c);
+var slider = new Slider("#ex1",{tooltip:'always',value: area_value });
+document.getElementById('valuecontain').textContent= "current area selected "+ area_value;
+
+slider.on("slide", function(sliderValue) {
+
+	    var current = window.location.href;
+        var url=new URL(current);
+        url.searchParams.set("area",sliderValue);
+        var newUrl= url.href;
+        //window.location.search+="&my_param=foobar";
+        window.location=newUrl;
+        //window.alert(newUrl);
+
+});
+
+</script>
+<!--filter price scripts -->
+<script>
+		var current = window.location.href;
+        var url=new URL(current);
+		var c=url.searchParams.get("filter");
+		if(c==null){
+		}
+		else{
+		document.getElementById("name").value=c;
+}
+</script>
+<script>
+
+function myFunction(){
+
+var r=document.getElementById("name");
+
+var min=document.getElementById("name").value;
+		var current = window.location.href;
+        var url=new URL(current);
+		//document.getElementById("name").value=min;
+
+
+		if(url.searchParams.get("filter")!=null)
+		{
+			url.searchParams.set("filter",min);
+			var newUrl= url.href;
+			window.location=newUrl;
+
+		}
+		else
+			{
+				url.search+="&filter="+min;
+				var newUrl= url.href;
+				window.location=newUrl;
+
+				}
+        //window.location.search+="&my_param=foobar";
+
+
+
+
+}
+
+</script>
 </body>
 </html>
