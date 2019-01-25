@@ -1,0 +1,10 @@
+{% include "useraccounts/base.html" %}
+{% block body_block %}
+<div class="container">
+  <div class="jumbotron">
+    <h4>Logged out!Thanks for spending some quality time with the Web site today.</h4>
+<span ><a href="{% url 'useraccounts:login' %}">Log in again</a></span>
+  </div>
+</div>
+
+{% endblock %}

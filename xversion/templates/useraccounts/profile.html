@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+{% block content %}
+
+            <header class="header7" id="header7">
+
+  {% include "useraccounts/base.html" %}
+
+                <div class="intro center-content">
+                    <div class="container">
+                     {% if user.email %}
+                                            <div class="form-group">
+                                               <h3 class="text-center">Welcome {{ user.email }}</h3>
+                                            </div>
+                                            {% endif %}
+                        <div class="row">
+                            <div class="col-md-5">
+
+                                <div class="row">
+                                        <div class="col-sm-12">
+
+
+
+                                            {% if messages %}
+
+{% for message in messages %}
+<div >
+    {{message }}
+</div>
+{%endfor %}
+{% endif %}
+                                            {% if user %}
+                                            <div class="form-group">
+                                                username:{{ user }}
+                                            </div>
+                                            {% endif %}
+                                            {% if user.email %}
+                                            <div class="form-group">
+                                                Email:{{ user.email }}
+                                            </div>
+                                            {% endif %}
+                                            {% if user.first_name %}
+                                            <div class="form-group">
+                                               FirsetName: {{user.first_name  }}
+                                            </div>
+
+                                            {% endif %}
+                                            {% if user.last_name %}
+                                            <div class="form-group">
+                                                LastName:{{ user.last_name }}
+                                            </div>
+
+                                            {% endif %}
+                                            {% if user.city %}
+                                            <div class="form-group">
+                                                Address:{{ user.city }}
+                                            </div>
+
+                                            {% endif %}
+                                            {% if user.phone %}
+                                            <div class="form-group">
+                                                MobileNumber:{{ user.phone }}
+                                            </div>
+
+                                            {% endif %}
+
+                                        </div>
+
+                            </div>
+
+                        </div><!-- row -->
+
+                    </div><!-- intro -->
+
+                </div><!-- container -->
+                </div>
+            </header><!-- header -->
+{% endblock %}
+</body>
+</html>

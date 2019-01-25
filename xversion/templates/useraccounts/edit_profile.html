@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+{% block content %}
+
+            <header class="header7" id="header7">
+
+  {% include "useraccounts/base.html" %}
+
+                <div class="intro center-content">
+                    <div class="container">
+
+                        <div class="row">
+                            <div class="col-md-5">
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <h3 class="pull-stop" data-selector="h3" style="">Welcom To Edit Your Profile!</h3>
+
+                                        </div>
+
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                               <b>{{ form.email }}</b>
+                                            </div>
+                                            <div class="form-group">
+                                               <b> {{ form.first_name }}</b>
+                                            </div>
+                                            <div class="form-group">
+                                               <b> {{ form.last_name }}</b>
+                                            </div>
+                                            <div class="form-group">
+                                               <b> {{ form.city }}</b>
+                                            </div>
+                                            <div class="form-group">
+                                               <b> {{ form.phone }}</b>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12">
+
+                                            <input type="submit" class="btn btn-info btn-block button" value="Update" data-selector="a.btn, button.btn" style="">
+
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div><!-- row -->
+
+                    </div><!-- intro -->
+
+                </div><!-- container -->
+
+            </header><!-- header -->
+{% endblock %}
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
