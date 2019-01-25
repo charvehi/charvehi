@@ -1,0 +1,52 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Index</title>
+        {% load staticfiles %}
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+        <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+
+    </head>
+    <body>
+    {% include "useraccounts/base.html" %}
+    <div class="container">
+        <div class="row" >
+            <div class="col-sm-4">
+
+            </div>
+            <div class="col-sm-4" style="padding:10px;">
+                <h3 class="text-center">Update Status</h3>
+                <form method="POST" class="post-form" action="/dealer/update/{{model.m_id}}">
+                    {% csrf_token %}
+                    <div class="form-group">
+        <label class="">Model Id:</label>
+
+            {{ model.m_id }}
+          <!--  <input type="text" name="m_id" id="id_m_id" required maxlength="20" value="{{ model.m_id }}"/>-->
+
+      </div>
+                    <div class="form-group ">
+                         <label class="">Model Name:</label>
+                        {{ model.model_name }}
+
+                    </div>
+
+                  <div class="form-group">
+        <label class="">Model status:</label>
+   <input type="checkbox" name="status" id="id_status"  {%if model.status %}checked="{{  model.status }}" {%endif %}  />check or uncheck status
+
+                    </div>
+                    <button type="submit" class="btn btn-success btn-block">Update</button>
+                </form>
+
+            </div>
+            <div class="col-sm-4">
+
+            </div>
+        </div>
+    </div>
+
+    </body>
+    </html>
