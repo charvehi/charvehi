@@ -12,6 +12,21 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
+#for register mail confirm
+#gmail or google apps
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'ramrana1912@gmail.com'
+EMAIL_HOST_PASSWORD = 'mepassword'
+EMAIL_PORT = 587
+
+'''EMAIL_HOST = ''
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'testsite_app'
+EMAIL_HOST_PASSWORD = 'mys3cr3tp4ssw0rd'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'TestSite Team <noreply@example.com>'
+'''
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR,'templates')
@@ -40,12 +55,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'uaccounts.apps.UaccountsConfig',
+
+    'UserAccounts.apps.UseraccountsConfig',
+    #added by ram for Usermodel 
     'booking.apps.BookingConfig',
     'dealer.apps.DealerConfig',
     'orders.apps.OrdersConfig',
     'review.apps.ReviewConfig',
     'localflavor',
+
 ]
 
 MIDDLEWARE = [
@@ -56,6 +74,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'xversion.middleware.LoginRequiredMiddleware',
 ]
 
 ROOT_URLCONF = 'xversion.urls'
@@ -89,15 +108,14 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': 'ramjs',
         'HOST': '127.0.0.1',
-        'PORT': '3307',
+        'PORT': '3306',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 #AUTH_USER_MODEL = 'uaccounts.UserProfileInfo'
-AUTHENTICATION_BACKENDS = ('uaccounts.backends.UserProfileInfoBackend', 'django.contrib.auth.backends.ModelBackend')
+AUTHENTICATION_BACKENDS = ('UserAccounts.backends.EmailPhoneBackend',)
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -137,9 +155,17 @@ STATICFILES_DIRS = [STATIC_DIR, ]
 
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
+#user authentication
+#LOGOUT_REDIRECT_URL = '/useraccounts/login/'
+AUTH_USER_MODEL = 'UserAccounts.User'
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = 'useraccounts:home'
 
-LOGIN_URL = '/uaccounts/signin/'
-LOGIN_REDIRECT_URL = '/booking/'
-#LOGOUT_REDIRECT_URL = 'home'
+LOGIN_EXEMPT_URLS = {
+    r'^accounts/logout/$',
+    r'^accounts/register/$',
+    r'^accounts/regdealer/$',
 
+}
+#end
 CART_SESSION_ID = 'cart'
