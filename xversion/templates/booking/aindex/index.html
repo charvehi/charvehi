@@ -1,17 +1,40 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
   <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <title>Places Search Box</title>
+    <script type="text/javascript" src="static/js/jonthornton-datepair/datepair.min.js"></script>
+    <script type="text/javascript" src="static/js/jonthornton-datepair/jquery.datepair.min.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script type="text/javascript" src="static/js/jonthornton-timepicker/jquery.timepicker.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <script src="https://jonthornton.github.io/jquery-timepicker/jquery.timepicker.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://jonthornton.github.io/jquery-timepicker/jquery.timepicker.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.standalone.css" />
+
+    <script src="lib/pikaday.js"></script>
+    <link rel="stylesheet" type="text/css" href="lib/pikaday.css" />
+
+    <script src="lib/jquery.ptTimeSelect.js"></script>
+    <link rel="stylesheet" type="text/css" href="lib/jquery.ptTimeSelect.css" />
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/ui-lightness/jquery-ui.css" type="text/css" media="all" />
+
+    <script src="lib/moment.min.js"></script>
+    <script src="lib/site.js"></script>
+    <link rel="stylesheet" type="text/css" href="lib/site.css" />
+	<script type="text/javascript" src="static/js/jonthornton-timepicker/lib/bootstrap-datepicker.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!--<script type="text/javascript" src="static/js/jonthornton-timepicker/jquery.timepicker.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="static/stylesheet/jonthornton-timepicker/jquery.timepicker.css" />
 	<script type="text/javascript" src="static/js/jonthornton-timepicker/lib/bootstrap-datepicker.js"></script>
 	<link rel="stylesheet" type="text/css" href="static/stylesheet/jonthornton-timepicker/lib/bootstrap-datepicker.css" />
 	<script type="text/javascript" src="static/js/jonthornton-timepicker/lib/site.js"></script>
-	<link rel="stylesheet" type="text/css" href="static/stylesheet/jonthornton-timepicker/lib/site.css" />
+	<link rel="stylesheet" type="text/css" href="static/stylesheet/jonthornton-timepicker/lib/site.css" />-->
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
@@ -115,7 +138,14 @@
       #btnAction:disabled {
         background: #6c99d2;
       }
-    </style>
+    </style><script>
+	$(function () {
+     $('#id_start_date').datepicker({
+         minDate:new Date()
+      });
+ })
+</script>
+
     {% include "booking/aindex/base.html" %}
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
     <script type="text/javascript" src="{% static 'js/gmaps.js' %}"></script>
@@ -149,14 +179,14 @@
       form.onclick = function(){
         var location = document.getElementById("loc");
         var location_enc = encodeURIComponent(location.value);
-        var start_d = document.getElementById("id_start_date")
-        var start_t = document.getElementById("id_start_time");
-        var end_d = document.getElementById("id_end_date")
-        var end_t = document.getElementById("id_end_time");
+        var start_d = document.getElementById("startDate");
+        var start_t = document.getElementById("startTime");
+        var end_d = document.getElementById("endDate");
+        var end_t = document.getElementById("endTime");
         var cord1 = document.getElementById("cord1");
         var cord2 = document.getElementById("cord2");
-        window.location = "bike/models/?current_loc=" + location_enc + "&start=" + start_d.options[start_d.selectedIndex].text + "_"
-                + start_t.value + "&end=" + end_d.options[end_d.selectedIndex].text + "_" + end_t.value + "&lat=" + cord1.value + "&lon=" + cord2.value + "&area=" + 1;
+        window.location = "bike/models/?current_loc=" + location_enc + "&start=" + start_d.value + ' ' +
+                start_t.value + "&end=" + end_d.value + ' '  + end_t.value + "&lat=" + cord1.value + "&lon=" + cord2.value + "&area=" + 1;
         return false;
       };
     };
@@ -164,7 +194,7 @@
   </head>
   <body>
   {% block body_block %}
-  <div class="container">
+  <p class="container">
     <div class="jumbotron" id="book_form">
       {% if registered %}
         <h1>Welcome to the Xsite!</h1>
@@ -172,41 +202,118 @@
         <h1>Book your bike now</h1>
         <h3>India on Wheels.</h3>
 <!--<form enctype="multipart/form-data" method="POST" action="{% url 'booking:model_list'%}">-->
-          {% csrf_token %}
+      <div id="currentInfo">
+          {{ profile_form.as_p }}
+        <div class="first_form_elem"><label for="loc">Location: </label>{{ form.location }}</div>
         <div class="first_form_elem">
-        <label for="loc">Location: </label>{{ form.location }}
+          <label for="startDate setTimeExample">Start: </label>
+        {{ form.start_date }}
+            {{ form.start_time }}
         </div>
         <div class="first_form_elem">
-          <label for="id_start_date setTimeExample">Start: </label>
-        {{ form.start_date }}{{ form.start_time }}
-        </div>
-        <div class="first_form_elem">
-        <label for="id_end_date setTimeExample">End: </label>
+        <label for="endDate setTimeExample">End: </label>
         {{ form.end_date }}{{ form.end_time }}
         </div>
-            <div class="demo">
-				<p>
-					<!--<input id="setTimeExample" type="text" class="time" />
-					<button id="setTimeButton">Set current time</button>-->
-				</p>
-			</div>
-			<script>
+      </div>
+			<!--<script>
 			$(function() {
 				$('.time').timepicker();
 				$('#setTimeButton').on('click', function() {
 					$('.time').timepicker('setTime', new Date());
 				});
 			});
-			</script>
-          {{ profile_form.as_p }}
-    <button type="button" id="form-submit-btn" name="search-bike" tabindex="1" onclick="submitInput()">Book Ride</button>
+			</script>-->
+      <button type="button" id="form-submit-btn" name="search-bike" tabindex="1">Book Ride</button>
 <!--</form>-->
 
       {% endif %}
 
     </div>
-  </div>.
   {% endblock %}
+<script>
+              var nowTemp = new Date();
+              var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+              var today = new Date();
+              var dd = today.getDate();
+              var mm = today.getMonth()+1; //January is 0!
+              var yyyy = today.getFullYear();
+              var hh=today.getHours();
+              var min=today.getMinutes();
+              if(min < 30){
+                min='00';
+              }else{
+                min='30';
+              }
+              if(hh<10){
+                  hh='0'+hh
+              } 
+              if(dd<10){
+                  dd='0'+dd
+              } 
+              if(mm<10){
+                  mm='0'+mm
+              } 
+              var today = dd+'/'+mm+'/'+yyyy;
+              var hora = hh+':'+min+':00';
+                $('#currentInfo .date').datepicker({
+                    startDate: now,
+                    todayHighlight: true,
+                    'format': 'dd/mm/yyyy',
+                    'autoclose': true,
+                });
+
+                $('#currentInfo .time').timepicker({
+                    'showDuration': true,
+                    'timeFormat': 'g:i A',
+                    'forceRoundTime': true,
+                    'disableTimeRanges': [
+                        ['12am', '9am'],
+                        ['9:01pm', '11:59pm']
+                    ]
+                });
+
+    var time = new Date();
+    var hour = time.getHours() - (time.getHours() >= 12 ? 12 : 0);
+    var minute = time.getMinutes();
+    var period = time.getHours() >= 12 ? 'PM' : 'AM';
+
+    if(minute > 0 && minute < 30){
+        minute = 30;
+    }
+    else if(minute > 30 && minute < 60) {
+        hour++;
+        minute = '00';
+    }
+    else if(minute==00) {
+        minute = '00'
+    }
+    //now = time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+    now = hour + ':' + minute + ' ' +period;
+                $('#startDate').val(today);
+                $('#startTime').val(now);
+</script>
+
+<script>
+  $('#startTime, #startDate').on('change', function() {
+  var startDate = $('#startDate').datepicker('getDate', {minDate: 0});
+  var start = $('#startTime').timepicker('getTime', startDate);
+  var now = new Date();
+  if (start < now) {
+      alert("Oops! Past date")
+  }
+});
+</script>
+<script>
+  $('#endTime, #endDate').on('change', function() {
+  var endDate = $('#endDate').datepicker('getDate', {minDate: 0});
+  var end = $('#endTime').timepicker('getTime', endDate);
+  var now = new Date();
+  if (end < now && end!==null && end!=='') {
+      alert("Oops! Past date")
+  }
+});
+</script>
+
     <input id="pac-input" class="controls" type="text" placeholder="Search your location" style="position: absolute; top: 40px;">
     <div id="map"></div>
     <div id="button-layer">
