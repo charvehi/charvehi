@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Title</title>
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+{% if user.is_authenticated and user.is_superuser %}
+<div class="table-responsive">
+<table class="table table-bordered table-hover">
+    <thead>
+    <tr>
+        <th>Order ID</th>
+        <th>User ID</th>
+        <th>Name</th>
+        <th>Mobile</th>
+        <th>Dealer ID</th>
+        <th>Model ID</th>
+        <th>Booked AT</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Duration</th>
+        <th>Price_hour</th>
+        <th>Price_day</th>
+        <th>Dealer money</th>
+        <th>Amount Paid</th>
+        <th>Location</th>
+    </tr>
+    </thead>
+    <tbody>
+{% for o in order %}
+    <tr>
+        <td>{{ o.order_id }}</td>
+        <td>{{ o.u_id }}</td>
+        <td>{{ o.name }}</td>
+        <td>{{ o.mobile }}</td>
+        <td>{{ o.d_id }}</td>
+        <td>{{ o.m_id }}</td>
+        <td>{{ o.booked_at }}</td>
+        <td>{{ o.start_date }} ({{ o.start_time }})</td>
+        <td>{{ o.end_date }} ({{ o.end_time }})</td>
+        <td>{{ o.duration }}</td>
+        <td>{{ o.price_hour }}</td>
+        <td>{{ o.price_day }}</td>
+        <td>{{ o.dealer_money }}</td>
+        <td>{{ o.amount_paid }}</td>
+        <td>{{ o.lat }}, {{ o.lon }}</td>
+    </tr>
+{% endfor %}
+    </tbody>
+</table>
+</div>
+{% endif %}
+</body>
+</html>
