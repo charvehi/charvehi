@@ -1,16 +1,29 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Edit your review</title>
+    <title>Title</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
+{% block content %}
+
+            <header class="header7" id="header7">
+  {% include "uaccounts/base.html" %}
+            </header><!-- header -->
+            <section id="content-section5" class="content-section5">
+                <div class="container">
+                    <div class="row">
+                      <div class="col-md-4">
 {% block title %}
 <h3>Edit your review</h3>
 {% endblock %}
-{% block content %}
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-<form id="review-form" action="{% url 'review:edit_review' m_id r_id %}?commit=true" method="POST">
+<form id="review-form" action="{% url 'review:edit_review' r_id %}?commit=true" method="POST">
     {% csrf_token %}
     {{ form_edit.comment }}
     <input type="submit" value="Done" />
@@ -23,7 +36,10 @@ window.onload = function() {
 };
 </script>
 {% endblock %}
-
+                      </div>
+                    </div><!-- end row -->
+                </div><!-- end container -->
+            </section>
 {% endblock %}
 </body>
 </html>

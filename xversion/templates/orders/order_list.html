@@ -1,58 +1,222 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-</head>
-<body>
 
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Details</title>
+    <!---------------for carousel---------------->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!---------------for carousel ends----------->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.mk-bkng-btn{
+    width: 100%;
+}
+
+.specs_value {
+    font-size: 1em;
+    padding-top: 0.1em;
+}
+
+#pos-setter {
+    margin-top: 4em;
+}
+
+.center-block {
+    float: none;
+    margin-top: 1.2em;
+}
+
+/*coupon box starts*/
+.input-group .icon-addon .form-control {
+    border-radius: 0;
+}
+
+.icon-addon {
+    position: relative;
+    color: #555;
+    display: block;
+}
+
+.icon-addon:after,
+.icon-addon:before {
+    display: table;
+    content: " ";
+}
+
+.icon-addon:after {
+    clear: both;
+}
+
+.icon-addon.addon-md .glyphicon,
+.icon-addon .glyphicon,
+.icon-addon.addon-md .fa,
+.icon-addon .fa {
+    position: absolute;
+    z-index: 2;
+    left: 10px;
+    font-size: 14px;
+    width: 20px;
+    margin-left: -2.5px;
+    text-align: center;
+    padding: 10px 0;
+    top: 1px
+}
+
+.icon-addon.addon-lg .form-control {
+    line-height: 1.33;
+    height: 46px;
+    font-size: 18px;
+    padding: 10px 16px 10px 40px;
+}
+
+.icon-addon.addon-sm .form-control {
+    height: 30px;
+    padding: 5px 10px 5px 28px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.icon-addon.addon-lg .fa,
+.icon-addon.addon-lg .glyphicon {
+    font-size: 18px;
+    margin-left: 0;
+    left: 11px;
+    top: 4px;
+}
+
+.icon-addon.addon-md .form-control,
+.icon-addon .form-control {
+    padding-left: 10px;
+    float: left;
+    font-weight: normal;
+}
+
+.icon-addon.addon-sm .fa,
+.icon-addon.addon-sm .glyphicon {
+    margin-left: 0;
+    font-size: 12px;
+    left: 5px;
+    top: -1px
+}
+
+.icon-addon .form-control:focus + .glyphicon,
+.icon-addon:hover .glyphicon,
+.icon-addon .form-control:focus + .fa,
+.icon-addon:hover .fa {
+    color: #2580db;
+}
+/*coupon box ends*/
+</style>
+</head>
+
+<body>
 {% block content %}
-  {% include "uaccounts/base.html" %}
-            <section id="content-section5" class="content-section5">
+{% include "uaccounts/base.html" %}
+<section id="content-section5" class="content-section5">
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-6">
-                {% for item in cart %}
+                        <div id="cart-container" class="col-md-8">
+                    {{ start }} to {{ end }}
+                            <div><a href="{% url "booking:model_list_by_category" %}?current_loc={{ loc }}&start={{ start }}&end={{ end }}&lat={{ lat }}&lon={{ lon }}&area=1" class="btn btn-default">Book more</a></div>
+                            <div style="font-size: 1.5em">You are riding:</div>
+                            {% for item in cart %}
                     {% with model=item.model  %}
-                        <div><a href="{% url "booking:model_list" %}" class="btn btn-default">Book more</a></div>
-                                         <div style="font-size: 1.5em">You are riding:</div>
-                        <div>
-                            <div>
-                                <a href="{{ model.get__absolute_url }}">
-                                    <img src="{% if model.model_image %} {{ media_url }}{{ model.model_image.img }} {% else %} {% static 'img/default.jpg' %} {% endif %}" alt="..." style="height: 130px; width: auto">
-                                </a>
-                            </div>
-                            <!--<td>{{ model.m_id }}</td>-->
-                            <div>{{ model.model_name }}</div>
-                            <div>Rs. {{ item.price }}</div>
-                            <a href="{% url "orders:cart_remove" model.m_id %}">Remove</a>
-                            <!--<td>Rs. {{ item.total_price }}</td>-->
-                        </div>
-                    {% endwith %}
+<div class="media">
+  <div class="media-left media-top">
+<a href="{{ model.get__absolute_url }}">
+    <img src="{% if model.model_image %} {{ media_url }}{{ model.model_image.img }} {% else %} {% static 'img/default.jpg' %} {% endif %}" alt="..." style="width: 8em">
+</a>
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading">{{ model.model_name }}</h4>
+    <p>₹{{ item.price }}</p>
+    <a href="{% url "orders:cart_remove" model.m_id %}">Remove</a>
+  </div>
+</div>
+                            <hr>
+                            {% endwith %}
+                            {% empty %}
+                            <button onclick="uturn()">Go Back</button>
                 {% endfor %}
-                    <!--<td colspan="num"><b>Rs. {{ cart.get_total_price }}</b></td>-->
-                     <button class="btn btn-info pull-right" style="background: #d4d4d4">
+                        </div>
+
+            <div id="pos-setter" class="col-md-4">
             {% with totail_items=cart|length %}
                 {% if cart|length > 0 %}
-                    My Shopping Order:
-                    <a href="{% url "orders:cart_detail" %}">
-                        {{ totail_items }} item{{ totail_items|pluralize }}, Rs. {{ cart.get_total_price }}
-                    </a>
-                    {% else %}
+                          <div class="panel panel-default">
+                            <div class="panel-heading">Just one step away ({{ totail_items }} model{{ totail_items|pluralize }})</div>
+                            <div class="panel-body">
+                            <div class="text-center specs_value">₹{{ cart.get_sub_total_price }} + 0.9% Service charge (each model)</div>
+
+            {% if request.user.is_authenticated %}
+            <div class="col-md-9 form-group center-block">
+                <div class="input-group input-group-md">
+                    <div class="icon-addon addon-md">
+                        <input type="text" placeholder="Have a coupon code?" class="form-control" id="coupon">
+                    </div>
+                    <span class="input-group-btn">
+                        <button id="applyCoupon" class="btn btn-default" type="button"><i class="glyphicon glyphicon-ok"></i></button>
+                    </span>
+                </div>
+            </div>
+            {% else %}
+                                <div style="text-align: center; padding-top: 1em;"><a href="#">Signup</a> and get 10% off on next ride.</div>
+            {% endif %}
+                                {% if coupon_value is not None %}
+                                <div class="coupon_status" style="margin-top: 1em; text-align: center; color: #009a17">Coupon applied</div>
+                                {% elif coupon_value is None %}
+                                <div class="coupon_status" style="margin-top: 1em; text-align: center; color: #dc143c">Coupon not applied</div>
+                                {% endif %}
+                                <hr style="margin-bottom: 10px">
+                   <div class="text-center specs_value" style="margin-bottom: 15px">Payable amount: ₹{{ cart.get_total_price }}</div>
+            <button class="btn btn-primary mk-bkng-btn">Checkout</button>
+                              {% else %}
                     Your cart is empty.
                 {% endif %}
             {% endwith %}
-      </button>
-            <a href="checkout.html" class="btn btn-primary">Checkout</a>
+                        </div>
+            </div>
                     </div><!-- end row -->
                 </div><!-- end container -->
                 </div>
             </section>
+<script>
+$(document).ready(function() {
+    var cc = '{{ coupon_value }}';
+    if(cc != 'None')
+        $('#coupon').val("{{ coupon_value }}");
+    var couponCheck = $('#applyCoupon');
+    couponCheck.click(function(event) {
+        event.preventDefault();
+            var cc = $('#coupon').val();
+            $.ajax({
+                url: 'http://127.0.0.1:8000/coupon/apply/'+cc,
+                data: null,
+                success: function (data) {
+                    //$('#coupon_status').text('Coupon applied').attr('style', 'color:#009a17');
+                    window.location.href = window.location.href;
+                },
+                error: function (data) {
+                    alert('Coupon not applicable');
+                }
+            });
+        //}
+    });
+});
+
+</script>
+<script>
+function uturn() {
+  window.history.back();
+}
+</script>
 {% endblock %}
 </body>
 </html>

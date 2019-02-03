@@ -1,21 +1,42 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
+{% block content %}
+
+
+            <section id="content-section5" class="content-section5">
+                <div class="container">
+                    <div class="row">
+                      <div class="col-md-4">
 {% if latest_review_list %}
                 {% for model in modeldetails %}
 <div>
     <div id="usr_cmnt_tb">
     {% for review in latest_review_list %}
-        <h6>rated {{ review.rating }} of 5 by {{ review.user_name }}</h6>
-        <a href="{{ review.get_detail_url }}" style="text-decoration: none"><div>{{ review.comment }}</div></a>
-        <a class="review_edit_btn" name="{{ review.id }}" href="{% url 'review:edit_review' model.m_id review.id %}?comment={{ review.comment }}">Edit</a>
-        <button class="review_del_btn" name="{{ review.id }}">Delete</button>
+        <div class="col-md-20" style="margin-top: 2em">
+        <div class="media">
+        <div class="media-left media-top">
+            <img src="img_avatar1.png" class="media-object" style="width:30px">
+        </div>
+        <div class="media-body">
+            <h4 class="media-heading">{{ review.user_id.first_name }} {{ review.user_id.last_name }} ({{ review.rating }})</h4>
+            <a href="{{ review.get_detail_url }}" style="text-decoration: none"><div>{{ review.comment }}</div></a>
+            <!--<button class="review_del_btn" name="{{ review.id }}">Delete</button>-->
+        </div>
+    </div>
+
+        <hr>
     {% endfor %}
-        <div><a href="{% url 'review:review_list' model.m_id %}">More reviews</a></div>
+                              </div>
     </div>
     <div id="usr_cmnt_tb_liv"></div>
 </div>
@@ -23,5 +44,10 @@
           {% else %}
 <p>No reviews are available.</p>
 {% endif %}
+                      </div>
+                    </div><!-- end row -->
+                </div><!-- end container -->
+            </section>
+{% endblock %}
 </body>
 </html>

@@ -10,8 +10,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -129,10 +127,26 @@
          
 
      }
-          #jumbo{
-              padding:10px;
-          }
 
+     #jumbo{
+         padding:10px;
+     }
+
+@media only screen and (max-width: 601px) {
+  div#jumbo {
+        margin-top: 4em
+  }
+}
+@media only screen and (min-width: 601px) {
+  div#jumbo {
+        margin-top: 10em
+  }
+}
+
+    .elem-position-setter {
+        display: inline-block;
+        width: 49%;
+    }
     </style><script>
 	$(function () {
      $('#id_start_date').datepicker({
@@ -193,8 +207,68 @@
 
 
   <header class="header" >
+                    <div class="container-fluid">
+                            <div class="text-center">RideYaan</div>
+      <div class="row">
+          <div class="col-sm-1">
+
+          </div>
+                             <div class="col-sm-4 col-md-4 col4 jumbotron" id="jumbo" style="background:rgba(19, 31, 62, 0.4);">
+                       <h2>Book your bike now</h2>
+  <div id="currentInfo">
+
+                       <div class="form-group">
+
+
+                       <div class="first_form_elem">{{ form.location }}</div>
+                           </div>
+
+              <div class="form-group elem-position-setter">
+                <div class="input-group date" id="datepickerstart">
+
+                     {{ form.start_date }}
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group elem-position-setter">
+                <div class="input-group date" id="timepickerstart">
+                   {{ form.start_time }}
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-time"></span>
+                    </span>
+                </div>
+            </div>
+      <div style="text-align: center"><h3 class="glyphicon glyphicon-transfer" style="margin-top: 0em"></h3></div>
+            <div class="form-group elem-position-setter">
+                <div class="input-group date" id="datepickerend">
+                    {{ form.end_date }}
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+
+                <div class="form-group elem-position-setter">
+                    <div class="input-group date" id="timepickerend">
+                   {{ form.end_time }}
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-time"></span>
+                    </span>
+                    </div>
+                </div>
+            <button type="button" id="form-submit-btn" class="btn btn-primary btn-block" name="search-bike" tabindex="1">Book Ride</button>
+</div>
+                                 <div class="col-sm-7"></div>
+      </div>
+      </div>
+                                            </div>
+
+
               <!--------------------------navbar ---------------------------->
-                <div class="navbar navbar-fixed-top ">
+                <!--<div class="navbar navbar-fixed-top ">
                     <div class="container-fluid">
                         <div class="navbar-header">
                             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#micon">
@@ -203,11 +277,9 @@
                                 <span class="icon-bar"></span>
 
                              </button>
-                        <!----------------------brand logo------------------------>
-                            <a class="navbar-brand" href="#"><img class="logo" src="{% static 'frontpage/img/Bikelogo.png' %}" style="height:40px;"></a>
+                            <a class="navbar-brand" href="#"><img class="logo" src="{% static 'frontpage/img/bikelogo.png' %}" style="height:40px;"></a>
                         </div>
                         <div class="collapse navbar-collapse" id="micon">
-                            <!----------------------navbar menus---------------------->
                               <ul class="nav navbar-nav  navbar-right ">
                                     <li><a href="">Why CB ?</a></li>
                                     <li><a href="">How It Works ?</a></li>
@@ -228,7 +300,7 @@
                             {% endif %}
                                   {% if user.is_authenticated %}
                                   {% else %}
-                             <!--       <li><a class="nav-button" href="{% url 'useraccounts:register' %}" data-selector="nav a, a.edit" style="">Sign Up</a></li>-->
+                             <li><a class="nav-button" href="{% url 'useraccounts:register' %}" data-selector="nav a, a.edit" style="">Sign Up</a></li>
                             <li><a class="nav-button" href="{% url 'useraccounts:login' %}?next={{request.path}}" data-selector="nav a, a.edit" style="">Log In</a></li>
 
                                   {% endif %}
@@ -238,79 +310,64 @@
                         </div>
                     </div>
                 </div>
-                <!----------------------------navbar header image/Banner--------------->
+
 							<div class="container-fluid">
 			   <div class="row backgroundimg">
                    <div class="col-sm-1 col-md-1 col-1">
 
                    </div>
-                   <div class="col-sm-3 col-md-3 col-3 jumbotron" id="jumbo" style="margin-top:10em;background:rgba(19, 31, 62, 0.4);">
+                   <div class="col-sm-4 col-md-4 col4 jumbotron" id="jumbo" style="background:rgba(19, 31, 62, 0.4);">
+                       <h2>Book your bike now</h2>
   <div id="currentInfo">
-         <!-- <div class="text-center well">BOOK HERE!</div>-->
+
                        <div class="form-group">
 
 
                        <div class="first_form_elem">{{ form.location }}</div>
                            </div>
 
-              <div class="form-group">
+              <div class="form-group elem-position-setter">
                 <div class="input-group date" id="datepickerstart">
 
                      {{ form.start_date }}
-                   <!-- <input type='text' id="datetimepicker5" placeholder="select date" class=" form-control" />-->
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
                 </div>
             </div>
 
-                  <div class="form-group">
-    <div class="input-group date" id="timepickerstart">
+            <div class="form-group elem-position-setter">
+                <div class="input-group date" id="timepickerstart">
                    {{ form.start_time }}
-                   <!-- <input type='text' id="datetimepicker4" class="form-control" />-->
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-time"></span>
                     </span>
                 </div>
-
-
-
-                 </div>
-
-
-
-                 <div class="form-group">
+            </div>
+      <div style="text-align: center"><h3 class="glyphicon glyphicon-transfer" style="margin-top: 0em"></h3></div>
+            <div class="form-group elem-position-setter">
                 <div class="input-group date" id="datepickerend">
                     {{ form.end_date }}
-                   <!-- <input type='text' id="datetimepicker4" class="form-control" />-->
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
                 </div>
             </div>
 
-                <div class="form-group">
+                <div class="form-group elem-position-setter">
                     <div class="input-group date" id="timepickerend">
                    {{ form.end_time }}
-                   <!-- <input type='text' id="datetimepicker4" class="form-control" />-->
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-time"></span>
                     </span>
+                    </div>
                 </div>
-
-
-                 </div>
-
-
             <button type="button" id="form-submit-btn" class="btn btn-primary btn-block" name="search-bike" tabindex="1">Book Ride</button>
 </div>
-                   <div class="col-sm-8 col-md-8 col-8">
-
-                   </div>
                    </div>
 </div>
 </div>
-
+--->
 </header>
 
 <div class="fluid-container" style="background-color:   #e7e7e7">
@@ -451,17 +508,34 @@
             </div>
         </div>
         <div class="footer-copyright">
-            <p>© 2016 Copyright Text </p>
+            <p>© 2019 RideYaan </p>
         </div>
     </footer>
 
 
 
+    <script type="text/javascript">
+    window.onload = function(){
+      var form = document.getElementById("form-submit-btn");
+      form.onclick = function(){
+        var location = document.getElementById("loc");
+        var location_enc = encodeURIComponent(location.value);
+        var start_d = document.getElementById("startDate");
+        var start_t = document.getElementById("startTime");
+        var end_d = document.getElementById("endDate");
+        var end_t = document.getElementById("endTime");
+        var cord1 = document.getElementById("cord1");
+        var cord2 = document.getElementById("cord2");
 
+        window.location = "bike/models/?current_loc=" + location_enc + "&start=" + start_d.value + ' ' +
+                start_t.value + "&end=" + end_d.value + ' '  + end_t.value + "&lat=" + cord1.value + "&lon=" + cord2.value + "&area=" + 1;
+        return false;
+      };
+    };
+    </script>
 
 <!--date script -->
-
-                                   <script type="text/javascript">
+  <script type="text/javascript">
                     $(function () {
                         var date=new Date();
                         date.setDate(date.getDate() + 2);

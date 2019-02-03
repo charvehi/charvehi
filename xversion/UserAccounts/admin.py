@@ -30,7 +30,7 @@ class MyUserAdmin(UserAdmin):
     add_form = MyUserCreationForm
     list_filter = ['is_vendor','is_active','is_staff','is_superuser',]
     fieldsets = UserAdmin.fieldsets + (
-        (None, {'fields': ('city', 'phone','is_vendor')}),
+        (None, {'fields': ('city', 'phone','is_vendor','ride_count')}),
     )
 
 admin.site.register(User, MyUserAdmin)

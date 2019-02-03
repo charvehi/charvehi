@@ -16,8 +16,8 @@ import os
 #gmail or google apps
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_USER = 'ramrana1912@gmail.com'
+EMAIL_HOST_PASSWORD = 'mepassword'
 EMAIL_PORT = 587
 
 '''EMAIL_HOST = ''
@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'dealer.apps.DealerConfig',
     'orders.apps.OrdersConfig',
     'review.apps.ReviewConfig',
+    'voucher.apps.VoucherConfig',
     'localflavor',
 
 ]
@@ -108,7 +109,7 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': 'ramjs',
         'HOST': '127.0.0.1',
-        'PORT': '3306',
+        'PORT': '3307',
     }
 }
 

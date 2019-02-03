@@ -120,6 +120,7 @@
                                 <span class="text-left specs_value">{{ model.d_id.dealer_address }}</span></div>
                             <div class="text-left specs_value">{{ distance }} {{ unit }} away</div>
                             <div class="specs_value">{{ model.specification }}</div>
+                            <div class="mk-bkng-btn-sec"><a href="{{ model.get_order_url }}?current_loc={{ loc }}&start={{ start }}&end={{ end }}&lat={{ lat }}&lon={{ lon }}"><button class="mk-bkng-btn">Book</button></a></div>
                         </div>
                     {% endfor %}
                     </div><!-- end row -->
@@ -128,6 +129,7 @@
 
                 <div class="container">
                         <div class="col-md-4">
+
 {% if latest_review_list %}
                 {% for model in modeldetails %}
 <h5>{{ model.review_set.count }} reviews ({{ model.average_rating | floatformat }} average rating)</h5>
@@ -136,12 +138,19 @@
 <div>
     <div id="usr_cmnt_tb">
     {% for review in latest_review_list %}
-                              <div class="col-md-20" style="margin-top: 2em">
-        <h6 style="font-weight: bold">rated {{ review.rating }} of 5 by {{ review.user_name }}</h6>
-        <a href="{{ review.get_detail_url }}" style="text-decoration: none"><div>{{ review.comment }}</div></a>
-        <a class="review_edit_btn" name="{{ review.id }}" href="{% url 'review:edit_review' model.m_id review.id %}?comment={{ review.comment }}">Edit</a>
-        <button class="review_del_btn" name="{{ review.id }}">Delete</button>
-                                  <hr>
+        <div class="col-md-20" style="margin-top: 2em">
+        <div class="media">
+        <div class="media-left media-top">
+            <img src="img_avatar1.png" class="media-object" style="width:30px">
+        </div>
+        <div class="media-body">
+            <h4 class="media-heading">{{ review.user_id.first_name }} {{ review.user_id.last_name }} ({{ review.rating }})</h4>
+            <a href="{{ review.get_detail_url }}" style="text-decoration: none"><div>{{ review.comment }}</div></a>
+            <!--<button class="review_del_btn" name="{{ review.id }}">Delete</button>-->
+        </div>
+    </div>
+
+        <hr>
     {% endfor %}
         <div><a href="{% url 'review:review_list' model.m_id %}">More reviews</a></div>
                               </div>
@@ -153,6 +162,7 @@
 <p>No reviews are available.</p>
 {% endif %}
 <!---Form start-->
+                            {% if review_bit is False %}
           <div id="my_review_form">
 <h3>Add your review</h3>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
@@ -165,7 +175,7 @@
           {% endfor %}
 <!--Form end-->
           </div>
-
+                            {% endif %}
 </div>
 </div>
 <script>
@@ -275,6 +285,14 @@ $(document).ready(function() {
     });
 });
 
+</script>
+<script>
+    function blinker() {
+    $('#dc_blink').fadeOut(500);
+    $('#dc_blink').fadeIn(500);
+}
+
+setInterval(blinker, 1000);
 </script>
           {% endfor %}
 {% endblock %}

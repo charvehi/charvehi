@@ -1,10 +1,12 @@
 from django.db.models import Max, Min
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, Http404, HttpResponseBadRequest
 from django.urls import reverse
 from django.conf import settings
 from time import gmtime, strftime
 from django.shortcuts import render, redirect, get_object_or_404
 from booking.forms import IndexBookForm
+from django.contrib.auth.models import User
+from django.contrib.auth import update_session_auth_hash, get_user_model
 from booking.models import Category, Image, CategoryModel, CategoryModelImage
 from dealer.models import Dealer
 from numpy.ma import empty
@@ -14,12 +16,15 @@ from datetime import datetime as dt
 import datetime
 import math
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import itertools
 from django.views.generic.list import ListView
 from endless_pagination.decorators import page_template
 # import mpu
 # from Collections import defaultdict
 # from django.db.models.functions import Cos, ASin
 from decimal import Decimal
+
+User = get_user_model()
 
 
 def index(request):
@@ -77,8 +82,84 @@ def category_list(request, category_id=None, category_slug=None):
     }
     return render(request, 'booking/category/list.html', context)
 
+def profit_margin(request, models, days, hours, net_hours):
+    priceHourD = models.price_hour_dealer
+    priceDayD = models.price_day_dealer
+    priceHour = models.price_hour
+    PH_Count = models.ph_count
+    priceDay = models.price_day
+    PD_count = models.pd_count
+
+    if days is 0 or hours <= PH_Count:        #hourly charges
+        price = priceHour*hours
+        priceD = priceHourD*hours
+    if days is not 0 and hours > PH_Count:        #day charges
+        price = (float(priceDay)*(net_hours/PD_count))+(float(priceHour)
+                                                                     * (net_hours % PD_count))
+        priceD = (float(priceDayD)*(net_hours/PD_count))+(float(priceHourD)
+                                                                     * (net_hours % PD_count))
+    gross_profit = price-priceD
+    profit_cent = (gross_profit/price)*100
+    print("Profit margin:", gross_profit)
+    print("Profit percentage:", profit_cent)
+    return 0
+
+
+def duration_calc(request, start, end):
+    #checking format according to the url takes value
+    #check = dt.strptime('1 jan 12:00 am','%d %b %I:%M %p')
+    datetimeFormat1 = '%d/%m/%Y %I:%M %p'
+    check = dt.strptime(start, datetimeFormat1)
+    check.strftime('%d/%m/%Y %H:%M')
+
+
+    #check1 = dt.strptime('2 jan 01:30 am', '%d %b %I:%M %p')
+    check1 = dt.strptime(end, datetimeFormat1)
+    check1.strftime('%d/%m/%Y %H:%M')
+    newdiff = check1 - check
+    days, hours, minutes = newdiff.days, newdiff.seconds // 3600, newdiff.seconds % 3600 / 60.0
+    print(hours)
+    net_hours = (days*24)+hours
+    print(net_hours)
+    return days, hours, minutes, net_hours
+
+
+def price_calc(request, models, days, hours, minutes, net_hours):
+    priceHourOff = models.price_hour_offline
+    priceDayOff = models.price_day_offline
+    priceHour = models.price_hour
+    PH_Count = models.ph_count
+    priceDay = models.price_day
+    PD_count = models.pd_count
+
+    min_factor = 0
+    if int(minutes) is not 0:
+        min_factor = 1
+
+    if PD_count >= net_hours > PH_Count:
+        price = (float(priceDay))
+        priceOff = (float(priceDayOff))
+
+    elif net_hours >= PD_count:
+        price = (float(priceDay)) * (int(net_hours / PD_count)) + (float(priceHour)) * \
+                (int(net_hours % PD_count)) + (float(priceHour) / 2) * min_factor
+        priceOff = (float(priceDayOff)) * (int(net_hours / PD_count)) + (float(priceHourOff)) * \
+                   (int(net_hours % PD_count)) + (float(priceHourOff) / 2) * min_factor
+
+    price_discount = priceOff - price
+    return price, price_discount
+
 
 def category_model_list(request):
+
+    if 'current_loc' not in request.GET or 'start' not in request.GET or 'end' not in request.GET or \
+            'lat' not in request.GET or 'lon' not in request.GET or \
+            'area' not in request.GET:
+        return HttpResponseBadRequest("Something went wrong")
+    elif request.GET.get('current_loc', '') == '' or request.GET.get('start', '') == ''\
+            or request.GET.get('end', '') == '' or request.GET.get('lat', '') == ''\
+            or request.GET.get('lon', '') == '' or request.GET.get('area', '') == '':
+        return HttpResponseBadRequest("Something went wrong")
 
     models = CategoryModel.objects.filter(status=1)
     loc = request.GET.get('current_loc', '')
@@ -87,47 +168,10 @@ def category_model_list(request):
     lat = float(request.GET.get('lat', ''))
     lon = float(request.GET.get('lon', ''))
     area = float(request.GET.get('area', ''))
-    filter = str(request.GET.get('filter', ''))
-    #checking format according to the url takes value
-    #check = dt.strptime('1 jan 12:00 am','%d %b %I:%M %p')
-    datetimeFormat1='%d %b %I:%M%p'
-    check=dt.strptime(start,datetimeFormat1)
-    check.strftime('%d %m %H:%M')
+    filter_price = str(request.GET.get('filter', ''))
 
+    days, hours, minutes, net_hours = duration_calc(request, start, end)
 
-    #check1 = dt.strptime('2 jan 01:30 am', '%d %b %I:%M %p')
-    check1=dt.strptime(end,datetimeFormat1)
-    check1.strftime('%d %m %H:%M')
-    newdiff = check1 \
-           - check
-    days, hours, minutes = newdiff.days, newdiff.seconds // 3600, newdiff.seconds % 3600 / 60.0
-    print(days,hours,minutes)
-    '''
-    datetimeFormat = '%m-%d %I:%M %p'
-    end_time=dt.strptime(end, datetimeFormat)
-    end_time.strftime("%H:%M")
-    start_time=dt.strptime(start, datetimeFormat)
-    start_time.strftime("%H:%M")
-    diff = end_time \
-           - start_time
-    days, hours, minutes = diff.days, diff.seconds // 3600, diff.seconds % 3600 / 60.0
-    print(days,hours,minutes)
-    print("Difference:", diff)
-    print("Days:", diff.days)
-
-    print("Microseconds:", diff.microseconds)
-    print("Seconds:", diff.seconds)
-
-    
-     diff = end - start
-
-    days, seconds = diff.days, diff.seconds
-    hours = days * 24 + seconds // 3600
-    minutes = (seconds % 3600) // 60
-    seconds = seconds % 60
-
-    print
-    hours, minutes, second'''
     r = 6371
     maxLat = lat + math.degrees(area / r)
     minLat = lat - math.degrees(area / r)
@@ -140,32 +184,42 @@ def category_model_list(request):
         models_li = []
         models_list = []
         for dl in dealers_li:
-            min=CategoryModel.objects.all().filter(d_id=dl).aggregate(Min('price'))
-            max=CategoryModel.objects.all().filter(d_id=dl).aggregate(Max('price'))
-            if filter == 'All':
-                min_price = min['price__min']
-                max_price = max['price__max']
-            if filter == 'less_price':
-                min_price = min['price__min']
+            minPrice = CategoryModel.objects.all().filter(d_id=dl).aggregate(Min('price_hour'))
+            maxPrice = CategoryModel.objects.all().filter(d_id=dl).aggregate(Max('price_hour'))
+            if filter_price == 'All':
+                min_price = minPrice['price_hour__min']
+                max_price = maxPrice['price_hour__max']
+
+            if filter_price == 'less_price':
+                min_price = minPrice['price_hour__min']
+                max_price = 56
+
+            if filter_price == 'medium_price':
+                min_price = 50
+                max_price = 100
+
+            if filter_price == 'high_price':
+                min_price = 90
                 max_price = 200
 
-            if filter == 'medium_price':
-                min_price = 200
-                max_price = 500
-
-            #print(min,max)
-            if filter != None and filter != '':
-                models = CategoryModel.objects.all().filter(price__range=(min_price, max_price),d_id=dl,status=1).order_by('price')
+            if filter_price is not None and filter_price != '':
+                models = CategoryModel.objects.all().filter(price_hour__range=(min_price, max_price), d_id=dl, status=1).\
+                    order_by('price_hour')
             else:
-                models = CategoryModel.objects.all().filter(d_id=dl,status=1).order_by('price')
+                models = CategoryModel.objects.all().filter(d_id=dl, status=1).order_by('price_hour')
             print(models)
             models_li.append(models)
 
         for model in models_li:
             for m in model:
+                # --------------------Price calculation begins-----------------------#
+                price, price_discount = price_calc(request, m, days, hours, minutes, net_hours)
+                #profit_margin(request, m, days, hours, net_hours)
+                m.price = price
+                m.price_discount = price_discount
+                # --------------------Price calculation ends-----------------------#
+                #m2 = zip(itertools.repeat(m, int(price)))
                 models_list.append(m)
-        print("models are")
-        print(models_list)
 
         page = request.GET.get('page')
         paginator = Paginator(models_list, 4)
@@ -185,12 +239,10 @@ def category_model_list(request):
             'lat': lat,
             'lon': lon,
             'area': area,
-            'days':days,
-            'hour':hours,
-            'min':minutes,
-
+            'days': days,
+            'hour': hours,
+            'min': minutes,
         }
-
         return render(request, 'booking/catmodel/model_list.html', context)
 
 
@@ -209,6 +261,19 @@ def category_model_details(request, model_id, model_slug=None):
         details = CategoryModel.objects.filter(m_id=model_id)
         dealer = get_object_or_404(CategoryModel, m_id=model_id)
         # photo = get_object_or_404(CategoryModelImage, id=model_id)
+
+        print(details)
+        days, hours, minutes, net_hours = duration_calc(request, start, end)
+
+        for m in details:
+            # --------------------Price calculation begins-----------------------#
+            price, price_discount = price_calc(request, m, days, hours, minutes, net_hours)
+            #profit_margin(request, m, days, hours, net_hours)
+            m.price = price
+            m.price_discount = price_discount
+            # --------------------Price calculation ends-----------------------#
+
+        #-----------------------Location script--------------------------#
         d_lat = math.radians(float(dealer.d_id.dealer_lat))
         d_lon = math.radians(float(dealer.d_id.dealer_lon))
 
@@ -227,14 +292,22 @@ def category_model_details(request, model_id, model_slug=None):
             distance = round(distance, 1)
             unit = 'km'
         print(distance)
-
+        #------------------------Location script ends-----------------------#
         latest_review_list = Review.objects.filter(model=model_id).order_by('-pub_date')[:3]
+
+        review_exist = Review.objects.filter(user_id=request.user.id)
+        review = False
+        if review_exist.exists():
+            review = True
+        uid = request.user.id
         form = ReviewForm()
     context = {
         'media_url': settings.MEDIA_URL,
+        'user_id': uid,
         'modeldetails': details,
         'form': form,
         'latest_review_list': latest_review_list,
+        'review_bit': review,
         'loc': loc,
         'start': start,
         'end': end,

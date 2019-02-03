@@ -17,16 +17,30 @@ class UserOrderInfo(models.Model):
         (3, str(three.day) + " " + str(three.strftime("%b"))),
         (4, str(four.day) + " " + str(four.strftime("%b"))),
     )
-    uid = models.BigIntegerField(primary_key=True, default=0)
-    mid = models.IntegerField(default=0)
+    order_id = models.BigIntegerField(primary_key=True, default=0)
+    u_id = models.BigIntegerField(default=0)
+    name = models.CharField(max_length=40, blank=False, default=0)
+    mobile = models.IntegerField(default=0)
+    d_id = models.IntegerField(default=0)
+    m_id = models.IntegerField(default=0)
+    booked_at = models.DateTimeField(auto_now=True)
+    #start_date = models.CharField(choices=DATE_CHOICES, blank=False, max_length=6)
+    start_date = models.DateField(blank=False, max_length=6)
+    start_time = models.CharField(max_length=8, blank=False)
+    #end_date = models.CharField(choices=DATE_CHOICES, blank=False, max_length=6)
+    end_date = models.DateField(blank=False, max_length=6)
+    end_time = models.CharField(max_length=8, blank=False)
+    duration = models.CharField(max_length=30, blank=False, default=0)
+    price_hour = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    price_day = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    dealer_money = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    amount_paid = models.DecimalField(max_digits=6, decimal_places=2, default=0)
     lat = models.DecimalField(max_digits=9, decimal_places=6, blank=True, default=0)
     lon = models.DecimalField(max_digits=9, decimal_places=6, blank=True, default=0)
-    start_date = models.CharField(choices=DATE_CHOICES, blank=False, max_length=6)
-    start_time = models.CharField(max_length=8, blank=False)
-    end_date = models.CharField(choices=DATE_CHOICES, blank=False, max_length=6)
-    end_time = models.CharField(max_length=8, blank=False)
-
     #REQUIRED_FIELDS = ['email', 'password']
+
+    def __str__(self):
+        return self.order_id, self.d_id
 
     class Meta:
         verbose_name_plural = 'Orders'

@@ -1,12 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm,PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash, get_user_model
 from django.urls import reverse
 
-from .forms import RegistrationForm,EditProfileForm,DealerRegistrationForm
+from .forms import RegistrationForm, EditProfileForm, DealerRegistrationForm
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.models import User
 
@@ -17,7 +17,7 @@ def home(request):
         if request.user.is_vendor:
             return redirect('dealer:show')
         else:
-            return redirect('/accounts')
+            return redirect('/')
     return render(request, 'useraccounts/home.html')
 
 def register(request):
@@ -74,18 +74,18 @@ def edit_profile(request):
 
 def change_password(request):
     if request.method == 'POST':
-        form = PasswordChangeForm(data=request.POST,user= request.user)
+        form = PasswordChangeForm(data=request.POST, user=request.user)
 
         if form.is_valid():
             form.save()
-            messages.success(request,'Your new password has been saved.')
-            update_session_auth_hash(request,form.user)
+            messages.success(request, 'Your new password has been saved.')
+            update_session_auth_hash(request, form.user)
             return redirect(reverse('useraccounts:view_profile'))
         '''else:
             return redirect('/useraccounts/change-password')'''
     else:
         form = PasswordChangeForm(user= request.user)
-        args = {'form':form}
+        args = {'form': form}
         return render(request,'useraccounts/change_password.html',args)
 
 

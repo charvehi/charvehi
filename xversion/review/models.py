@@ -1,6 +1,10 @@
 from django.db import models
 from django.urls import reverse
 from booking.models import CategoryModel
+from django.contrib.auth import update_session_auth_hash, get_user_model
+from django.contrib.auth.models import User
+
+User = get_user_model()
 
 
 class Review(models.Model):
@@ -13,7 +17,7 @@ class Review(models.Model):
     )
     model = models.ForeignKey(CategoryModel, on_delete=models.CASCADE)
     pub_date = models.DateTimeField('date published')
-    user_name = models.CharField(max_length=100)
+    user_id = models.ForeignKey(User, null=True, db_column="user_id", on_delete=models.CASCADE)
     comment = models.CharField(max_length=200)
     rating = models.DecimalField(choices=RATING_CHOICES, max_digits=2, decimal_places=1)
 

@@ -22,11 +22,15 @@
     padding: 1px;
     text-align: center;
   }
+
+  .m-detail{
+      padding-bottom: 0.4em;
+  }
   .mk-bkng-btn-sec{
     text-align: center;
   }
   .mk-bkng-btn{
-
+    width: 100%;
   }
 
     #ex1Slider .slider-selection, #ex1Slider .slider-track-high{
@@ -98,20 +102,18 @@ h2 {
 
                         </div>
                         <div class="col-sm-4">
-                             <input id="ex1" data-slider-id='ex1Slider' type="range"
-                             data-slider-min="1"
-                            data-slider-max="5"
-                            data-slider-step="1"
-                            data-slider-value= "1"
-                            tooltip="always"
-
-		  />&nbsp&nbsp<span id="valuecontain" style="color:green;">  </span><br>
- <span class="label label-success">{{days }}days,&nbsp{{hour}}hours,&nbsp{{ min}}minutes.</span>&nbsp;
+                             <input id="ex1" data-slider-id='ex1Slider' type="range" data-slider-min="1"
+                            data-slider-max="15"
+                            data-slider-step="2"
+                            data-slider-value= "5"
+                            tooltip="always"><span id="valuecontain" style="color:green;"></span><br>
+ <span class="label label-success">{{days }}days, {{hour}}hours, {{ min}}minutes.</span>&nbsp;
                     <!--filters -->
                     <select class="mdb-select md-form colorful-select dropdown-primary" id="name" onchange="myFunction()" >
-<option value="All" >Select price</option>
-<option value="less_price" >Price: 100-200</option>
-<option value="medium_price" >Price: 200-300</option>
+<option value="All" >Most relevant</option>
+<option value="less_price" >Economy</option>
+<option value="medium_price" >Standard</option>
+<option value="high_price" >Premium</option>
 </select>
                     <!--end filters-->
                         </div>
@@ -124,7 +126,26 @@ h2 {
                     <div class="row">
                         {% for m in models %}
                       <div class="col-md-3">
-
+                          <div class="thumbnail">
+<div class="media">
+  <div class="media-left media-top">
+      <img class="media-object" src="{% if m.model_image %} {{ media_url }}{{ m.model_image }} {% else %} {% static 'img/default.jpg' %} {% endif %}" alt="..." style="width: 8em">
+      {% if m.delivery_charge != 0 %}
+      <div id="dc_blink" style="color: #337ab7">Free Delivery*</div>
+      {% endif %}
+  </div>
+  <div class="media-body">
+    <a class="media-heading" href="{{ m.get_detail_url }}?current_loc={{ loc }}&start={{ start }}&end={{ end }}&lat={{ lat }}&lon={{ lon }}&area={{ area }}">{{ m.model_name }}</a>
+    <p>
+        <div class="text-center fa m-detail" >&#xf156; {{ m.price }}</div>
+      <div><span class="text-center fa m-detail" >You save: &#xf156; {{ m.price_discount }}</span></div>
+       <div class="text-center fa m-detail" >{{ m.d_id.dealer_address }}</div>
+    </p>
+      <div class="mk-bkng-btn-sec"><a href="{{ m.get_order_url }}?current_loc={{ loc }}&start={{ start }}&end={{ end }}&lat={{ lat }}&lon={{ lon }}"><button class="mk-bkng-btn">Book</button></a></div>
+  </div>
+</div>
+                          </div>
+                        <!---
                         <div class="thumbnail">
                             <a href="{{ m.get_absolute_url }}">
                                 <img src="{% if m.model_image %} {{ media_url }}{{ m.model_image }} {% else %} {% static 'img/default.jpg' %} {% endif %}" alt="..." style="height: 130px; width: auto">
@@ -133,13 +154,15 @@ h2 {
                                 <h3 class="text-center" style="color: #0B1022">
                                     <a href="{{ m.get_detail_url }}?current_loc={{ loc }}&start={{ start }}&end={{ end }}&lat={{ lat }}&lon={{ lon }}&area={{ area }}">{{ m.model_name }}</a>
                                 </h3>
-                                <p class="text-center fa" >&#xf156; {{ m.price }}</p>
+                                <div class="text-center fa" >&#xf156; {{ m.price }}</div>
+                                <div><span class="text-center fa" >You save: &#xf156; {{ m.price_discount }}</span></div>
                             </div>
                             <div class="caption">{{ m.dealer_name }}</div>
                             <div class="caption">{{ m.d_id.dealer_address }}</div>
                             <div class="mk-bkng-btn-sec"><a href="{{ m.get_order_url }}?current_loc={{ loc }}&start={{ start }}&end={{ end }}&lat={{ lat }}&lon={{ lon }}"><button class="mk-bkng-btn">Book</button></a></div>
 
                         </div>
+                          --->
                       </div>
                     {% endfor %}
                     </div><!-- end row -->
@@ -186,7 +209,7 @@ var url = new URL(current);
 var area_value = url.searchParams.get("area");
 //window.alert(c);
 var slider = new Slider("#ex1",{tooltip:'always',value: area_value });
-document.getElementById('valuecontain').textContent= "current area selected "+ area_value;
+document.getElementById('valuecontain').textContent= "Area circle: "+ area_value + "km";
 
 slider.on("slide", function(sliderValue) {
 
@@ -223,7 +246,6 @@ var min=document.getElementById("name").value;
         var url=new URL(current);
 		//document.getElementById("name").value=min;
 
-
 		if(url.searchParams.get("filter")!=null)
 		{
 			url.searchParams.set("filter",min);
@@ -239,12 +261,17 @@ var min=document.getElementById("name").value;
 
 				}
         //window.location.search+="&my_param=foobar";
-
-
-
-
 }
 
+</script>
+
+<script>
+    function blinker() {
+    $('#dc_blink').fadeOut(500);
+    $('#dc_blink').fadeIn(500);
+}
+
+setInterval(blinker, 1000);
 </script>
 </body>
 </html>

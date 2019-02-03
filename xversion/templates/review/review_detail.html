@@ -1,14 +1,50 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    {{ review.model }}
-    {{ review.user_name }}
-    {{ review.comment }}
-    {{ review.rating }}
-    {{ review.pub_date }}
+{% block content %}
+
+            <header class="header7" id="header7">
+  {% include "uaccounts/base.html" %}
+            </header><!-- header -->
+            <section id="content-section5" class="content-section5">
+                <div class="container">
+                    <div class="row">
+                      <div class="col-md-4">
+<div>
+    <div id="usr_cmnt_tb">
+        <div class="col-md-20" style="margin-top: 2em">
+        <div class="media">
+        <div class="media-left media-top">
+            <img src="img_avatar1.png" class="media-object" style="width:30px">
+        </div>
+        <div class="media-body">
+            <h4 class="media-heading">{{ review.user_id.first_name }} {{ review.user_id.last_name }} ({{ review.rating }})</h4><span>-{{ review.pub_date }}</span>
+            <a style="text-decoration: none"><div>{{ review.comment }}</div></a>
+                                        {% if review_bit is True %}
+            <a class="review_edit_btn" name="{{ review.id }}" href="{% url 'review:edit_review' review.id %}?comment={{ review.comment }}">Edit</a>
+                                        {% endif %}
+            <!--<button class="review_del_btn" name="{{ review.id }}">Delete</button>-->
+        </div>
+    </div>
+
+        <hr>
+                              </div>
+    </div>
+    <div id="usr_cmnt_tb_liv"></div>
+</div>
+                      </div>
+                    </div><!-- end row -->
+                </div><!-- end container -->
+            </section>
+{% endblock %}
 </body>
 </html>

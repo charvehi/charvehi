@@ -53,16 +53,41 @@ class CategoryModelImage(models.Model):
 
 
 class CategoryModel(models.Model):   #Model storage table
+    DAY_COUNT_CHOICES = (
+        (1, '12'),
+        (2, '24'),
+    )
+
     m_id = models.AutoField(primary_key=True)
     c_id = models.ForeignKey(Category, null=True, db_column='c_id', on_delete=models.CASCADE)
     d_id = models.ForeignKey(Dealer, null=True, db_column='d_id', on_delete=models.CASCADE)
     model_name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=150, unique=True, db_index=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
     model_image = models.ForeignKey(CategoryModelImage, db_column='image', null=True, on_delete=models.CASCADE)
     rating = models.IntegerField()
     status = models.BooleanField(default=False)
     specification = models.CharField(max_length=300)
+
+    #------------------for difference calculation-one time (N1) --------------------#
+    price_hour_offline = models.DecimalField('Price hour offline (static)', max_digits=6, decimal_places=2, default=0)
+    price_day_offline = models.DecimalField('Price day offline (static)', max_digits=6, decimal_places=2, default=0)
+    #----------------------------------ends--------------------------------------#
+
+    #----reference for price_hour-----#
+    price_hour_dealer = models.DecimalField('Price hour (Dealer)', max_digits=6, decimal_places=2, default=0)
+    #----ends-----#
+
+    price_hour = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    ph_count = models.IntegerField(default=0)
+
+    #----reference for price_day-----#
+    price_day_dealer = models.DecimalField('Price day (Dealer)', max_digits=6, decimal_places=2, default=0)
+    #----ends-----#
+
+    price_day = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    pd_count = models.IntegerField(choices=DAY_COUNT_CHOICES, default=0)
+    delivery_charge = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -80,7 +105,6 @@ class CategoryModel(models.Model):   #Model storage table
         ordering = ('-created',)
         verbose_name_plural ='Models/Variants'
         db_table = 'category_model'
-
 
     def get_absolute_url(self):
         return reverse('booking:category_model_details', args=[self.m_id, self.slug])
