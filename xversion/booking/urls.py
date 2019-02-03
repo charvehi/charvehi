@@ -3,7 +3,7 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls import url,include
-import uaccounts.views as acc
+
 # SET THE NAMESPACE!
 app_name = 'booking'
 #app_name = 'uaccounts'

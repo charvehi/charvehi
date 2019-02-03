@@ -134,7 +134,7 @@ def category_model_list(request):
     maxLon = lon + math.degrees(math.asin(area / r) / math.cos(math.radians(lat)))
     minLon = lon - math.degrees(math.asin(area / r) / math.cos(math.radians(lat)))
     if models:
-        dealers = Dealer.objects.filter(dealer_lat__range=(minLat, maxLat), dealer_lon__range=(minLon, maxLon))
+        dealers = Dealer.objects.filter(dealer_lat__range=(minLat, maxLat),status=True,dealer_lon__range=(minLon, maxLon))
         dealers_li = list(dealers)
         print(dealers_li)
         models_li = []
@@ -154,7 +154,7 @@ def category_model_list(request):
                 max_price = 500
 
             #print(min,max)
-            if filter != None and filter != '':
+            if filter is not None and filter != '':
                 models = CategoryModel.objects.all().filter(price__range=(min_price, max_price),d_id=dl,status=1).order_by('price')
             else:
                 models = CategoryModel.objects.all().filter(d_id=dl,status=1).order_by('price')

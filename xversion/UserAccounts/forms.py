@@ -1,7 +1,8 @@
 from  django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm, PasswordResetForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm, PasswordResetForm, \
+    PasswordChangeForm
 
 from dealer.models import Dealer
 
@@ -131,14 +132,20 @@ class DealerRegistrationForm(UserCreationForm):
 '''
 
 
+class PasswordChangeForm(PasswordChangeForm):
+    old_password= forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'old password','id':'oldPassword'}) ,required=True)
+    new_password1 = forms.CharField(widget=forms.PasswordInput(
+        attrs={'class': 'form-control', 'placeholder': 'new password', 'id': 'newPassword'}), required=True)
+    new_password2 = forms.CharField(widget=forms.PasswordInput(
+        attrs={'class': 'form-control', 'placeholder': 'confirm new password', 'id': 'newconfirmPassword'}), required=True)
 
 
 class EditProfileForm(UserChangeForm):
-    email = forms.EmailField(widget=forms.TextInput(attrs={'class':'form-control','placeholder': 'Email Address', 'id': 'uemail', }),required=True)
+    email = forms.EmailField(widget=forms.TextInput(attrs={'class':'form-control','placeholder': 'Email Address', 'id': 'uemail'}) ,required=True)
     first_name=forms.CharField(widget=forms.TextInput(
-        attrs={'class': 'form-control','placeholder': 'Email Address', 'id': 'uemail', }),required=True,)
+        attrs={'class': 'form-control','placeholder': 'First Name', 'id': 'uemail', }),required=True,)
     last_name = forms.CharField(widget=forms.TextInput(
-        attrs={'class': 'form-control','placeholder': 'Email Address', 'id': 'uemail', }),required = True)
+        attrs={'class': 'form-control','placeholder': 'Last Name', 'id': 'uemail', }),required = True)
     city = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Address', 'id': 'address', }),
         required=True)

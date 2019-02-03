@@ -21,10 +21,10 @@ class UserOrderInfo(models.Model):
     mid = models.IntegerField(default=0)
     lat = models.DecimalField(max_digits=9, decimal_places=6, blank=True, default=0)
     lon = models.DecimalField(max_digits=9, decimal_places=6, blank=True, default=0)
-    start_date = models.CharField(choices=DATE_CHOICES, blank=False, max_length=6)
-    start_time = models.CharField(max_length=8, blank=False)
+    start_date = models.CharField(choices=DATE_CHOICES,blank=False, max_length=6)
+    start_time = models.CharField(max_length=8,blank=False)
     end_date = models.CharField(choices=DATE_CHOICES, blank=False, max_length=6)
-    end_time = models.CharField(max_length=8, blank=False)
+    end_time = models.CharField(max_length=8,blank=False)
 
     #REQUIRED_FIELDS = ['email', 'password']
 
