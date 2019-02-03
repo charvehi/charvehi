@@ -1,9 +1,9 @@
 {% load static %}
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Login</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -25,16 +25,30 @@
     {% endfor %}
 </ul>
 {% endif %}
-              <form method="POST">
+
+              {% if form.non_field_errors %}
+                                                 {% for error in form.non_field_errors %}
+                                                 <div class="text-danger" style="color:red;">
+                                                     {{ error }}
+                                                 </div>
+                                                 {% endfor %}
+                                                 {% endif %}
+             <!--  {{ form.non_field_errors }}for form field erros -->
+              <form method="POST" action="">
                  {% csrf_token %}
 
                   <div class="form-label-group">
+
+
                 {{ form.username }}
                 <label for="inputEmail">Email or Phone</label>
 
+
+
               </div>
                   <div class="form-label-group">
-                {{form.password }}
+
+                {{ form.password }}
                     <label for="inputPassword">Password</label>
               </div>
                   <div class="custom-control custom-checkbox mb-3">
@@ -46,10 +60,7 @@
                <!--  <hr class="my-4">
            <button class="btn btn-lg btn-google btn-block text-uppercase" type="submit"><i class="fab fa-google mr-2"></i> Sign in with Google</button>
               <button class="btn btn-lg btn-facebook btn-block text-uppercase" type="submit"><i class="fab fa-facebook-f mr-2"></i> Sign in with Facebook</button>-->
-    {{ formset.errors }}
-    {{ formset.non_field_errors }}
-    {{ form.errors }}
-    {{ form.non_field_errors }}
+
             </form>
 
 
@@ -62,31 +73,3 @@
   </div>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

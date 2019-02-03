@@ -32,6 +32,11 @@
 
                                         <div class="col-sm-12">
                                             <div class="form-group">
+                                                {% if form.email.errors %}
+                                    {% for error in form.email.errors %}
+                                    {{ error }}
+                                    {% endfor %}
+                                    {% endif %}
                                                <b>{{ form.email }}</b>
                                             </div>
                                             <div class="form-group">

@@ -22,7 +22,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a href="#" class="navbar-brand brand" data-selector="nav a, a.edit" style=""><i class="fa fa-codepen"></i><span>Charvehi</span></a>
+                        <a href="{% url 'index' %}" class="navbar-brand brand" data-selector="nav a, a.edit" style=""><i class="fa fa-codepen"></i><span>Charvehi</span></a>
                     </div>
 
                     <div id="navbar-collapse-02" class="collapse navbar-collapse">
@@ -32,8 +32,8 @@
                             <li class="dropdown"><a href="" class="dropdown-toggle" data-toggle="dropdown" data-selector="nav a, a.edit" style=""><strong>{{ request.user.email }}</strong><span class="caret"></span></a>
                             <ul class="dropdown-menu">
       <li><a href="{% url 'useraccounts:view_profile'%}">Profile</a></li>
-      <li><a href="{% url 'useraccounts:change_password'%}">Change Password</a></li>
       <li><a href="{% url 'useraccounts:edit_profile'%}">Edit Profile</a></li>
+      <li><a href="{% url 'useraccounts:change_password'%}">Change Password</a></li>
       <li><a href="{% url 'useraccounts:logout'%}">Log Out!</a></li>
     </ul>
                             </li>
@@ -48,15 +48,19 @@
                             {% else %}
 
                             <li><a class="nav-button" href="{% url 'useraccounts:register' %}" data-selector="nav a, a.edit" style="">Sign Up</a></li>
-                            <li><a class="nav-button" href="{% url 'useraccounts:login' %}" data-selector="nav a, a.edit" style="">Log In</a></li>
-                           <li class="dropdown"><a href="" class="dropdown-toggle" data-toggle="dropdown" data-selector="nav a, a.edit" style=""><strong>Vendor</strong><span class="caret"></span></a>
+                            <li><a class="nav-button" href="{% url 'useraccounts:login' %}?next={{request.path}}" data-selector="nav a, a.edit" style="">Log In</a></li>
+                            <li class="dropdown"><a href="" class="dropdown-toggle" data-toggle="dropdown" data-selector="nav a, a.edit" style=""><strong>Vendor</strong><span class="caret"></span></a>
                             <ul class="dropdown-menu">
       <li><a href="{% url 'useraccounts:login'%}">SignIn</a></li>
       <li><a href="{% url 'useraccounts:registerdealer'%}">SignUp</a></li>
+
+                            </ul>
+                            </li>
       {% endif %}
 
 
                         </ul>
+
                     </div><!-- /.navbar-collapse -->
                     </div>
                 </nav>
