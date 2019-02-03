@@ -1,41 +1,36 @@
 {% load static %}
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/html">
+<html>
   <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
-    <title>Places Search Box</title>
-    <script type="text/javascript" src="static/js/jonthornton-datepair/datepair.min.js"></script>
-    <script type="text/javascript" src="static/js/jonthornton-datepair/jquery.datepair.min.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
-    <script src="https://jonthornton.github.io/jquery-timepicker/jquery.timepicker.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/momentjs/2.14.1/moment.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css">
+
+      <script src="https://jonthornton.github.io/jquery-timepicker/jquery.timepicker.js"></script>
     <link rel="stylesheet" type="text/css" href="https://jonthornton.github.io/jquery-timepicker/jquery.timepicker.css" />
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.standalone.css" />
+         <!-- Latest compiled JavaScript -->
 
-    <script src="lib/pikaday.js"></script>
-    <link rel="stylesheet" type="text/css" href="lib/pikaday.css" />
+      <link rel="stylesheet" href="{% static 'frontpage/custom.css' %}">
+	  <script src="{% static 'frontpage/js.js' %}" ></script>
 
-    <script src="lib/jquery.ptTimeSelect.js"></script>
-    <link rel="stylesheet" type="text/css" href="lib/jquery.ptTimeSelect.css" />
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/ui-lightness/jquery-ui.css" type="text/css" media="all" />
+    <title>Places Search Box</title>
 
-    <script src="lib/moment.min.js"></script>
-    <script src="lib/site.js"></script>
-    <link rel="stylesheet" type="text/css" href="lib/site.css" />
-	<script type="text/javascript" src="static/js/jonthornton-timepicker/lib/bootstrap-datepicker.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <!--<script type="text/javascript" src="static/js/jonthornton-timepicker/jquery.timepicker.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="static/stylesheet/jonthornton-timepicker/jquery.timepicker.css" />
-	<script type="text/javascript" src="static/js/jonthornton-timepicker/lib/bootstrap-datepicker.js"></script>
-	<link rel="stylesheet" type="text/css" href="static/stylesheet/jonthornton-timepicker/lib/bootstrap-datepicker.css" />
-	<script type="text/javascript" src="static/js/jonthornton-timepicker/lib/site.js"></script>
-	<link rel="stylesheet" type="text/css" href="static/stylesheet/jonthornton-timepicker/lib/site.css" />-->
-    <style>
+      <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
       #map {
@@ -53,21 +48,17 @@
         font-size: 15px;
         font-weight: 300;
       }
-
       #infowindow-content .title {
         font-weight: bold;
       }
-
       #infowindow-content {
         display: none;
       }
-
       #map #infowindow-content {
         display: inline;
           position: absolute;
           top: 20%;
       }
-
       .pac-card {
         margin: 10px 10px 0 0;
         border-radius: 2px 0 0 2px;
@@ -78,23 +69,19 @@
         background-color: #fff;
         font-family: Roboto;
       }
-
       #pac-container {
         padding-bottom: 12px;
         margin-right: 12px;
       }
-
       .pac-controls {
         display: inline-block;
         padding: 5px 11px;
       }
-
       .pac-controls label {
         font-family: Roboto;
         font-size: 13px;
         font-weight: 300;
       }
-
       #pac-input {
         background-color: #fff;
         font-family: Roboto;
@@ -108,11 +95,9 @@
         height: 2em;
         width: 80%;
       }
-
       #pac-input:focus {
         border-color: #4d90fe;
       }
-
       #title {
         color: #fff;
         background-color: #4d90fe;
@@ -123,7 +108,6 @@
       #target {
         width: 345px;
       }
-
       /*Current location button*/
       #btnAction {
 	    background: #3878c7;
@@ -138,6 +122,17 @@
       #btnAction:disabled {
         background: #6c99d2;
       }
+     .jumbotron{
+         margin-right:2px;
+         margin-left:2px;
+         padding:1em;
+         
+
+     }
+          #jumbo{
+              padding:10px;
+          }
+
     </style><script>
 	$(function () {
      $('#id_start_date').datepicker({
@@ -159,7 +154,6 @@
         //$('#pac-input').show();
         //$('#btnAction').show();
         //$('#book_form').hide();
-
     });
 });
     </script>
@@ -193,43 +187,325 @@
     </script>
   </head>
   <body>
-  {% block body_block %}
-  <p class="container">
-    <div class="jumbotron" id="book_form">
-      {% if registered %}
-        <h1>Welcome to the Xsite!</h1>
-      {% else %}
-        <h1>Book your bike now</h1>
-        <h3>India on Wheels.</h3>
-<!--<form enctype="multipart/form-data" method="POST" action="{% url 'booking:model_list'%}">-->
-      <div id="currentInfo">
-          {{ profile_form.as_p }}
-        <div class="first_form_elem"><label for="loc">Location: </label>{{ form.location }}</div>
-        <div class="first_form_elem">
-          <label for="startDate setTimeExample">Start: </label>
-        {{ form.start_date }}
-            {{ form.start_time }}
-        </div>
-        <div class="first_form_elem">
-        <label for="endDate setTimeExample">End: </label>
-        {{ form.end_date }}{{ form.end_time }}
-        </div>
-      </div>
-			<!--<script>
-			$(function() {
-				$('.time').timepicker();
-				$('#setTimeButton').on('click', function() {
-					$('.time').timepicker('setTime', new Date());
-				});
-			});
-			</script>-->
-      <button type="button" id="form-submit-btn" name="search-bike" tabindex="1">Book Ride</button>
-<!--</form>-->
 
-      {% endif %}
 
+
+
+
+  <header class="header" >
+              <!--------------------------navbar ---------------------------->
+                <div class="navbar navbar-fixed-top ">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#micon">
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+
+                             </button>
+                        <!----------------------brand logo------------------------>
+                            <a class="navbar-brand" href="#"><img class="logo" src="{% static 'frontpage/img/Bikelogo.png' %}" style="height:40px;"></a>
+                        </div>
+                        <div class="collapse navbar-collapse" id="micon">
+                            <!----------------------navbar menus---------------------->
+                              <ul class="nav navbar-nav  navbar-right ">
+                                    <li><a href="">Why CB ?</a></li>
+                                    <li><a href="">How It Works ?</a></li>
+                                    <li><a href="">Offers</a></li>
+                                    <li><a href="">Blog</a></li>
+                                    <li><a href="">FAQ's</a></li>
+                                   <li><a href="#">Contact Us</a></li>
+                                  {% if user.is_authenticated %}
+                            <li class="dropdown"><a href="" class="dropdown-toggle" data-toggle="dropdown" data-selector="nav a, a.edit" style="">{{ request.user.email }}<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+      <li><a href="{% url 'useraccounts:view_profile'%}">Profile</a></li>
+      <li><a href="{% url 'useraccounts:edit_profile'%}">Edit Profile</a></li>
+      <li><a href="{% url 'useraccounts:change_password'%}">Change Password</a></li>
+      <li><a href="{% url 'useraccounts:logout'%}">Log Out!</a></li>
+    </ul>
+                            </li>
+
+                            {% endif %}
+                                  {% if user.is_authenticated %}
+                                  {% else %}
+                             <!--       <li><a class="nav-button" href="{% url 'useraccounts:register' %}" data-selector="nav a, a.edit" style="">Sign Up</a></li>-->
+                            <li><a class="nav-button" href="{% url 'useraccounts:login' %}?next={{request.path}}" data-selector="nav a, a.edit" style="">Log In</a></li>
+
+                                  {% endif %}
+
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!----------------------------navbar header image/Banner--------------->
+							<div class="container-fluid">
+			   <div class="row backgroundimg">
+                   <div class="col-sm-1 col-md-1 col-1">
+
+                   </div>
+                   <div class="col-sm-3 col-md-3 col-3 jumbotron" id="jumbo" style="margin-top:10em;background:rgba(19, 31, 62, 0.4);">
+  <div id="currentInfo">
+         <!-- <div class="text-center well">BOOK HERE!</div>-->
+                       <div class="form-group">
+
+
+                       <div class="first_form_elem">{{ form.location }}</div>
+                           </div>
+
+              <div class="form-group">
+                <div class="input-group date" id="datepickerstart">
+
+                     {{ form.start_date }}
+                   <!-- <input type='text' id="datetimepicker5" placeholder="select date" class=" form-control" />-->
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+
+                  <div class="form-group">
+    <div class="input-group date" id="timepickerstart">
+                   {{ form.start_time }}
+                   <!-- <input type='text' id="datetimepicker4" class="form-control" />-->
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-time"></span>
+                    </span>
+                </div>
+
+
+
+                 </div>
+
+
+
+                 <div class="form-group">
+                <div class="input-group date" id="datepickerend">
+                    {{ form.end_date }}
+                   <!-- <input type='text' id="datetimepicker4" class="form-control" />-->
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+
+                <div class="form-group">
+                    <div class="input-group date" id="timepickerend">
+                   {{ form.end_time }}
+                   <!-- <input type='text' id="datetimepicker4" class="form-control" />-->
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-time"></span>
+                    </span>
+                </div>
+
+
+                 </div>
+
+
+            <button type="button" id="form-submit-btn" class="btn btn-primary btn-block" name="search-bike" tabindex="1">Book Ride</button>
+</div>
+                   <div class="col-sm-8 col-md-8 col-8">
+
+                   </div>
+                   </div>
+</div>
+</div>
+
+</header>
+
+<div class="fluid-container" style="background-color:   #e7e7e7">
+        <div class="container" >
+                <h1 class="display-3 text-center">OUR FLEET</h1>
+
+            <!----First Row--------->
+
+    <div class="row">
+        <div class="col-md-3 col-xs-6">
+            <a href="#" class="thumbnail">
+                <img src="{% static 'frontpage/img/triumph-street-twin.png' %}">
+                <div class="caption">
+                        <h3>Triumph Street Twin</h3>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-3 col-xs-6">
+
+            <a href="#" class="thumbnail">
+                <img src="{% static 'frontpage/img/benelli-tnt-600-i.png' %}">
+                <div class="caption">
+                        <h3>Benelli Tnt 600 I</h3>
+                </div>
+            </a>
+
+         </div>
+
+         <div class="col-md-3 col-xs-6">
+
+            <a href="#" class="thumbnail">
+                <img src="{% static 'frontpage/img/iron_883.png' %}">
+                <div class="caption">
+                        <h3>Harley Davison Iron</h3>
+                </div>
+            </a>
+
+        </div>
+
+        <div class="col-md-3 col-xs-6">
+
+            <a href="#" class="thumbnail">
+                <img src="{% static 'frontpage/img/royal-enfield-redditch.png' %}">
+                <div class="caption">
+                        <h3>Royal Enfield </h3>
+                        </div>
+            </a>
+
+        </div>
     </div>
-  {% endblock %}
+
+    <!-----Second Row-------------------->
+    <div class="row">
+            <div class="col-md-3 col-xs-6">
+
+                <a href="#" class="thumbnail">
+                    <img src="{% static 'frontpage/img/Classic-350.png' %}">
+                    <div class="caption">
+                            <h3>Classic 350</h3>
+                    </div>
+                </a>
+
+            </div>
+
+            <div class="col-md-3 col-xs-6">
+
+                <a href="#" class="thumbnail">
+                    <img src="{% static 'frontpage/img/dominar.png' %}">
+                    <div class="caption">
+                            <h3>Dominar 400 I</h3>
+                    </div>
+                </a>
+
+             </div>
+
+             <div class="col-md-3 col-xs-6">
+                <a href="#" class="thumbnail">
+                    <img src="{% static 'frontpage/img/Avenger-Cruise.png' %}">
+                    <div class="caption">
+                            <h3>Avenger Cruise 200</h3>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-3 col-xs-6">
+                <a href="#" class="thumbnail">
+                    <img src="{% static 'frontpage/img/Activa.png' %}">
+                    <div class="caption">
+                            <h3>Activa</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+</div>
+<br>
+</div>
+<!-----footer------>
+
+<footer id="myFooter">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3">
+                    <h2 class="logo"><a href="#"> LOGO </a></h2>
+                </div>
+                <div class="col-sm-2">
+                    <h5>Get started</h5>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Sign up</a></li>
+                        <li><a href="#">Downloads</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-2">
+                    <h5>About us</h5>
+                    <ul>
+                        <li><a href="#">Company Information</a></li>
+                        <li><a href="#">Contact us</a></li>
+                        <li><a href="#">Reviews</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-2">
+                    <h5>Support</h5>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Help desk</a></li>
+                        <li><a href="#">Forums</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <div class="social-networks">
+                        <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+                        <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+                        <a href="#" class="google"><i class="fa fa-google-plus"></i></a>
+                    </div>
+                    <button type="button" class="btn btn-default">Contact us</button>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <p>© 2016 Copyright Text </p>
+        </div>
+    </footer>
+
+
+
+
+
+<!--date script -->
+
+                                   <script type="text/javascript">
+                    $(function () {
+                        var date=new Date();
+                        date.setDate(date.getDate() + 2);
+                        $('#datepickerstart').datepicker({
+                            format: 'dd/mm/yyyy',
+                            startDate:new Date(),
+                            todayHighlight: true,
+                            endDate:date,
+                            autoclose:true,
+                                }
+                        );
+
+                    });
+
+
+                      $(function () {
+                        $('#datepickerend').datepicker({
+                            format: 'dd/mm/yyyy',
+                            startDate: new Date(),
+
+                        });
+                    });
+
+
+            $(function () {
+                $("#startDate").on("change", function () {
+
+                    $('#datepickerend').datepicker('setStartDate', this.value);
+
+                    $('#startDate').datepicker('hide');
+
+                });
+                $('#endDate').on("change", function () {
+
+                        $('#datepickerstart').datepicker('setEndDate', this.value);
+
+                        $('#datepickerend').datepicker('hide');
+
+                });
+            });
+
+                </script>
+  <!-- time script -->
+
 <script>
               var nowTemp = new Date();
               var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
@@ -246,37 +522,32 @@
               }
               if(hh<10){
                   hh='0'+hh
-              } 
+              }
               if(dd<10){
                   dd='0'+dd
-              } 
+              }
               if(mm<10){
                   mm='0'+mm
-              } 
+              }
               var today = dd+'/'+mm+'/'+yyyy;
               var hora = hh+':'+min+':00';
-                $('#currentInfo .date').datepicker({
-                    startDate: now,
-                    todayHighlight: true,
-                    'format': 'dd/mm/yyyy',
-                    'autoclose': true,
-                });
-
                 $('#currentInfo .time').timepicker({
                     'showDuration': true,
                     'timeFormat': 'g:i A',
                     'forceRoundTime': true,
+                    'disableTextInput':true,
+                    'scrollDefault': 'now',
                     'disableTimeRanges': [
                         ['12am', '9am'],
                         ['9:01pm', '11:59pm']
                     ]
                 });
 
+
     var time = new Date();
     var hour = time.getHours() - (time.getHours() >= 12 ? 12 : 0);
     var minute = time.getMinutes();
     var period = time.getHours() >= 12 ? 'PM' : 'AM';
-
     if(minute > 0 && minute < 30){
         minute = 30;
     }
@@ -284,60 +555,21 @@
         hour++;
         minute = '00';
     }
-    else if(minute==00) {
+    else if(minute == 0) {
         minute = '00'
     }
     //now = time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
     now = hour + ':' + minute + ' ' +period;
-                $('#startDate').val(today);
-                $('#startTime').val(now);
-</script>
 
-<script>
-  $('#startTime, #startDate').on('change', function() {
-  var startDate = $('#startDate').datepicker('getDate', {minDate: 0});
-  var start = $('#startTime').timepicker('getTime', startDate);
-  var now = new Date();
-  if (start < now) {
-      alert("Oops! Past date")
-  }
-});
-</script>
-<script>
-  $('#endTime, #endDate').on('change', function() {
-  var endDate = $('#endDate').datepicker('getDate', {minDate: 0});
-  var end = $('#endTime').timepicker('getTime', endDate);
-  var now = new Date();
-  if (end < now && end!==null && end!=='') {
-      alert("Oops! Past date")
-  }
-});
-</script>
 
-    <input id="pac-input" class="controls" type="text" placeholder="Search your location" style="position: absolute; top: 40px;">
-    <div id="map"></div>
-    <div id="button-layer">
-	<button id="btnAction" onclick="getLocation()">My Current Location</button>
-</div>
-    <p id="demo" style="display: none"></p>
-    <input id="cord1">
-    <input id="cord2">
-<script>
-var x = document.getElementById("demo");
 
-function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.watchPosition(showPosition);
-    } else {
-        x.innerHTML = "Geolocation is not supported by this browser.";}
-    }
-
-function showPosition(position) {
-    x.innerHTML="Latitude: " + position.coords.latitude +
-    "<br>Longitude: " + position.coords.longitude;
-}
 </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2wop3hW2RdVnIKchqEdtxEVDkWSAMK5E&libraries=places&callback=initAutocomplete"
-         async defer></script>
+            <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+
+
+
+
   </body>
 </html>
