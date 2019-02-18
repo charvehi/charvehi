@@ -14,7 +14,11 @@
     <!---------------for carousel ends----------->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
+<link rel="stylesheet" type="text/css" href="{% static 'slick-1.8.1/slick/slick.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'slick-1.8.1/slick/slick-theme.css' %}"/>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <style>
 .checked {
         color: orange;
 }
@@ -127,9 +131,27 @@
                 </div><!-- end container -->
             </section>
 
+<!---------------------------------------------------- Suggested bikes ------------------------------------------->
+<hr>
+<div class="container">
+                    <div align="center" style="font-size: 24px; margin-bottom: 1em">This Fleet Master also has</div>
+<div class="your-class">
+                   {% for m in modelsuggest %}
+
+      <div>
+          <a class="#" href="{{ m.get_detail_url }}?current_loc={{ loc }}&start={{ start }}&end={{ end }}&lat={{ lat }}&lon={{ lon }}&area={{ area }}">
+          <img src="{% if m.model_image %} {{ media_url }}{{ m.model_image }} {% else %} {% static 'img/default.jpg' %} {% endif %}" style="border: solid #fff">
+              <div align="center" style="color: #333333; font-size: 1.5em">{{ m.model_name }}</div>
+              </a>
+      </div>
+                    {% endfor %}
+</div>
+                </div>
+<hr>
+<!------------------------------------------- Suggested bikes ends ----------------------------------------------->
+
                 <div class="container">
                         <div class="col-md-4">
-
 {% if latest_review_list %}
                 {% for model in modeldetails %}
 <h5>{{ model.review_set.count }} reviews ({{ model.average_rating | floatformat }} average rating)</h5>
@@ -141,7 +163,7 @@
         <div class="col-md-20" style="margin-top: 2em">
         <div class="media">
         <div class="media-left media-top">
-            <img src="img_avatar1.png" class="media-object" style="width:30px">
+            <img src="https://img.icons8.com/ios-glyphs/30/000000/user.png" class="media-object" style="width:30px">
         </div>
         <div class="media-body">
             <h4 class="media-heading">{{ review.user_id.first_name }} {{ review.user_id.last_name }} ({{ review.rating }})</h4>
@@ -178,6 +200,7 @@
                             {% endif %}
 </div>
 </div>
+
 <script>
     $.fn.stars = function() {
         return $(this).each(function() {
@@ -300,6 +323,18 @@ setInterval(blinker, 1000);
 //$(".mk-bkng-btn").click(function(){
   //document.location.href = "http://127.0.0.1:8000/bike/book/make_purchase/m_id/model_name/?ref=&current_loc=&start=&end=&lat=&lon=";
 //});
+</script>
+<script type="text/javascript" src="{% static 'slick-1.8.1/slick/slick.min.js' %}"></script>
+<script type="text/javascript">
+
+$('.your-class').slick({
+  dots: true,
+  infinite: false,
+  speed: 300,
+  slidesToShow: 1,
+  centerMode: false,
+  variableWidth: true
+});
 </script>
 </body>
 </html>

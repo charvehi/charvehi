@@ -22,6 +22,7 @@
 .specs_value {
     font-size: 1em;
     padding-top: 0.1em;
+    margin-bottom: 1em;
 }
 
 #pos-setter {
@@ -136,6 +137,9 @@
   </div>
   <div class="media-body">
     <h4 class="media-heading">{{ model.model_name }}</h4>
+      {% if model.is_delivery is True %}
+        <div><label><input id="delv_check" type="checkbox" {% if request.session.delivery %}checked{% endif %}> I want delivery (Charges*)</label></div>
+      {% endif %}
     <p>₹{{ item.price }}</p>
     <a href="{% url "orders:cart_remove" model.m_id %}">Remove</a>
   </div>
@@ -153,7 +157,8 @@
                           <div class="panel panel-default">
                             <div class="panel-heading">Just one step away ({{ totail_items }} model{{ totail_items|pluralize }})</div>
                             <div class="panel-body">
-                            <div class="text-center specs_value">₹{{ cart.get_sub_total_price }} + 0.9% Service charge (each model)</div>
+                            <div class="text-center specs_value" style="font-weight: bold">₹{{ cart.get_sub_total_price }} + 0.9% Service charge (each model)</div>
+                  <div align="center" style="font-style: italic; font-size: 12.5px">Pay deposit and delivery charges to Fleet Master</div>
 
             {% if request.user.is_authenticated %}
             <div class="col-md-9 form-group center-block">
@@ -189,6 +194,29 @@
             </section>
 <script>
 $(document).ready(function() {
+    function del_check(check){
+            //var cc = $('#coupon').val();
+            $.ajax({
+                url: 'http://127.0.0.1:8000/bike/book/delivery/apply/'+check,
+                data: null,
+                success: function (data) {
+                    window.location.href = window.location.href;
+                },
+            });
+    }
+$('#delv_check').change(function() {
+  if ($(this).is(':checked')) {
+      var check = "1";
+    console.log('Checked');
+    del_check(check);
+  } else {
+    var check = "0";
+    console.log('Unchecked');
+    del_check(check);
+  }
+});
+
+
     var cc = '{{ coupon_value }}';
     if(cc != 'None')
         $('#coupon').val("{{ coupon_value }}");

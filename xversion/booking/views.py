@@ -136,16 +136,22 @@ def price_calc(request, models, days, hours, minutes, net_hours):
     if int(minutes) is not 0:
         min_factor = 1
 
+    if PD_count is 1:
+        PD_count = 12
+    else:
+        PD_count = 24
+
     if PD_count >= net_hours > PH_Count:
         price = (float(priceDay))
         priceOff = (float(priceDayOff))
 
     elif net_hours >= PD_count:
-        price = (float(priceDay)) * (int(net_hours / PD_count)) + (float(priceHour)) * \
-                (int(net_hours % PD_count)) + (float(priceHour) / 2) * min_factor
-        priceOff = (float(priceDayOff)) * (int(net_hours / PD_count)) + (float(priceHourOff)) * \
-                   (int(net_hours % PD_count)) + (float(priceHourOff) / 2) * min_factor
-
+        price = ((float(priceDay)) * (int(net_hours / PD_count))) + (float(priceHour) * \
+                int(net_hours % PD_count)) + ((float(priceHour) / 2) * min_factor)
+        priceOff = ((float(priceDayOff)) * (int(net_hours / PD_count))) + (float(priceHourOff) * \
+                   int(net_hours % PD_count)) + ((float(priceHourOff) / 2) * min_factor)
+    print(int(net_hours % PD_count))
+    print(PD_count)
     price_discount = priceOff - price
     return price, price_discount
 
@@ -293,6 +299,9 @@ def category_model_details(request, model_id, model_slug=None):
             unit = 'km'
         print(distance)
         #------------------------Location script ends-----------------------#
+        for m in details:
+            model_suggestions = CategoryModel.objects.filter(d_id=m.d_id.d_id).exclude(m_id=m.m_id)
+            print(model_suggestions)
         latest_review_list = Review.objects.filter(model=model_id).order_by('-pub_date')[:3]
 
         review_exist = Review.objects.filter(user_id=request.user.id)
@@ -306,6 +315,7 @@ def category_model_details(request, model_id, model_slug=None):
         'user_id': uid,
         'modeldetails': details,
         'form': form,
+        'modelsuggest': model_suggestions,
         'latest_review_list': latest_review_list,
         'review_bit': review,
         'loc': loc,

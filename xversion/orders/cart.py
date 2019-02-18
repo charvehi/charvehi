@@ -12,8 +12,11 @@ class Cart(object):
         self.session = request.session
         cart = self.session.get(settings.CART_SESSION_ID)
         self.cc_cookie = None
+        self.dv_cookie = None
         if 'coupon' in request.session:
             self.cc_cookie = request.session['coupon']
+        #if 'delivery' in request.session:
+         #   self.dv_cookie = request.session['delivery']
         if not cart:
             cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart

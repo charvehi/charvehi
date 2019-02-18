@@ -130,3 +130,17 @@ def cart_detail(request):
     }
     return render(request, 'orders/order_list.html', context)
 
+
+def delivery_charge(request, delivery_value):
+    print("entered del")
+    dv = delivery_value
+    print(dv)
+    #d_charge = get_object_or_404(CategoryModel, is_delivery=True)
+    if dv is '1':
+            print("applied")
+            request.session['delivery'] = dv
+            return HttpResponse(request)
+    elif dv is '0':
+        del request.session['delivery']
+        request.session.modified = True
+        return HttpResponse(request)

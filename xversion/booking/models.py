@@ -86,6 +86,8 @@ class CategoryModel(models.Model):   #Model storage table
 
     price_day = models.DecimalField(max_digits=6, decimal_places=2, default=0)
     pd_count = models.IntegerField(choices=DAY_COUNT_CHOICES, default=0)
+
+    is_delivery = models.BooleanField('Delivery', default=False)
     delivery_charge = models.DecimalField(max_digits=6, decimal_places=2, default=0)
 
     created = models.DateTimeField(auto_now_add=True)

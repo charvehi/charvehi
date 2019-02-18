@@ -24,14 +24,15 @@
         <div class="col-md-20" style="margin-top: 2em">
         <div class="media">
         <div class="media-left media-top">
-            <img src="img_avatar1.png" class="media-object" style="width:30px">
+            <img src="https://img.icons8.com/ios-glyphs/30/000000/user.png" class="media-object" style="width:30px">
         </div>
-        <div class="media-body">
+        <div  class="media-body">
             <h4 class="media-heading">{{ review.user_id.first_name }} {{ review.user_id.last_name }} ({{ review.rating }})</h4><span>-{{ review.pub_date }}</span>
             <a style="text-decoration: none"><div>{{ review.comment }}</div></a>
                                         {% if review_bit is True %}
             <a class="review_edit_btn" name="{{ review.id }}" href="{% url 'review:edit_review' review.id %}?comment={{ review.comment }}">Edit</a>
-                                        {% endif %}
+
+            {% endif %}
             <!--<button class="review_del_btn" name="{{ review.id }}">Delete</button>-->
         </div>
     </div>

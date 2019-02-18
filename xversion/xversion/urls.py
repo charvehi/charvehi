@@ -39,6 +39,8 @@ urlpatterns = [
     url(r'^coupon/', include('voucher.urls'), name='voucher'),
     url(r'^bike/reviews/', include('review.urls', namespace="review")),
 
+    url(r'^mylocation/maps/$', PasswordResetDoneView.as_view(template_name='booking/aindex/map.html'), name='find_loc'),
+
     url(r'^password_reset/$', PasswordResetView.as_view(form_class=NewPasswordResetForm, template_name='registration/password_reset_form.html'), name='password_reset'),
     url(r'^password_reset/done/$', PasswordResetDoneView.as_view(template_name='registration/password_reset_done.html'), name='password_reset_done'),
     url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', PasswordResetConfirmView.as_view(template_name='registration/password_reset_confirm.html'), name='password_reset_confirm'),

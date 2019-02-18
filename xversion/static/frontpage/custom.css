@@ -26,11 +26,10 @@ body {
 --------------Main  navabar css-----------*/
 
 .nav>li>a {
+    color:#383838;
     padding:18px  ;
     font-size: 15px;
     font-weight: 400;
-    color: #fff;
-    text-transform: uppercase;
 }
 .nav>li>a:hover{
     color:	#f0c14b !important;
@@ -59,39 +58,45 @@ body {
 /* Portrait phones and smaller */
 @media (max-width: 480px) {
 
-    .nav>li>a:hover{
-        color:	#f0c14b !important;
+    .nav > li > a:hover {
+        color: #f0c14b !important;
         background-color: #131f3e;
-    
+
     }
+
+    /*
     .navbar .navbar-fixed-top{
-        background-color: #131f3e;
+        background-color: transparent;
     }
-        
+     */
     .navbar {
-        background-color: #131f3e;
-       }
+        background-color: transparent;
+    }
+
+    .navbar-fixed-top.scrolled  {
+        background-color: transparent !important;
+
+        transition:  background-color 200ms linear;
+        position: absolute;
+        top: -70px;
+        background: #f1f2f5;
+        transform: translateY(70px);
+        transition: transform .5s ease,background .9s ease;
+        -webkit-transition: transform .5s ease,background .9s ease;
+        z-index: 99999;
+    }
+    .navbar-toggle {
+        float: left !important;
+    }
 
 }
 
-.navbar-fixed-top.scrolled  {
-    background-color:#131f3e !important;
-    
-    transition:  background-color 200ms linear;
-    position: fixed;
-    top: -70px;
-    background: #f1f2f5;
-    transform: translateY(70px);
-    transition: transform .5s ease,background .9s ease;
-    -webkit-transition: transform .5s ease,background .9s ease;
-    z-index: 99999;
-   }
 
 .scrolled .navbar .navbar-fixed-top{
     background-color: white;
 }
   .scrolled .nav>li>a{
-    color: white;
+    color: #fefefa;
     padding: 10px;
 
   }
@@ -171,10 +176,23 @@ li a {
         background-size: cover;
         background-position:  center;
         background-repeat: no-repeat;
-        height: 110vh;
+        height: 50em;
         }
-    
-    }
+
+    .navbar-fixed-top.scrolled  {
+    background-color:#131f3e !important;
+
+    transition:  background-color 200ms linear;
+    position: fixed;
+    top: -70px;
+    background: #f1f2f5;
+    transform: translateY(70px);
+    transition: transform .5s ease,background .9s ease;
+    -webkit-transition: transform .5s ease,background .9s ease;
+    z-index: 99999;
+   }
+
+}
 
     
     /*Hide in Other Small Devices */
@@ -182,13 +200,15 @@ li a {
     
     /* Landscape tablets and medium desktops */
     @media (min-width: 992px) and (max-width: 1199px) {
-    
+    .backgroundimg {
+        height: 50em !important;
+    }
         .header .backgroundimg {
         background-image: url('img/Road2.jpg' );
         background-size: cover;
         background-position:  center;
         background-repeat: no-repeat;
-        height: 110vh;
+        height: 50em;
         }
     
     }
@@ -196,7 +216,7 @@ li a {
 @media (min-width: 768px) and (max-width: 991px) {
 
     .header .backgroundimg {
-        background-image: url('img/Road2.jpg' );
+        background: #fefefa;
         background-size: cover;
         background-position:  center;
         background-repeat: no-repeat;
@@ -209,7 +229,7 @@ li a {
 @media (max-width: 767px) {
 
     .header .backgroundimg{
-        background-image: url('img/Road2.jpg' );
+        background: #fefefa;
         background-repeat: no-repeat;
         background-size: cover;
         height: 110vh;
@@ -222,7 +242,7 @@ li a {
 @media (max-width: 480px) {
 
     .header .backgroundimg {
-        background-image: url('img/Road2.jpg' );
+        background: #fefefa;
         background-size: cover;
         background-position:  center;
         background-repeat: no-repeat;

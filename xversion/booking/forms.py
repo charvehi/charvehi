@@ -6,11 +6,11 @@ from django.contrib.auth.models import User
 class IndexBookForm(forms.ModelForm):
     #lat = forms.DecimalField(max_digits=9, decimal_places=6)
     #lon = forms.DecimalField(max_digits=9, decimal_places=6)
-    location = forms.CharField(widget=forms.TextInput(attrs={'id': 'loc','class': 'form-control','placeholder':"Enter your location"}), max_length=200)
-    start_date = forms.DateField(widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'startDate',
-                                                               'aria-hidden': 'true','placeholder':"Start Date",'readonly':''}))
+    location = forms.CharField(widget=forms.TextInput(attrs={'id': 'loc','class': 'form-control', 'placeholder':'Enter your location'}), max_length=200)
+    start_date = forms.DateField(widget=forms.TextInput(attrs={'class': 'form-control box-edit', 'id': 'startDate',
+                                                               'aria-hidden': 'true','placeholder':"Start Date",'readonly':'','style':'background-color:#fefefa',}))
     start_time = forms.CharField(widget=forms.TextInput(attrs={'class': 'time start form-control', 'id': 'startTime','placeholder':"Start Time"}), max_length=50)
-    end_date = forms.DateField(widget=forms.TextInput(attrs={'class': 'form-control', 'id': 'endDate','placeholder':"End Date",'readonly':''}))
+    end_date = forms.DateField(widget=forms.TextInput(attrs={'class': 'form-control box-edit', 'id': 'endDate','placeholder':"End Date",'readonly':'','style':'background-color:#fefefa'}))
     end_time = forms.CharField(widget=forms.TextInput(attrs={'class': 'time end form-control', 'id': 'endTime','placeholder':"EndTime"}), max_length=50)
 
     REQUIRED_FIELDS = ['location', 'start_date', 'start_time', 'end_date', 'end_time']

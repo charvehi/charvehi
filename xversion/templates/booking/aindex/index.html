@@ -9,17 +9,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Latest compiled and minified CSS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/momentjs/2.14.1/moment.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css">
-
-      <script src="https://jonthornton.github.io/jquery-timepicker/jquery.timepicker.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://jonthornton.github.io/jquery-timepicker/jquery.timepicker.css" />
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
          <!-- Latest compiled JavaScript -->
 
@@ -29,6 +21,15 @@
     <title>Places Search Box</title>
 
       <style>
+      #prime-head-logo {
+          height: 3em;
+          margin-top: 5em;;
+      }
+
+      #logo-holder {
+          background: url("http://127.0.0.1:8000/static/frontpage/img/Road.jpg");
+            height: 10em;
+      }
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
       #map {
@@ -41,6 +42,32 @@
         margin: 0;
         padding: 0;
       }
+
+      .box-head {
+          color: #383838;
+          margin-bottom: 1.2em;
+          margin-top: 0em;
+          text-align: center;
+          text-shadow: 2px 8px 6px rgba(0,0,0,0.2), 0px -5px 35px rgba(255,255,255,0.3);
+          font-size: 26px;
+      }
+      /* for formatting inputs */
+      input[type="text"],
+select.form-control {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #deddd8;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+input[type="text"]:focus,
+select.form-control:focus {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+    /* formatting inputs ends */
       #description {
         font-family: Roboto;
         font-size: 15px;
@@ -80,19 +107,7 @@
         font-size: 13px;
         font-weight: 300;
       }
-      #pac-input {
-        background-color: #fff;
-        font-family: Roboto;
-        font-size: 15px;
-        font-weight: 300;
-        margin-left: 12px;
-        padding: 0 11px 0 13px;
-        text-overflow: ellipsis;
-        border-radius: 0.5em;
-        border: 1px solid;
-        height: 2em;
-        width: 80%;
-      }
+
       #pac-input:focus {
         border-color: #4d90fe;
       }
@@ -120,6 +135,41 @@
       #btnAction:disabled {
         background: #6c99d2;
       }
+
+      .offer-strip-btn {
+            border: solid 1.5px;
+            width: 58px;
+            border-radius: 20px;
+            padding: 3px;
+            position: absolute;
+            top: 25px;
+            float: right;
+            right: 25px;
+            background-color: white;
+      }
+
+      .offer-strip:hover {
+          text-decoration: none;
+          cursor: pointer;
+      }
+
+      .link-effect:hover {
+          cursor: pointer;
+          text-decoration: none;
+      }
+@media only screen and (max-width: 601px) {
+    div#header-name {
+        font-size: 2.7em;
+        margin-top: 1.2em;
+    }
+          .offer-strip {
+          box-shadow: 0 1px 6px 0 rgba(32,33,36,0.28);
+          border-color: rgba(223,225,229,0);
+          color: #383838;
+          background-color: #fefefa;
+          border-radius: 8px;
+      }
+}
      .jumbotron{
          margin-right:2px;
          margin-left:2px;
@@ -130,56 +180,105 @@
 
      #jumbo{
          padding:10px;
+         background: #fefefa;
+         opacity: 0.96;
      }
+#form-submit-btn {
+    background-color: #FF9922;
+    border: none;
+}
 
 @media only screen and (max-width: 601px) {
   div#jumbo {
-        margin-top: 4em
+        margin-top: 2em;
+        background: #fefefa;
+        border: none;
   }
+    #profile-ico-cont {
+        float: right;
+        margin-top: 1em;
+        margin-right: 1em;
+    }
 }
 @media only screen and (min-width: 601px) {
+  .header .backgroundimg {
+    background-image: url('static/frontpage/img/Road.jpg');
+}
+    #logo-holder {
+        display: none;
+    }
+    #profile-ico-cont {
+        display: none;
+    }
   div#jumbo {
         margin-top: 10em
   }
+
+    .offer-strip {
+                  box-shadow: 0 1px 6px 0 rgba(32,33,36,0.28);
+          border-color: rgba(223,225,229,0);
+          color: #383838;
+          background-color: #fefefa;
+          border-radius: 8px;
+        float: right;
+        width: 550px;
+        position: absolute;
+        top: 70px;
+        left: 90%;
+    }
 }
 
+input.form-control {
+    background-color: #fefefa;
+}
+
+span.box-edit {
+    background-color: #fefefa;
+    border: none;
+}
     .elem-position-setter {
         display: inline-block;
         width: 49%;
     }
-    </style><script>
+
+      #pac-input {
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 400px;
+        background: transparent;
+        border: none;
+        border-bottom-color: currentcolor;
+        border-bottom-style: none;
+        border-bottom-width: medium;
+        border-bottom: 1px solid #deddd8;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        border-radius: 0;
+      }
+
+.myloc-btn {
+    display: none;
+    width: 100%;
+    margin-top: 1em;
+}
+
+#google-mark {
+    float: right;
+    height: 1em;
+    margin-top: 1em;
+}
+    </style>
+
+<script>
 	$(function () {
      $('#id_start_date').datepicker({
          minDate:new Date()
       });
  })
 </script>
-
-    {% include "booking/aindex/base.html" %}
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
-    <script type="text/javascript" src="{% static 'js/gmaps.js' %}"></script>
-          <script>
-    $(document).ready(function() {
-        //$('#map').hide();
-        //$('#pac-input').hide();
-        //$('#btnAction').hide();
-    $('#id_location').focus(function() {
-        //$('#map').show();
-        //$('#pac-input').show();
-        //$('#btnAction').show();
-        //$('#book_form').hide();
-    });
-});
-    </script>
-
-      <script>
-        $(document).ready(function () {
-            $("#pac-input").keyup(function () {
-                var value = $(this).val();
-                $("#loc").val(value);
-            });
-        });
-      </script>
 
     <script type="text/javascript">
     window.onload = function(){
@@ -194,101 +293,31 @@
         var cord1 = document.getElementById("cord1");
         var cord2 = document.getElementById("cord2");
         window.location = "bike/models/?current_loc=" + location_enc + "&start=" + start_d.value + ' ' +
-                start_t.value + "&end=" + end_d.value + ' '  + end_t.value + "&lat=" + cord1.value + "&lon=" + cord2.value + "&area=" + 1;
+                start_t.value + "&end=" + end_d.value + ' '  + end_t.value + "&lat=" + 30.3410112 + "&lon=" + 77.9522165 + "&area=" + 5;
         return false;
       };
     };
     </script>
   </head>
   <body>
-
-
-
-
-
   <header class="header" >
-                    <div class="container-fluid">
-                            <div class="text-center">RideYaan</div>
-      <div class="row">
-          <div class="col-sm-1">
 
-          </div>
-                             <div class="col-sm-4 col-md-4 col4 jumbotron" id="jumbo" style="background:rgba(19, 31, 62, 0.4);">
-                       <h2>Book your bike now</h2>
-  <div id="currentInfo">
-
-                       <div class="form-group">
-
-
-                       <div class="first_form_elem">{{ form.location }}</div>
-                           </div>
-
-              <div class="form-group elem-position-setter">
-                <div class="input-group date" id="datepickerstart">
-
-                     {{ form.start_date }}
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-            </div>
-
-            <div class="form-group elem-position-setter">
-                <div class="input-group date" id="timepickerstart">
-                   {{ form.start_time }}
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-time"></span>
-                    </span>
-                </div>
-            </div>
-      <div style="text-align: center"><h3 class="glyphicon glyphicon-transfer" style="margin-top: 0em"></h3></div>
-            <div class="form-group elem-position-setter">
-                <div class="input-group date" id="datepickerend">
-                    {{ form.end_date }}
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-            </div>
-
-                <div class="form-group elem-position-setter">
-                    <div class="input-group date" id="timepickerend">
-                   {{ form.end_time }}
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-time"></span>
-                    </span>
-                    </div>
-                </div>
-            <button type="button" id="form-submit-btn" class="btn btn-primary btn-block" name="search-bike" tabindex="1">Book Ride</button>
-</div>
-                                 <div class="col-sm-7"></div>
-      </div>
-      </div>
-                                            </div>
-
-
-              <!--------------------------navbar ---------------------------->
-                <!--<div class="navbar navbar-fixed-top ">
+       <div class=" navbar navbar-fixed-top ">
                     <div class="container-fluid">
                         <div class="navbar-header">
                             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#micon">
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
-
                              </button>
-                            <a class="navbar-brand" href="#"><img class="logo" src="{% static 'frontpage/img/bikelogo.png' %}" style="height:40px;"></a>
+                            <div id="profile-ico-cont"><img src="https://img.icons8.com/ios-glyphs/30/000000/user.png"></div>
                         </div>
                         <div class="collapse navbar-collapse" id="micon">
                               <ul class="nav navbar-nav  navbar-right ">
-                                    <li><a href="">Why CB ?</a></li>
-                                    <li><a href="">How It Works ?</a></li>
-                                    <li><a href="">Offers</a></li>
-                                    <li><a href="">Blog</a></li>
-                                    <li><a href="">FAQ's</a></li>
-                                   <li><a href="#">Contact Us</a></li>
+                                    <li><a href="">(+91)999-9999-99</a></li>
                                   {% if user.is_authenticated %}
-                            <li class="dropdown"><a href="" class="dropdown-toggle" data-toggle="dropdown" data-selector="nav a, a.edit" style="">{{ request.user.email }}<span class="caret"></span></a>
+                            <li class="dropdown">
+                                <a href="" class="dropdown-toggle" data-toggle="dropdown" data-selector="nav a, a.edit" style="">{{ request.user.email }}<span class="caret"></span></a>
                             <ul class="dropdown-menu">
       <li><a href="{% url 'useraccounts:view_profile'%}">Profile</a></li>
       <li><a href="{% url 'useraccounts:edit_profile'%}">Edit Profile</a></li>
@@ -296,41 +325,47 @@
       <li><a href="{% url 'useraccounts:logout'%}">Log Out!</a></li>
     </ul>
                             </li>
-
                             {% endif %}
                                   {% if user.is_authenticated %}
                                   {% else %}
                              <li><a class="nav-button" href="{% url 'useraccounts:register' %}" data-selector="nav a, a.edit" style="">Sign Up</a></li>
                             <li><a class="nav-button" href="{% url 'useraccounts:login' %}?next={{request.path}}" data-selector="nav a, a.edit" style="">Log In</a></li>
-
                                   {% endif %}
-
-
                             </ul>
                         </div>
                     </div>
                 </div>
 
-							<div class="container-fluid">
-			   <div class="row backgroundimg">
-                   <div class="col-sm-1 col-md-1 col-1">
+                    <div class="container-fluid">
+      <div class="row backgroundimg">
+                    <div id="logo-holder" align="center"><img id="prime-head-logo" src="{% static 'frontpage/img/logo.jpg' %}"></div>
 
-                   </div>
-                   <div class="col-sm-4 col-md-4 col4 jumbotron" id="jumbo" style="background:rgba(19, 31, 62, 0.4);">
-                       <h2>Book your bike now</h2>
-  <div id="currentInfo">
+          <div class="col-sm-1">
 
-                       <div class="form-group">
+          </div>
+                             <div class="col-sm-4 col-md-4 col4 jumbotron" id="jumbo">
+                       <h2 class="box-head" id="static-line">Find bikes near you</h2>
+                       <h2 class="box-head" id="loco-line" style="display: none">Your location</h2>
 
+              <img id="back-to-currentInfo" src="https://img.icons8.com/material-outlined/24/000000/circled-left.png" onclick="back_actn()" style="margin-bottom:0em; position: absolute; top: 1em; display: none">
+              <div class="form-group">
+                  <div class="first_form_elem">
+                      <input id="pac-input" class="controls" type="text" placeholder="Your location">
+                  </div>
+                      <input id="cord1" value="" type="hidden">
+                      <input id="cord2" value="" type="hidden">
+                  <button type="button" id="submit" class="btn btn-default myloc-btn">Current location
+                  <img src="https://img.icons8.com/material/24/000000/place-marker.png"></button>
+                  <img id="google-mark" src="static/frontpage/img/powered_by_google.png" style="display: none">
+                  <p id="demo"></p>
 
-                       <div class="first_form_elem">{{ form.location }}</div>
-                           </div>
-
+              </div>
+           <div id="currentInfo">
               <div class="form-group elem-position-setter">
                 <div class="input-group date" id="datepickerstart">
 
                      {{ form.start_date }}
-                    <span class="input-group-addon">
+                    <span class="input-group-addon box-edit">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
                 </div>
@@ -339,7 +374,7 @@
             <div class="form-group elem-position-setter">
                 <div class="input-group date" id="timepickerstart">
                    {{ form.start_time }}
-                    <span class="input-group-addon">
+                    <span class="input-group-addon box-edit">
                         <span class="glyphicon glyphicon-time"></span>
                     </span>
                 </div>
@@ -348,7 +383,7 @@
             <div class="form-group elem-position-setter">
                 <div class="input-group date" id="datepickerend">
                     {{ form.end_date }}
-                    <span class="input-group-addon">
+                    <span class="input-group-addon box-edit">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
                 </div>
@@ -357,20 +392,33 @@
                 <div class="form-group elem-position-setter">
                     <div class="input-group date" id="timepickerend">
                    {{ form.end_time }}
-                    <span class="input-group-addon">
+                    <span class="input-group-addon box-edit">
                         <span class="glyphicon glyphicon-time"></span>
                     </span>
                     </div>
                 </div>
             <button type="button" id="form-submit-btn" class="btn btn-primary btn-block" name="search-bike" tabindex="1">Book Ride</button>
 </div>
-                   </div>
-</div>
-</div>
---->
+                                 <div id="mark_gmaps"></div>
+                                 <div id="map"></div>
+                             </div>
+                                 <div class="col-sm-7">
+                                     <a class="link-effect" href="http://127.0.0.1:8000/accounts/register/">
+                                         <div class="offer-strip">
+                                             <img src="{% static 'frontpage/img/offer.png' %}" style="height: 70px; position: absolute;">
+                                         <div class="offer-strip-btn">Signup</div>
+                                         <div align="center" style="position: relative; top: 10px; font-weight: bold">Get 10% OFF</div>
+                                         <hr style="margin-left: 10px">
+                                         <div align="center" style="position: relative; bottom: 10px">Instantly on next ride</div>
+                                         </div>
+                                     </a>
+                                 </div>
+
+      </div>
+                                            </div>
 </header>
 
-<div class="fluid-container" style="background-color:   #e7e7e7">
+<div class="fluid-container" style="background-color: #e7e7e7">
         <div class="container" >
                 <h1 class="display-3 text-center">OUR FLEET</h1>
 
@@ -463,7 +511,6 @@
             </div>
         </div>
 </div>
-<br>
 </div>
 <!-----footer------>
 
@@ -511,14 +558,13 @@
             <p>© 2019 RideYaan </p>
         </div>
     </footer>
-
-
+</body>
 
     <script type="text/javascript">
     window.onload = function(){
       var form = document.getElementById("form-submit-btn");
       form.onclick = function(){
-        var location = document.getElementById("loc");
+        var location = document.getElementById("pac-input");
         var location_enc = encodeURIComponent(location.value);
         var start_d = document.getElementById("startDate");
         var start_t = document.getElementById("startTime");
@@ -528,18 +574,25 @@
         var cord2 = document.getElementById("cord2");
 
         window.location = "bike/models/?current_loc=" + location_enc + "&start=" + start_d.value + ' ' +
-                start_t.value + "&end=" + end_d.value + ' '  + end_t.value + "&lat=" + cord1.value + "&lon=" + cord2.value + "&area=" + 1;
+                start_t.value + "&end=" + end_d.value + ' '  + end_t.value + "&lat=" + cord1.value + "&lon=" + cord2.value + "&area=" + 5;
         return false;
       };
     };
     </script>
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css">
+<script type="text/javascript" src="static/js/jonthornton-timepicker/jquery.timepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="static/stylesheet/jonthornton-timepicker/jquery.timepicker.css">
+
 <!--date script -->
-  <script type="text/javascript">
+
+<script type="text/javascript">
                     $(function () {
                         var date=new Date();
                         date.setDate(date.getDate() + 2);
-                        $('#datepickerstart').datepicker({
+                        $('#startDate').datepicker({
                             format: 'dd/mm/yyyy',
                             startDate:new Date(),
                             todayHighlight: true,
@@ -552,7 +605,7 @@
 
 
                       $(function () {
-                        $('#datepickerend').datepicker({
+                        $('#endDate').datepicker({
                             format: 'dd/mm/yyyy',
                             startDate: new Date(),
 
@@ -563,21 +616,23 @@
             $(function () {
                 $("#startDate").on("change", function () {
 
-                    $('#datepickerend').datepicker('setStartDate', this.value);
+                    $('#endDate').datepicker('setStartDate', this.value);
 
                     $('#startDate').datepicker('hide');
 
                 });
                 $('#endDate').on("change", function () {
 
-                        $('#datepickerstart').datepicker('setEndDate', this.value);
+                        //$('#startDate').datepicker('setEndDate', this.value);
 
-                        $('#datepickerend').datepicker('hide');
+                        $('#endDate').datepicker('hide');
 
                 });
             });
 
-                </script>
+</script>
+
+
   <!-- time script -->
 
 <script>
@@ -633,17 +688,46 @@
         minute = '00'
     }
     //now = time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
-    now = hour + ':' + minute + ' ' +period;
+        now = hour + ':' + minute + ' ' +period;
+                $('#startDate').val(today);
+                $('#startTime').val(now);</script>
 
-
-
+<script>
+  $('#startTime, #startDate').on('change', function() {
+  var startDate = $('#startDate').datepicker('getDate', {minDate: 0});
+  var start = $('#startTime').timepicker('getTime', startDate);
+  var now = new Date();
+  if (start < now) {
+      alert("Oops! Past date")
+  }
+});
 </script>
-            <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 
+<script>
+$(document).ready(function () {
+    $("#back-to-currentInfo").hide();
+    $("#pac-input").keyup(function () {
+        var value = $(this).val();
+        $("#loc").val(value);
+    });
+});
 
+function back_actn() {
+        $("#static-line").show();
+        $("#loco-line, #submit, #back-to-currentInfo, #google-mark, #mark_gmaps").hide();
+        $("#currentInfo").show();
+}
 
-
-
-  </body>
+$(document).on('click', "input#pac-input", function (event) {
+        $("#pac-input").val('');
+        event.preventDefault();
+        $("#currentInfo").hide();
+        $("#mark_gmaps").load("http://127.0.0.1:8000/mylocation/maps/");
+        $("#static-line").hide();
+        $("#loco-line").show();
+        $(".myloc-btn").show();
+        $("#google-mark").show();
+        $("#back-to-currentInfo").show();
+});
+</script>
 </html>

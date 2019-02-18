@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^orders/$', views.cart_detail, name='cart_detail'),
     url(r'^make_purchase/add/(?P<model_id>\d+)/(?P<model_slug>[-\w]+)/$', views.cart_add, name='cart_add'),
     url(r'^remove/(?P<model_id>\d+)/$', views.cart_remove, name='cart_remove'),
+    url(r'^delivery/apply/(?P<delivery_value>[-\w]+)/$', views.delivery_charge, name='delivery_charge'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

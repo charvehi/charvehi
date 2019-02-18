@@ -97,7 +97,7 @@ h2 {
 {% endblock %}
             <section id="content-section5" class="content-section5">
                 <div class="container">
-                    <div class="row">
+                    <div class="row" style="margin-bottom: 2em">
                         <div class="col-sm-4">
 
                         </div>
@@ -130,8 +130,8 @@ h2 {
 <div class="media">
   <div class="media-left media-top">
       <img class="media-object" src="{% if m.model_image %} {{ media_url }}{{ m.model_image }} {% else %} {% static 'img/default.jpg' %} {% endif %}" alt="..." style="width: 8em">
-      {% if m.delivery_charge != 0 %}
-      <div id="dc_blink" style="color: #337ab7">Free Delivery*</div>
+      {% if m.is_delivery is True %}
+      <div class="dc_blink" align="center" style="color: #337ab7; margin-top: 0.2em">Delivery <img src="{% static 'ico_set/available_blue.png' %}" style="height: 1.3em"></div>
       {% endif %}
   </div>
   <div class="media-body">
@@ -267,8 +267,8 @@ var min=document.getElementById("name").value;
 
 <script>
     function blinker() {
-    $('#dc_blink').fadeOut(500);
-    $('#dc_blink').fadeIn(500);
+    $('.dc_blink').fadeOut(500);
+    $('.dc_blink').fadeIn(500);
 }
 
 setInterval(blinker, 1000);
