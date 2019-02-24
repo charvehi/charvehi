@@ -1,19 +1,4 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Base</title>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<style>
-.navbar-default {
-    background: #131f3e;;
-}
-</style>
-</head>
-  <body>
-
-       <nav role="navigation" class="navbar navbar-default">
+<nav role="navigation" class="navbar navbar-default">
                     <div class="container-fluid">
                     <div class="navbar-header">
                         <button data-target="#navbar-collapse-02" data-toggle="collapse" class="navbar-toggle" type="button" data-selector="Footers" style="">
@@ -48,7 +33,7 @@
                             {% else %}
 
                             <li><a class="nav-button" href="{% url 'useraccounts:register' %}" data-selector="nav a, a.edit" style="">Sign Up</a></li>
-                            <li><a class="nav-button" href="{% url 'useraccounts:login' %}?next={{request.path}}" data-selector="nav a, a.edit" style="">Log In</a></li>
+                            <li><a class="nav-button" href="{% url 'useraccounts:login' %}?next={{ request.get_full_path|urlencode }}" data-selector="nav a, a.edit" style="">Log In</a></li>
                             <li class="dropdown"><a href="" class="dropdown-toggle" data-toggle="dropdown" data-selector="nav a, a.edit" style=""><strong>Vendor</strong><span class="caret"></span></a>
                             <ul class="dropdown-menu">
       <li><a href="{% url 'useraccounts:login'%}">SignIn</a></li>
@@ -64,11 +49,3 @@
                     </div><!-- /.navbar-collapse -->
                     </div>
                 </nav>
-  <ul class="dropdown-menu">
-    <li><a href="#">HTML</a></li>
-    <li><a href="#">CSS</a></li>
-    <li><a href="#">JavaScript</a></li>
-  </ul>
-
-  </body>
-</html>

@@ -1,10 +1,10 @@
-{% load static %}
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="viewport" content="width=device-width, initial-scale=1,maximum-sclale=1,user-scalable=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <title>Details</title>
     <!---------------for carousel---------------->
@@ -19,6 +19,9 @@
     <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <style>
+         .navbar-default {
+    background: #131f3e;;
+}
 .checked {
         color: orange;
 }
@@ -58,11 +61,11 @@
 {% endblock %}
 {% include "useraccounts/base.html" %}
 {% block content %}
-<section id="content-section5" class="content-section5">
+<section id="content-section5" class="content-section5" style="overflow: hidden">
                 <div class="container">
                     <div class="row">
                   {% for model in modeldetails %}
-                        <div id="img-container" class="col-md-6">
+                        <div id="img-container" class="col-sm-6">
                             <a href="{{ model.get_absolute_url }}"></a>
 
                                 <!-------------------Image div stars here----------------------->
@@ -107,7 +110,7 @@
   </div>
                                 <!-------------------Image div ends here----------------------->
                         </div>
-                                                <div class="col-md-5">
+                                                <div class="col-sm-5">
                             <div class="caption">
                                 <h3 class="text-left">
                                     {{ model.model_name }}
@@ -124,7 +127,7 @@
                                 <span class="text-left specs_value">{{ model.d_id.dealer_address }}</span></div>
                             <div class="text-left specs_value">{{ distance }} {{ unit }} away</div>
                             <div class="specs_value">{{ model.specification }}</div>
-                            <div class="mk-bkng-btn-sec"><a href="{{ model.get_order_url }}?current_loc={{ loc }}&start={{ start }}&end={{ end }}&lat={{ lat }}&lon={{ lon }}"><button class="mk-bkng-btn">Book</button></a></div>
+                            <div class="mk-bkng-btn-sec"><a href="{{ model.get_order_url }}?current_loc={{ loc }}&start={{ start }}&end={{ end }}&lat={{ lat }}&lon={{ lon }}"><button class="btn mk-bkng-btn">Book</button></a></div>
                         </div>
                     {% endfor %}
                     </div><!-- end row -->
@@ -140,7 +143,7 @@
 
       <div>
           <a class="#" href="{{ m.get_detail_url }}?current_loc={{ loc }}&start={{ start }}&end={{ end }}&lat={{ lat }}&lon={{ lon }}&area={{ area }}">
-          <img src="{% if m.model_image %} {{ media_url }}{{ m.model_image }} {% else %} {% static 'img/default.jpg' %} {% endif %}" style="border: solid #fff">
+          <img src="{% if m.model_image %} {{ media_url }}{{ m.model_image }} {% else %} {% static 'img/default.jpg' %} {% endif %}" style="border: solid #fff;height:170px;" />
               <div align="center" style="color: #333333; font-size: 1.5em">{{ m.model_name }}</div>
               </a>
       </div>
@@ -151,7 +154,7 @@
 <!------------------------------------------- Suggested bikes ends ----------------------------------------------->
 
                 <div class="container">
-                        <div class="col-md-4">
+                        <div class="col-sm-4">
 {% if latest_review_list %}
                 {% for model in modeldetails %}
 <h5>{{ model.review_set.count }} reviews ({{ model.average_rating | floatformat }} average rating)</h5>
@@ -171,7 +174,6 @@
             <!--<button class="review_del_btn" name="{{ review.id }}">Delete</button>-->
         </div>
     </div>
-
         <hr>
     {% endfor %}
         <div><a href="{% url 'review:review_list' model.m_id %}">More reviews</a></div>
@@ -192,7 +194,7 @@
 <form id="review-form" action="">
     {% csrf_token %}
     {{ form.as_table }}
-    <input type="submit" value="Add" />
+    <input type="submit" class="btn" value="Add" />
 </form>
           {% endfor %}
 <!--Form end-->

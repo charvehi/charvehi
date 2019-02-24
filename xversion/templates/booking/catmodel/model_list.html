@@ -1,14 +1,17 @@
-{% load static %}
 <!DOCTYPE html>
+{% load static %}
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-sclale=1,user-scalable=no">
     <title>Title</title>
  <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -18,6 +21,9 @@
     <!--end css,script bootstrap slider -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
+    .navbar-default {
+    background: #131f3e;;
+}
   .thumbnail .caption{
     padding: 1px;
     text-align: center;
@@ -141,7 +147,7 @@ h2 {
       <div><span class="text-center fa m-detail" >You save: &#xf156; {{ m.price_discount }}</span></div>
        <div class="text-center fa m-detail" >{{ m.d_id.dealer_address }}</div>
     </p>
-      <div class="mk-bkng-btn-sec"><a href="{{ m.get_order_url }}?current_loc={{ loc }}&start={{ start }}&end={{ end }}&lat={{ lat }}&lon={{ lon }}"><button class="mk-bkng-btn">Book</button></a></div>
+      <div class="mk-bkng-btn-sec"><a href="{{ m.get_order_url }}?current_loc={{ loc }}&start={{ start }}&end={{ end }}&lat={{ lat }}&lon={{ lon }}"><button class="btn mk-bkng-btn">Book</button></a></div>
   </div>
 </div>
                           </div>

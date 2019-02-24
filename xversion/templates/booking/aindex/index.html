@@ -1,13 +1,13 @@
-{% load static %}
 <!DOCTYPE html>
+{% load static %}
 <html>
   <head>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
 
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-sclale=1,user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="google-site-verification" content="-0oQmfExzaWWH0oLRN4891V2ungtZHfBDYDkC5OU0jk" />
+      <title>YaanRides</title>
 <!-- Latest compiled and minified CSS -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -18,16 +18,16 @@
       <link rel="stylesheet" href="{% static 'frontpage/custom.css' %}">
 	  <script src="{% static 'frontpage/js.js' %}" ></script>
 
-    <title>Places Search Box</title>
 
-      <style>
+
+     <style>
       #prime-head-logo {
           height: 3em;
           margin-top: 5em;;
       }
 
       #logo-holder {
-          background: url("http://127.0.0.1:8000/static/frontpage/img/Road.jpg");
+          background: url("http://www.yaanrides.com/static/frontpage/img/Road.jpg");
             height: 10em;
       }
       /* Always set the map height explicitly to define the size of the div
@@ -141,7 +141,7 @@ select.form-control:focus {
             width: 58px;
             border-radius: 20px;
             padding: 3px;
-            position: absolute;
+            position: relative;
             top: 25px;
             float: right;
             right: 25px;
@@ -157,7 +157,7 @@ select.form-control:focus {
           cursor: pointer;
           text-decoration: none;
       }
-@media only screen and (max-width: 601px) {
+@media only screen and (max-width: 767px) {
     div#header-name {
         font-size: 2.7em;
         margin-top: 1.2em;
@@ -188,7 +188,7 @@ select.form-control:focus {
     border: none;
 }
 
-@media only screen and (max-width: 601px) {
+@media only screen and (max-width: 767px) {
   div#jumbo {
         margin-top: 2em;
         background: #fefefa;
@@ -200,7 +200,7 @@ select.form-control:focus {
         margin-right: 1em;
     }
 }
-@media only screen and (min-width: 601px) {
+@media only screen and (min-width: 767px) {
   .header .backgroundimg {
     background-image: url('static/frontpage/img/Road.jpg');
 }
@@ -214,18 +214,14 @@ select.form-control:focus {
         margin-top: 10em
   }
 
-    .offer-strip {
-                  box-shadow: 0 1px 6px 0 rgba(32,33,36,0.28);
+     .offer-strip {
+          box-shadow: 0 1px 6px 0 rgba(32,33,36,0.28);
           border-color: rgba(223,225,229,0);
           color: #383838;
           background-color: #fefefa;
           border-radius: 8px;
-        float: right;
-        width: 550px;
-        position: absolute;
-        top: 70px;
-        left: 90%;
-    }
+		  margin-top:40em;
+      }
 }
 
 input.form-control {
@@ -247,7 +243,7 @@ span.box-edit {
         font-weight: 300;
         padding: 0 11px 0 13px;
         text-overflow: ellipsis;
-        width: 400px;
+
         background: transparent;
         border: none;
         border-bottom-color: currentcolor;
@@ -272,33 +268,8 @@ span.box-edit {
 }
     </style>
 
-<script>
-	$(function () {
-     $('#id_start_date').datepicker({
-         minDate:new Date()
-      });
- })
-</script>
 
-    <script type="text/javascript">
-    window.onload = function(){
-      var form = document.getElementById("form-submit-btn");
-      form.onclick = function(){
-        var location = document.getElementById("loc");
-        var location_enc = encodeURIComponent(location.value);
-        var start_d = document.getElementById("startDate");
-        var start_t = document.getElementById("startTime");
-        var end_d = document.getElementById("endDate");
-        var end_t = document.getElementById("endTime");
-        var cord1 = document.getElementById("cord1");
-        var cord2 = document.getElementById("cord2");
-        window.location = "bike/models/?current_loc=" + location_enc + "&start=" + start_d.value + ' ' +
-                start_t.value + "&end=" + end_d.value + ' '  + end_t.value + "&lat=" + 30.3410112 + "&lon=" + 77.9522165 + "&area=" + 5;
-        return false;
-      };
-    };
-    </script>
-  </head>
+</head>
   <body>
   <header class="header" >
 
@@ -343,15 +314,15 @@ span.box-edit {
           <div class="col-sm-1">
 
           </div>
-                             <div class="col-sm-4 col-md-4 col4 jumbotron" id="jumbo">
+                             <div class="col-sm-4 col-md-4 jumbotron" id="jumbo">
                        <h2 class="box-head" id="static-line">Find bikes near you</h2>
                        <h2 class="box-head" id="loco-line" style="display: none">Your location</h2>
 
               <img id="back-to-currentInfo" src="https://img.icons8.com/material-outlined/24/000000/circled-left.png" onclick="back_actn()" style="margin-bottom:0em; position: absolute; top: 1em; display: none">
-              <div class="form-group">
-                  <div class="first_form_elem">
-                      <input id="pac-input" class="controls" type="text" placeholder="Your location">
-                  </div>
+              <div class="form-group first_form_elem">
+
+                      <input id="pac-input" class="form-control" type="text" placeholder="Your location"  />
+
                       <input id="cord1" value="" type="hidden">
                       <input id="cord2" value="" type="hidden">
                   <button type="button" id="submit" class="btn btn-default myloc-btn">Current location
@@ -402,9 +373,10 @@ span.box-edit {
                                  <div id="mark_gmaps"></div>
                                  <div id="map"></div>
                              </div>
-                                 <div class="col-sm-7">
-                                     <a class="link-effect" href="http://127.0.0.1:8000/accounts/register/">
-                                         <div class="offer-strip">
+
+       <div class="col-sm-1"></div>   <div class="col-sm-6">
+               <a class="link-effect" href="/accounts/register/">
+                                         <div class="offer-strip" style="margin-bottom: 5px;">
                                              <img src="{% static 'frontpage/img/offer.png' %}" style="height: 70px; position: absolute;">
                                          <div class="offer-strip-btn">Signup</div>
                                          <div align="center" style="position: relative; top: 10px; font-weight: bold">Get 10% OFF</div>
@@ -412,7 +384,8 @@ span.box-edit {
                                          <div align="center" style="position: relative; bottom: 10px">Instantly on next ride</div>
                                          </div>
                                      </a>
-                                 </div>
+          </div>
+
 
       </div>
                                             </div>
@@ -425,7 +398,7 @@ span.box-edit {
             <!----First Row--------->
 
     <div class="row">
-        <div class="col-md-3 col-xs-6">
+        <div class="col-sm-3 col-xs-6">
             <a href="#" class="thumbnail">
                 <img src="{% static 'frontpage/img/triumph-street-twin.png' %}">
                 <div class="caption">
@@ -434,7 +407,7 @@ span.box-edit {
             </a>
         </div>
 
-        <div class="col-md-3 col-xs-6">
+        <div class="col-sm-3 col-xs-6">
 
             <a href="#" class="thumbnail">
                 <img src="{% static 'frontpage/img/benelli-tnt-600-i.png' %}">
@@ -445,7 +418,7 @@ span.box-edit {
 
          </div>
 
-         <div class="col-md-3 col-xs-6">
+         <div class="col-sm-3 col-xs-6">
 
             <a href="#" class="thumbnail">
                 <img src="{% static 'frontpage/img/iron_883.png' %}">
@@ -456,7 +429,7 @@ span.box-edit {
 
         </div>
 
-        <div class="col-md-3 col-xs-6">
+        <div class="col-sm-3 col-xs-6">
 
             <a href="#" class="thumbnail">
                 <img src="{% static 'frontpage/img/royal-enfield-redditch.png' %}">
@@ -470,7 +443,7 @@ span.box-edit {
 
     <!-----Second Row-------------------->
     <div class="row">
-            <div class="col-md-3 col-xs-6">
+            <div class="col-sm-3 col-xs-6">
 
                 <a href="#" class="thumbnail">
                     <img src="{% static 'frontpage/img/Classic-350.png' %}">
@@ -481,7 +454,7 @@ span.box-edit {
 
             </div>
 
-            <div class="col-md-3 col-xs-6">
+            <div class="col-sm-3 col-xs-6">
 
                 <a href="#" class="thumbnail">
                     <img src="{% static 'frontpage/img/dominar.png' %}">
@@ -492,7 +465,7 @@ span.box-edit {
 
              </div>
 
-             <div class="col-md-3 col-xs-6">
+             <div class="col-sm-3 col-xs-6">
                 <a href="#" class="thumbnail">
                     <img src="{% static 'frontpage/img/Avenger-Cruise.png' %}">
                     <div class="caption">
@@ -501,7 +474,7 @@ span.box-edit {
                 </a>
             </div>
 
-            <div class="col-md-3 col-xs-6">
+            <div class="col-sm-3 col-xs-6">
                 <a href="#" class="thumbnail">
                     <img src="{% static 'frontpage/img/Activa.png' %}">
                     <div class="caption">
@@ -512,6 +485,8 @@ span.box-edit {
         </div>
 </div>
 </div>
+
+
 <!-----footer------>
 
 <footer id="myFooter">
@@ -558,7 +533,7 @@ span.box-edit {
             <p>© 2019 RideYaan </p>
         </div>
     </footer>
-</body>
+
 
     <script type="text/javascript">
     window.onload = function(){
@@ -690,15 +665,17 @@ span.box-edit {
     //now = time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
         now = hour + ':' + minute + ' ' +period;
                 $('#startDate').val(today);
-                $('#startTime').val(now);</script>
+                //$('#startTime').val(now);</script>
 
 <script>
-  $('#startTime, #startDate').on('change', function() {
+  $('#startTime').on('change', function() {
   var startDate = $('#startDate').datepicker('getDate', {minDate: 0});
   var start = $('#startTime').timepicker('getTime', startDate);
   var now = new Date();
   if (start < now) {
-      alert("Oops! Past date")
+      alert("Oops! Past date");
+
+
   }
 });
 </script>
@@ -722,7 +699,7 @@ $(document).on('click', "input#pac-input", function (event) {
         $("#pac-input").val('');
         event.preventDefault();
         $("#currentInfo").hide();
-        $("#mark_gmaps").load("http://127.0.0.1:8000/mylocation/maps/");
+        $("#mark_gmaps").load("http://www.yaanrides.com/mylocation/maps/");
         $("#static-line").hide();
         $("#loco-line").show();
         $(".myloc-btn").show();
@@ -730,4 +707,6 @@ $(document).on('click', "input#pac-input", function (event) {
         $("#back-to-currentInfo").show();
 });
 </script>
+
+  </body>
 </html>
