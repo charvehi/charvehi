@@ -1,28 +1,18 @@
 from django.db.models import Max, Min
-from django.http import HttpResponseRedirect, HttpResponse, Http404, HttpResponseBadRequest
+from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.urls import reverse
 from django.conf import settings
 from time import gmtime, strftime
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from booking.forms import IndexBookForm
-from django.contrib.auth.models import User
-from django.contrib.auth import update_session_auth_hash, get_user_model
+from django.contrib.auth import get_user_model
 from booking.models import Category, Image, CategoryModel, CategoryModelImage
 from dealer.models import Dealer
-from numpy.ma import empty
 from review.models import Review
 from review.forms import ReviewForm
 from datetime import datetime as dt
-import datetime
 import math
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-import itertools
-from django.views.generic.list import ListView
-from endless_pagination.decorators import page_template
-# import mpu
-# from Collections import defaultdict
-# from django.db.models.functions import Cos, ASin
-from decimal import Decimal
 
 User = get_user_model()
 
@@ -58,23 +48,11 @@ def index_book_form(request):
     return render(request, 'booking/aindex/index.html', context)
 
 
-'''def product_detail(request, id, slug):
-    product = get_object_or_404(Product, id=id, slug=slug, available=True)
-    cart_product_form = CartAddProductForm()
-    context = {
-        'product': product,
-        'cart_product_form': cart_product_form
-    }
-    return render(request, 'shop/product/detail.html', context)'''
-
-
 def category_list(request, category_id=None, category_slug=None):
     category = None
     categories = Category.objects.all()
-    # models = CategoryModel.objects.filter(status=1)
     if category_slug:
         category = get_object_or_404(Category, c_id=category_id, slug=category_slug)
-        # models = CategoryModel.objects.filter(category=category)
 
     context = {
         'category': category,
@@ -106,14 +84,11 @@ def profit_margin(request, models, days, hours, net_hours):
 
 
 def duration_calc(request, start, end):
-    #checking format according to the url takes value
-    #check = dt.strptime('1 jan 12:00 am','%d %b %I:%M %p')
     datetimeFormat1 = '%d/%m/%Y %I:%M %p'
     check = dt.strptime(start, datetimeFormat1)
     check.strftime('%d/%m/%Y %H:%M')
 
 
-    #check1 = dt.strptime('2 jan 01:30 am', '%d %b %I:%M %p')
     check1 = dt.strptime(end, datetimeFormat1)
     check1.strftime('%d/%m/%Y %H:%M')
     newdiff = check1 - check
@@ -220,11 +195,9 @@ def category_model_list(request):
             for m in model:
                 # --------------------Price calculation begins-----------------------#
                 price, price_discount = price_calc(request, m, days, hours, minutes, net_hours)
-                #profit_margin(request, m, days, hours, net_hours)
                 m.price = price
                 m.price_discount = price_discount
                 # --------------------Price calculation ends-----------------------#
-                #m2 = zip(itertools.repeat(m, int(price)))
                 models_list.append(m)
 
         page = request.GET.get('page')
@@ -262,22 +235,21 @@ def category_model_details(request, model_id, model_slug=None):
     lat = math.radians(float(lat_o))
     lon = math.radians(float(lon_o))
     r = 6371.0
-    details = CategoryModel.objects.filter(status=1)
-    if model_slug:
+    if model_slug is not None:
         details = CategoryModel.objects.filter(m_id=model_id)
         dealer = get_object_or_404(CategoryModel, m_id=model_id)
-        # photo = get_object_or_404(CategoryModelImage, id=model_id)
 
-        print(details)
         days, hours, minutes, net_hours = duration_calc(request, start, end)
 
         for m in details:
             # --------------------Price calculation begins-----------------------#
-            price, price_discount = price_calc(request, m, days, hours, minutes, net_hours)
-            #profit_margin(request, m, days, hours, net_hours)
-            m.price = price
-            m.price_discount = price_discount
+            m.price, m.price_discount = price_calc(request, m, days, hours, minutes, net_hours)
             # --------------------Price calculation ends-----------------------#
+            # --------------------Model suggestion begins-----------------------#
+            model_suggestions = CategoryModel.objects.filter(d_id=m.d_id.d_id).exclude(m_id=m.m_id)
+            review_exist = Review.objects.filter(user_id=request.user.id, model=m.m_id)
+            # --------------------Model suggestion ends-----------------------#
+
 
         #-----------------------Location script--------------------------#
         d_lat = math.radians(float(dealer.d_id.dealer_lat))
@@ -292,23 +264,19 @@ def category_model_details(request, model_id, model_slug=None):
         distance = r * c
         if distance < 1:
             distance *= 1000
-            distance = int(distance)
-            unit = 'm'
+            distance = str(int(distance))+'m'
         else:
-            distance = round(distance, 1)
-            unit = 'km'
-        print(distance)
+            distance = str(round(distance, 1))+'km'
         #------------------------Location script ends-----------------------#
-        for m in details:
-            model_suggestions = CategoryModel.objects.filter(d_id=m.d_id.d_id).exclude(m_id=m.m_id)
-            print(model_suggestions)
+
         latest_review_list = Review.objects.filter(model=model_id).order_by('-pub_date')[:3]
 
-        review_exist = Review.objects.filter(user_id=request.user.id)
         review = False
+        uid = None
         if review_exist.exists():
             review = True
-        uid = request.user.id
+        if request.user.is_authenticated:
+            uid = request.user.id
         form = ReviewForm()
     context = {
         'media_url': settings.MEDIA_URL,
@@ -324,6 +292,5 @@ def category_model_details(request, model_id, model_slug=None):
         'lat': lat_o,
         'lon': lon_o,
         'distance': distance,
-        'unit': unit,
     }
     return render(request, 'booking/catmodel/model_detail.html', context)
