@@ -44,8 +44,6 @@ SECRET_KEY = 'lqhtthni$$_i#+e9xneu-qafg(0%$xf-s4=^2m9k(dujz6pu(='
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -64,7 +62,7 @@ INSTALLED_APPS = [
     'review.apps.ReviewConfig',
     'voucher.apps.VoucherConfig',
     'localflavor',
-
+    'pipeline',
 ]
 
 MIDDLEWARE = [
@@ -187,5 +185,45 @@ TIME_INPUT_FORMATS = [
     '%H:%M:%S.%f',  # '14:30:59.000200'
     '%H:%M',        # '14:30'
 ]'''
+
+# django-pipeline config
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.jsmin.JSMinCompressor'
+PIPELINE_CSS_COMPRESSOR = 'mvp.plans.CSSMin.CSSCompressor'
+
+PIPELINE = {
+    'STYLESHEETS': {
+        'index_direct': {
+            'source_filenames': (
+                'stylesheet/uaccounts/reg-log.css',
+                'stylesheet/slider.css',
+                'slick-1.8.1/slick/slick.css',
+                'slick-1.8.1/slick/slick-theme.css',
+                'frontpage/custom.css',
+            ),
+            'extra_context': {
+                'media': 'screen',
+            },
+            'output_filename': 'stylesheet/index_direct.css',
+        },
+    },
+    'JAVASCRIPT': {
+        'nodal_serve': {
+            'source_filenames': (
+                'slick-1.8.1/slick/slick.min.js',
+                'frontpage/js.js',
+            ),
+            'output_filename': 'js/nodal_serve.js',
+        }
+    }
+}
+
+
 
 
