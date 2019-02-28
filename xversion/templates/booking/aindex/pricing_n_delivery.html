@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Title</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+{% block content %}
+
+            <header class="header7" id="header7">
+{% include "useraccounts/base.html" %}
+            </header><!-- header -->
+            <section id="content-section5" class="content-section5">
+                <div class="container">
+                    <div class="row">
+                      <div class="col-md-8">
+{% block title %}
+<h3>Pricing and Delivery</h3>
+{% endblock %}
+                          <p>
+The pricing of the models is regulated by yaanrides.com. We offer lowest price of the particular model.
+The prices which are displayed on the website are less than offline price. In addition, we give discount and
+coupon on rides.
+                          </p>
+                          <p>
+We deliver motorbikes through our partner Fleet-Masters. The riders are provided location of the hosted model with
+all the necessary details. The Fleet Master is also notified of the booking for ease and transparency. We are
+operating with on-demand delievery services for some models.
+                          </p>
+                      </div>
+                    </div><!-- end row -->
+                </div><!-- end container -->
+            </section>
+{% endblock %}
+</body>
+</html>

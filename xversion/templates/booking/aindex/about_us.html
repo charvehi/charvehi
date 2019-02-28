@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Title</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+{% block content %}
+
+            <header class="header7" id="header7">
+{% include "useraccounts/base.html" %}
+            </header><!-- header -->
+            <section id="content-section5" class="content-section5">
+                <div class="container">
+                    <div class="row">
+                      <div class="col-md-8">
+{% block title %}
+<h3>What we are?</h3>
+{% endblock %}
+                          <div>
+YaanRides.com is a modern transportation company. We belive in providing efficient, affordable and viable mode of transportation at an instant demand. We choose Fleet Master who can guarantee best market price.
+Presently, we are only connected to Motorbikes’ Fleet Masters in Dehradun.
+                              <p style="font-weight: bold">We have the motto- “Low Cost and High Quality”</p>
+                          </div>
+
+                      </div>
+                    </div><!-- end row -->
+                </div><!-- end container -->
+            </section>
+{% endblock %}
+</body>
+</html>

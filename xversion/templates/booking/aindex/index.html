@@ -2,25 +2,26 @@
 {% load static %}
 <html>
   <head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-sclale=1,user-scalable=no">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="google-site-verification" content="-0oQmfExzaWWH0oLRN4891V2ungtZHfBDYDkC5OU0jk" />
-      <title>YaanRides</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="google-site-verification" content="-0oQmfExzaWWH0oLRN4891V2ungtZHfBDYDkC5OU0jk" />
+<meta name="description" content="YaanRides provides efficient, affordable and viable motorbikes at an instant demand. Partnered Fleet Master who can offer motorbikes at best market price.">
+<meta name="keywords" content="yaanrides,yaanride,yaan rides,yaan ride,rideyaan,bike rental,rent a bike,bike rent near me,rent a bike in dehradun">
+<title>Rent bikes near you and ride at low price-YAAN Rides</title>
 <!-- Latest compiled and minified CSS -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+<link rel="stylesheet" type="text/css" href="static/stylesheet/jonthornton-timepicker/jquery.timepicker.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css">
          <!-- Latest compiled JavaScript -->
+<link rel="stylesheet" href="{% static 'stylesheet/index_direct.css' %}">
+<link rel="stylesheet" href="{% static 'frontpage/custom.css' %}">
+<script src="{% static 'frontpage/js.js' %}" ></script>
 
-      <link rel="stylesheet" href="{% static 'frontpage/custom.css' %}">
-	  <script src="{% static 'frontpage/js.js' %}" ></script>
 
-
-
-     <style>
+<style>
       #prime-head-logo {
           height: 3em;
           margin-top: 5em;;
@@ -68,39 +69,13 @@ select.form-control:focus {
   box-shadow: none;
 }
     /* formatting inputs ends */
-      #description {
-        font-family: Roboto;
-        font-size: 15px;
-        font-weight: 300;
-      }
       #infowindow-content .title {
         font-weight: bold;
-      }
-      #infowindow-content {
-        display: none;
       }
       #map #infowindow-content {
         display: inline;
           position: absolute;
           top: 20%;
-      }
-      .pac-card {
-        margin: 10px 10px 0 0;
-        border-radius: 2px 0 0 2px;
-        box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        outline: none;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-        background-color: #fff;
-        font-family: Roboto;
-      }
-      #pac-container {
-        padding-bottom: 12px;
-        margin-right: 12px;
-      }
-      .pac-controls {
-        display: inline-block;
-        padding: 5px 11px;
       }
       .pac-controls label {
         font-family: Roboto;
@@ -110,30 +85,6 @@ select.form-control:focus {
 
       #pac-input:focus {
         border-color: #4d90fe;
-      }
-      #title {
-        color: #fff;
-        background-color: #4d90fe;
-        font-size: 25px;
-        font-weight: 500;
-        padding: 6px 12px;
-      }
-      #target {
-        width: 345px;
-      }
-      /*Current location button*/
-      #btnAction {
-	    background: #3878c7;
-        padding: 10px 40px;
-        border: #3672bb 1px solid;
-        border-radius: 2px;
-        color: #FFF;
-        font-size: 0.9em;
-        cursor:pointer;
-        display:block;
-      }
-      #btnAction:disabled {
-        background: #6c99d2;
       }
 
       .offer-strip-btn {
@@ -188,6 +139,27 @@ select.form-control:focus {
     border: none;
 }
 
+.mk-bkng-btn{
+    width: 100%;
+border:0px solid #e97d00; -webkit-border-radius: 3px; -moz-border-radius: 3px;border-radius: 3px;font-size:12px;font-family:arial, helvetica, sans-serif; text-decoration:none; display:inline-block; font-weight:bold; color: #FFFFFF;
+ background-color: #FF9922; background-image: -webkit-gradient(linear, left top, left bottom, from(#FF9922), to(#EBC321));
+ background-image: -webkit-linear-gradient(top, #FF9922, #EBC321);
+ background-image: -moz-linear-gradient(top, #FF9922, #EBC321);
+ background-image: -ms-linear-gradient(top, #FF9922, #EBC321);
+ background-image: -o-linear-gradient(top, #FF9922, #EBC321);
+ background-image: linear-gradient(to bottom, #FF9922, #EBC321);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FF9922, endColorstr=#EBC321);
+}
+
+.mk-bkng-btn:hover{
+ border:0px solid #bb6500;
+ color: #FFFFFF;
+ background-color: #EE8000; background-image: -webkit-gradient(linear, left top, left bottom, from(#EE8000), to(#c7a312));
+ background-image: -webkit-linear-gradient(top, #EE8000, #c7a312);
+ background-image: -moz-linear-gradient(top, #EE8000, #c7a312);
+ background-image: -ms-linear-gradient(top, #EE8000, #c7a312);
+ background-image: -o-linear-gradient(top, #EE8000, #c7a312);
+ background-image: linear-gradient(to bottom, #EE8000, #c7a312);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#EE8000, endColorstr=#c7a312);
+}
 @media only screen and (max-width: 767px) {
   div#jumbo {
         margin-top: 2em;
@@ -254,6 +226,14 @@ span.box-edit {
         box-shadow: none;
         border-radius: 0;
       }
+
+.dstn-list {
+    text-align: center;
+    color: #383838;
+}
+
+.dstn-img {
+}
 
 .myloc-btn {
     display: none;
@@ -377,10 +357,10 @@ span.box-edit {
        <div class="col-sm-1"></div>   <div class="col-sm-6">
                <a class="link-effect" href="/accounts/register/">
                                          <div class="offer-strip" style="margin-bottom: 5px;">
-                                             <img src="{% static 'frontpage/img/offer.png' %}" style="height: 70px; position: absolute;">
+                                             <img src="{% static 'frontpage/img/offer.png' %}" style="height: 70px; position: absolute; margin-top: 15px; margin-left: 2px;">
                                          <div class="offer-strip-btn">Signup</div>
-                                         <div align="center" style="position: relative; top: 10px; font-weight: bold">Get 10% OFF</div>
-                                         <hr style="margin-left: 10px">
+                                         <div align="center" style="position: relative; top: 10px; left: 5%; font-weight: bold">Get 10% OFF</div>
+                                         <hr style="margin-left: 10px; width: 84%">
                                          <div align="center" style="position: relative; bottom: 10px">Instantly on next ride</div>
                                          </div>
                                      </a>
@@ -393,96 +373,89 @@ span.box-edit {
 
 <div class="fluid-container" style="background-color: #e7e7e7">
         <div class="container" >
-                <h1 class="display-3 text-center">OUR FLEET</h1>
-
+                <h1 class="display-3 text-center">Travel destinations</h1>
             <!----First Row--------->
-
+<div style="margin-top: 3em; margin-bottom: 3em; color: #383838">
     <div class="row">
+
         <div class="col-sm-3 col-xs-6">
-            <a href="#" class="thumbnail">
-                <img src="{% static 'frontpage/img/triumph-street-twin.png' %}">
+            <a href="#">
                 <div class="caption">
-                        <h3>Triumph Street Twin</h3>
+                        <div class="dstn-list">Dehradun to Masoorie bikes</div>
                 </div>
+                <img class="img-responsive dstn-img" src="{% static 'frontpage/img/ls.jpg' %}">
             </a>
         </div>
 
         <div class="col-sm-3 col-xs-6">
-
-            <a href="#" class="thumbnail">
-                <img src="{% static 'frontpage/img/benelli-tnt-600-i.png' %}">
+            <a href="#">
                 <div class="caption">
-                        <h3>Benelli Tnt 600 I</h3>
+                        <div class="dstn-list">Dehradun to Rishikesh bikes</div>
                 </div>
+                <img class="img-responsive dstn-img" src="{% static 'frontpage/img/ls.jpg' %}">
             </a>
-
-         </div>
-
-         <div class="col-sm-3 col-xs-6">
-
-            <a href="#" class="thumbnail">
-                <img src="{% static 'frontpage/img/iron_883.png' %}">
-                <div class="caption">
-                        <h3>Harley Davison Iron</h3>
-                </div>
-            </a>
-
         </div>
 
         <div class="col-sm-3 col-xs-6">
-
-            <a href="#" class="thumbnail">
-                <img src="{% static 'frontpage/img/royal-enfield-redditch.png' %}">
+            <a href="#">
                 <div class="caption">
-                        <h3>Royal Enfield </h3>
-                        </div>
+                        <div class="dstn-list">Dehradun to Haridwar bikes</div>
+                </div>
+                <img class="img-responsive dstn-img" src="{% static 'frontpage/img/ls.jpg' %}">
             </a>
-
         </div>
+
+        <div class="col-sm-3 col-xs-6">
+            <a href="#">
+                <div class="caption">
+                        <div class="dstn-list">Dehradun to Shimla bikes</div>
+                </div>
+                <img class="img-responsive dstn-img" src="{% static 'frontpage/img/ls.jpg' %}">
+            </a>
+        </div>
+
     </div>
 
     <!-----Second Row-------------------->
-    <div class="row">
-            <div class="col-sm-3 col-xs-6">
+    <div class="row" style="margin-top: 3em">
 
-                <a href="#" class="thumbnail">
-                    <img src="{% static 'frontpage/img/Classic-350.png' %}">
-                    <div class="caption">
-                            <h3>Classic 350</h3>
-                    </div>
-                </a>
-
-            </div>
-
-            <div class="col-sm-3 col-xs-6">
-
-                <a href="#" class="thumbnail">
-                    <img src="{% static 'frontpage/img/dominar.png' %}">
-                    <div class="caption">
-                            <h3>Dominar 400 I</h3>
-                    </div>
-                </a>
-
-             </div>
-
-             <div class="col-sm-3 col-xs-6">
-                <a href="#" class="thumbnail">
-                    <img src="{% static 'frontpage/img/Avenger-Cruise.png' %}">
-                    <div class="caption">
-                            <h3>Avenger Cruise 200</h3>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col-sm-3 col-xs-6">
-                <a href="#" class="thumbnail">
-                    <img src="{% static 'frontpage/img/Activa.png' %}">
-                    <div class="caption">
-                            <h3>Activa</h3>
-                    </div>
-                </a>
-            </div>
+        <div class="col-sm-3 col-xs-6">
+            <a href="#">
+                <div class="caption">
+                        <div class="dstn-list">Dehradun to Manali bikes</div>
+                </div>
+                <img class="img-responsive dstn-img" src="{% static 'frontpage/img/ls.jpg' %}">
+            </a>
         </div>
+
+        <div class="col-sm-3 col-xs-6">
+            <a href="#">
+                <div class="caption">
+                        <div class="dstn-list">Dehradun to Chandigarh bikes</div>
+                </div>
+                <img class="img-responsive dstn-img" src="{% static 'frontpage/img/ls.jpg' %}">
+            </a>
+        </div>
+
+        <div class="col-sm-3 col-xs-6">
+            <a href="#">
+                <div class="caption">
+                        <div class="dstn-list">Dehradun to Delhi bikes</div>
+                </div>
+                <img class="img-responsive dstn-img" src="{% static 'frontpage/img/ls.jpg' %}">
+            </a>
+        </div>
+
+        <div class="col-sm-3 col-xs-6">
+            <a href="#">
+                <div class="caption">
+                        <div class="dstn-list">Dehradun to Ladakh bikes</div>
+                </div>
+                <img class="img-responsive dstn-img" src="{% static 'frontpage/img/ls.jpg' %}">
+            </a>
+        </div>
+        </div>
+</div>
 </div>
 </div>
 
@@ -496,44 +469,33 @@ span.box-edit {
                     <h2 class="logo"><a href="#"> LOGO </a></h2>
                 </div>
                 <div class="col-sm-2">
-                    <h5>Get started</h5>
-                    <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Sign up</a></li>
-                        <li><a href="#">Downloads</a></li>
-                    </ul>
-                </div>
-                <div class="col-sm-2">
                     <h5>About us</h5>
                     <ul>
-                        <li><a href="#">Company Information</a></li>
-                        <li><a href="#">Contact us</a></li>
-                        <li><a href="#">Reviews</a></li>
+                        <li><a href="about-us/">Company Information</a></li>
+                        <li><a href="pricing-and-delivery/">Pricing and Delivery</a></li>
+                        <li><a href="refund-rules/">Refunds and Cancellation</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-2">
-                    <h5>Support</h5>
+                    <h5>Regulations</h5>
                     <ul>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Help desk</a></li>
-                        <li><a href="#">Forums</a></li>
+                        <li><a href="terms-and-conditions/">Terms and Conditions</a></li>
+                        <li><a href="privacy-policy/">Privacy Policy</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-3">
                     <div class="social-networks">
-                        <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
                         <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
-                        <a href="#" class="google"><i class="fa fa-google-plus"></i></a>
+                        <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
                     </div>
-                    <button type="button" class="btn btn-default">Contact us</button>
+                    <a href="contact-us/"><button type="button" class="mk-bkng-btn btn">Contact us</button></a>
                 </div>
             </div>
         </div>
         <div class="footer-copyright">
-            <p>© 2019 RideYaan </p>
+            <p>© 2019 YAAN Rides. All rights reserved.</p>
         </div>
     </footer>
-
 
     <script type="text/javascript">
     window.onload = function(){
@@ -557,10 +519,7 @@ span.box-edit {
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css">
 <script type="text/javascript" src="static/js/jonthornton-timepicker/jquery.timepicker.min.js"></script>
-<link rel="stylesheet" type="text/css" href="static/stylesheet/jonthornton-timepicker/jquery.timepicker.css">
-
 <!--date script -->
 
 <script type="text/javascript">
@@ -699,7 +658,7 @@ $(document).on('click', "input#pac-input", function (event) {
         $("#pac-input").val('');
         event.preventDefault();
         $("#currentInfo").hide();
-        $("#mark_gmaps").load("http://www.yaanrides.com/mylocation/maps/");
+        $("#mark_gmaps").load("http://127.0.0.1:8000/mylocation/maps/");
         $("#static-line").hide();
         $("#loco-line").show();
         $(".myloc-btn").show();

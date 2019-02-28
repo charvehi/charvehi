@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Title</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+{% block content %}
+
+            <header class="header7" id="header7">
+{% include "useraccounts/base.html" %}
+            </header><!-- header -->
+            <section id="content-section5" class="content-section5">
+                <div class="container">
+                    <div class="row">
+                      <div class="col-md-8">
+{% block title %}
+<h3>Refund and Cancellation</h3>
+{% endblock %}
+<div>
+<p>At yaanrides.com, we believe no penny of riders is to be taken without giving any service. So, we offer zero cancellation fees and 100% refund is granted.</p>
+<p><h4>How to cancel ride and get refund?</h4>
+We are currently accepting refunds through mailing and phone-call facility only. We will request your bank details for direct-fund-transfer. The refund generally takes 1-3 days.</p>
+<hr>
+<p>Below are our contact details for refund:
+                              <div>Email: refund@yaanrides.com</div>
+                              <div>Phone: +91 999 9999 999</div>
+</p>
+</div>
+
+                      </div>
+                    </div><!-- end row -->
+                </div><!-- end container -->
+            </section>
+{% endblock %}
+</body>
+</html>

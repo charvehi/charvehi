@@ -4,27 +4,46 @@
 
 <head>
   <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1,maximum-sclale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>Details</title>
+  <title>Model details-YAAN Rides</title>
     <!---------------for carousel---------------->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!---------------for carousel ends----------->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="{% static 'slick-1.8.1/slick/slick.css' %}"/>
 <link rel="stylesheet" type="text/css" href="{% static 'slick-1.8.1/slick/slick-theme.css' %}"/>
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <style>
-         .navbar-default {
+.navbar-default {
     background: #131f3e;;
 }
 .checked {
         color: orange;
 }
+
+.mk-bkng-btn{
+ width: 100%;margin-top: 1em;border:0px solid #e97d00; -webkit-border-radius: 3px; -moz-border-radius: 3px;border-radius: 3px;font-size:18px;font-family:arial, helvetica, sans-serif; text-decoration:none; display:inline-block;font-weight:bold; color: #FFFFFF;
+ background-color: #FF9922; background-image: -webkit-gradient(linear, left top, left bottom, from(#FF9922), to(#EBC321));
+ background-image: -webkit-linear-gradient(top, #FF9922, #EBC321);
+ background-image: -moz-linear-gradient(top, #FF9922, #EBC321);
+ background-image: -ms-linear-gradient(top, #FF9922, #EBC321);
+ background-image: -o-linear-gradient(top, #FF9922, #EBC321);
+ background-image: linear-gradient(to bottom, #FF9922, #EBC321);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FF9922, endColorstr=#EBC321);
+}
+
+.mk-bkng-btn:hover{
+ border:0px solid #bb6500;
+ color: #FFFFFF;
+ background-color: #EE8000; background-image: -webkit-gradient(linear, left top, left bottom, from(#EE8000), to(#c7a312));
+ background-image: -webkit-linear-gradient(top, #EE8000, #c7a312);
+ background-image: -moz-linear-gradient(top, #EE8000, #c7a312);
+ background-image: -ms-linear-gradient(top, #EE8000, #c7a312);
+ background-image: -o-linear-gradient(top, #EE8000, #c7a312);
+ background-image: linear-gradient(to bottom, #EE8000, #c7a312);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#EE8000, endColorstr=#c7a312);
+}
+
 .specs_value {
     font-size: 1.5em;
 }
@@ -41,6 +60,8 @@
 }
 .carousel-image {
 }
+
+#more {display: none;}
 
 @media only screen and (max-width: 60px) {
   div#myCarousel {
@@ -112,21 +133,21 @@
                         </div>
                                                 <div class="col-sm-5">
                             <div class="caption">
-                                <h3 class="text-left">
+                                <h3 class="text-left" style="font-weight: bold">
                                     {{ model.model_name }}
                                 </h3>
                             </div>
-                            <!--<input id="rtg" value="{{ model.rating }}" hidden>
-                            <div id="rating" class="rating"></div>-->
                                             {% for model in modeldetails %}
-                            <span class="stars" data-rating="{{ model.average_rating | floatformat }}" data-num-stars="5" ></span>
+                                                    <span class="stars" data-rating="{{ model.average_rating | floatformat }}" data-num-stars="5" >No reviews available</span> <span>(Based on user rating)</span>
                                             {% endfor %}
                                                     <hr>
-                            <div class="text-left fa specs_value">&#xf156; {{ model.price }}</div><br>
-                            <div>Address:
-                                <span class="text-left specs_value">{{ model.d_id.dealer_address }}</span></div>
-                            <div class="text-left specs_value">{{ distance }} {{ unit }} away</div>
-                            <div class="specs_value">{{ model.specification }}</div>
+                            <div class="text-left fa specs_value">&#xf156; {{ model.price }} <span class="text-center fa m-detail" style="font-style: italic; font-size: 16px">You save: ₹ {{ model.price_discount }}</span></div><br>
+                                <span class="text-left specs_value"><img src="https://img.icons8.com/material/24/000000/place-marker.png"> {{ model.d_id.dealer_address }}</span>
+                            <div class="text-left specs_value"><img src="https://img.icons8.com/material/24/000000/binoculars.png"> {{ distance }} {{ unit }} away</div>
+                            <div class="specs_value"><img src="https://img.icons8.com/material/24/000000/quad-bike.png"> {{ model.specification }}
+                                <span id="dots">...</span><div><span id="more">Safety gears also available</span></div>
+                                <a onclick="readMore()" id="myBtn" style="cursor: pointer">Read more</a>
+                            </div>
                             <div class="mk-bkng-btn-sec"><a href="{{ model.get_order_url }}?current_loc={{ loc }}&start={{ start }}&end={{ end }}&lat={{ lat }}&lon={{ lon }}"><button class="btn mk-bkng-btn">Book</button></a></div>
                         </div>
                     {% endfor %}
@@ -171,7 +192,6 @@
         <div class="media-body">
             <h4 class="media-heading">{{ review.user_id.first_name }} {{ review.user_id.last_name }} ({{ review.rating }})</h4>
             <a href="{{ review.get_detail_url }}" style="text-decoration: none"><div>{{ review.comment }}</div></a>
-            <!--<button class="review_del_btn" name="{{ review.id }}">Delete</button>-->
         </div>
     </div>
         <hr>
@@ -186,8 +206,8 @@
 <p>No reviews are available.</p>
 {% endif %}
 <!---Form start-->
-                            {% if review_bit is False %}
-          <div id="my_review_form">
+                            {% if user_id is not None and review_bit is False %}
+                            <div id="my_review_form">
 <h3>Add your review</h3>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
           {% for model in modeldetails %}
@@ -224,7 +244,7 @@
 
     $('.stars').stars();
 </script>
-    <script>
+    <script defer>
     function displayrating() {
         let stars = '';
         let sn = document.getElementById('rtg').value;
@@ -241,7 +261,7 @@
     </script>
 
           {% for model in modeldetails %}
-<script type="text/javascript">
+<script type="text/javascript" async>
 $(document).ready(function() {
     var token = '{{csrf_token}}';
     var m_id = '{{ model.m_id }}';
@@ -249,27 +269,20 @@ $(document).ready(function() {
     reviewForm.submit(function(event) {
         event.preventDefault();
         var formData = reviewForm.serialize();
-        //var frm = $('#review-form');
-        //var btn = $('#upload-files-btn');
-        //btn.bind('click', handleClick);
-        //var formData = new FormData(); // Use FormData instead
-        //formData.append('file', frm.files[0], frm.files[0].name) // The first argument is the 'key' of the form data so change it to whatever works.
-        //var handleClick = function (event) {
-          //  event.preventDefault();
             $.ajax({
                 headers: { "X-CSRFToken": token },
                 type: 'POST',
                 url: 'http://127.0.0.1:8000/bike/reviews/model/'+m_id+'/add_review/',
                 data: formData,
-                //contentType: false,  // add this to indicate 'multipart/form-data'
                 success: function (data) {
                     document.getElementById('review-form').reset();
-                    alert('Form Submitted');
+                    //alert('Reviewed');
+                    location.reload();
                     my_comment();
                     $('#usr_cmnt_tb').hide();
                 },
                 error: function (data) {
-                    alert('Form submission failed');
+                    alert('Failed to review');
                 }
             });
         //}
@@ -280,55 +293,38 @@ function my_comment() {
     var m_id = '{{ model.m_id }}';
     $.ajaxSetup({cache: false}); // This part addresses an IE bug.  without it, IE will only load the first number and will never refresh
     var my_refresh = setInterval(function () {
-        //clearInterval(my_refresh);
         $('#usr_cmnt_tb_liv').load('http://127.0.0.1:8000/bike/reviews/model/' + m_id + '/review_list/?comment_added=true');
-        //clearInterval(my_refresh);
-    }, 1000); // the "1000"
+    }, 1000);
 }
 </script>
 
-<script>
-$(document).ready(function() {
-    var m_id = '{{ model.m_id }}';
-    var reviewDelete = $('.review_del_btn');
-    var btn = reviewDelete.attr('name');
-    reviewDelete.click(function(event) {
-        //alert(btn);
-        event.preventDefault();
-            $.ajax({
-                //type: 'GET',
-                url: 'http://127.0.0.1:8000/bike/reviews/model/'+m_id+'/delete_review/'+btn,
-                data: null,
-                success: function (data) {
-                    alert('Deleted');
-                },
-                error: function (data) {
-                    alert('Not deleted');
-                }
-            });
-        //}
-    });
-});
-
-</script>
 <script>
     function blinker() {
     $('#dc_blink').fadeOut(500);
     $('#dc_blink').fadeIn(500);
 }
-
 setInterval(blinker, 1000);
 </script>
           {% endfor %}
-{% endblock %}
-<script type="text/javascript">
-//$(".mk-bkng-btn").click(function(){
-  //document.location.href = "http://127.0.0.1:8000/bike/book/make_purchase/m_id/model_name/?ref=&current_loc=&start=&end=&lat=&lon=";
-//});
+<script async defer>
+function readMore() {
+  var dots = document.getElementById("dots");
+  var moreText = document.getElementById("more");
+  var btnText = document.getElementById("myBtn");
+
+  if (dots.style.display === "none") {
+    dots.style.display = "inline";
+    btnText.innerHTML = "Read more";
+    moreText.style.display = "none";
+  } else {
+    dots.style.display = "none";
+    btnText.innerHTML = "Read less";
+    moreText.style.display = "inline";
+  }
+}
 </script>
 <script type="text/javascript" src="{% static 'slick-1.8.1/slick/slick.min.js' %}"></script>
 <script type="text/javascript">
-
 $('.your-class').slick({
   dots: true,
   infinite: false,
@@ -338,5 +334,6 @@ $('.your-class').slick({
   variableWidth: true
 });
 </script>
+{% endblock %}
 </body>
 </html>
