@@ -29,6 +29,7 @@ from orders import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('mylocation/maps/', TemplateView.as_view(template_name='booking/aindex/map.html'), name='maps'),
     #path('booking/', TemplateView.as_view(template_name='index.html'), name='index'),
     url(r'^admin/orders/report/$', views.order_report, name='order_report'),
     url(r'^$', book.index, name='index'),
@@ -39,12 +40,20 @@ urlpatterns = [
     url(r'^coupon/', include('voucher.urls'), name='voucher'),
     url(r'^bike/reviews/', include('review.urls', namespace="review")),
 
-    url(r'^mylocation/maps/$', PasswordResetDoneView.as_view(template_name='booking/aindex/map.html'), name='find_loc'),
-
     url(r'^password_reset/$', PasswordResetView.as_view(form_class=NewPasswordResetForm, template_name='registration/password_reset_form.html'), name='password_reset'),
     url(r'^password_reset/done/$', PasswordResetDoneView.as_view(template_name='registration/password_reset_done.html'), name='password_reset_done'),
     url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', PasswordResetConfirmView.as_view(template_name='registration/password_reset_confirm.html'), name='password_reset_confirm'),
     url(r'^reset/done/$', PasswordResetCompleteView.as_view(template_name='registration/password_reset_complete.html') , name='password_reset_complete'),
+
+##################################index page urls###################################
+path('about-us/', TemplateView.as_view(template_name='booking/aindex/about_us.html'), name='about-us'),
+path('contact-us/', TemplateView.as_view(template_name='booking/aindex/contactus.html'), name='contact-us'),
+path('pricing-and-delivery/', TemplateView.as_view(template_name='booking/aindex/pricing_n_delivery.html'), name='pricing-delivery'),
+path('privacy-policy/', TemplateView.as_view(template_name='booking/aindex/privacy_policy.html'), name='privacy-policy'),
+path('refund-rules/', TemplateView.as_view(template_name='booking/aindex/refund_n_cancel.html'), name='refund-rules'),
+path('terms-and-conditions/', TemplateView.as_view(template_name='booking/aindex/tnc.html'), name='terms-conditions'),
+##################################index page urls ends###################################
+
 
     #path('', include('booking.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
