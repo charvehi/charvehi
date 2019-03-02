@@ -20,3 +20,7 @@
  background-image: linear-gradient(to bottom, #EE8000, #c7a312);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#EE8000, endColorstr=#c7a312);
 }
 
+.navbar-default {
+    background: #131f3e;
+}
+
