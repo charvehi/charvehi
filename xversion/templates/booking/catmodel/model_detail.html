@@ -6,7 +6,7 @@
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>Model details-YAAN Rides</title>
+  <title>Book your ride-YAAN Rides</title>
     <!---------------for carousel---------------->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -16,6 +16,41 @@
 <link rel="stylesheet" type="text/css" href="{% static 'slick-1.8.1/slick/slick.css' %}"/>
 <link rel="stylesheet" type="text/css" href="{% static 'slick-1.8.1/slick/slick-theme.css' %}"/>
     <style>
+.ry_rupee {
+    background-image: url("http://127.0.0.1:8000/static/ico_set/icon_pack.png");
+    background-position: -65px -120px;
+    height: 25px;
+    width: 30px;
+    display: inline-block;
+}
+.ry_addr {
+    background-image: url("http://127.0.0.1:8000/static/ico_set/icon_pack.png");
+    background-position: -90px -120px;
+    height: 25px;
+    width: 30px;
+    display: inline-block;
+}
+.ry_dist {
+    background-image: url("http://127.0.0.1:8000/static/ico_set/icon_pack.png");
+    background-position: -120px -120px;
+    height: 25px;
+    width: 30px;
+    display: inline-block;
+}
+.ry_specs {
+    background-image: url("http://127.0.0.1:8000/static/ico_set/icon_pack.png");
+    background-position: -150px -120px;
+    height: 25px;
+    width: 30px;
+    display: inline-block;
+}
+.ry_user {
+    background-image: url("http://127.0.0.1:8000/static/ico_set/icon_pack.png");
+    background-position: -8px -120px;
+    height: 25px;
+    width: 30px;
+    display: inline-block;
+}
 .navbar-default {
     background: #131f3e;;
 }
@@ -141,10 +176,13 @@
                                                     <span class="stars" data-rating="{{ model.average_rating | floatformat }}" data-num-stars="5" >No reviews available</span> <span>(Based on user rating)</span>
                                             {% endfor %}
                                                     <hr>
-                            <div class="text-left fa specs_value">&#xf156; {{ model.price }} <span class="text-center fa m-detail" style="font-style: italic; font-size: 16px">You save: ₹ {{ model.price_discount }}</span></div><br>
-                                <span class="text-left specs_value"><img src="https://img.icons8.com/material/24/000000/place-marker.png"> {{ model.d_id.dealer_address }}</span>
-                            <div class="text-left specs_value"><img src="https://img.icons8.com/material/24/000000/binoculars.png"> {{ distance }} {{ unit }} away</div>
-                            <div class="specs_value"><img src="https://img.icons8.com/material/24/000000/quad-bike.png"> {{ model.specification }}
+<div style="position: relative;white-space: nowrap;display: inline-block;">
+<a class="ry_rupee" title="Model Price" aria-expanded="false"></a>
+</div>
+                                                    <div class="text-left fa specs_value"> {{ model.price }} <span class="text-center fa m-detail" style="font-style: italic; font-size: 16px">You save: ₹ {{ model.price_discount }}</span></div><br>
+                                <span class="text-left specs_value"><a class="ry_addr" title="Model Address" aria-expanded="false"></a> {{ model.d_id.dealer_address }}</span>
+                            <div class="text-left specs_value"><a class="ry_dist" title="Model Distance" aria-expanded="false"></a> {{ distance }} {{ unit }} away</div>
+                            <div class="specs_value"><a class="ry_specs" title="Model Address" aria-expanded="false"></a> {{ model.specification }}
                                 <span id="dots">...</span><div><span id="more">Safety gears also available</span></div>
                                 <a onclick="readMore()" id="myBtn" style="cursor: pointer">Read more</a>
                             </div>
@@ -187,7 +225,8 @@
         <div class="col-md-20" style="margin-top: 2em">
         <div class="media">
         <div class="media-left media-top">
-            <img src="https://img.icons8.com/ios-glyphs/30/000000/user.png" class="media-object" style="width:30px">
+            <a class="ry_user" title="User-Bike rider" aria-expanded="false"></a>
+            <!--<img src="https://img.icons8.com/ios-glyphs/30/000000/user.png" class="media-object" style="width:30px">-->
         </div>
         <div class="media-body">
             <h4 class="media-heading">{{ review.user_id.first_name }} {{ review.user_id.last_name }} ({{ review.rating }})</h4>

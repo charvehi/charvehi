@@ -41,17 +41,31 @@ body {
   /* Landscape phones and portrait tablets */
   @media (max-width: 767px) {
 
-    .nav>li>a:hover{
-        color:	#f0c14b !important;
+    .nav > li > a:hover {
+        color: #f0c14b !important;
         background-color: #131f3e;
-    
+
     }
-    .navbar .navbar-fixed-top{
-        background-color: #131f3e;
+
+    .navbar {
+        background-color: transparent;
     }
-   .navbar {
-    background-color: #131f3e;
-   }
+
+    .navbar-fixed-top.scrolled  {
+        background-color: transparent !important;
+
+        transition:  background-color 200ms linear;
+        position: absolute;
+        top: -70px;
+        background: #f1f2f5;
+        transform: translateY(70px);
+        transition: transform .5s ease,background .9s ease;
+        -webkit-transition: transform .5s ease,background .9s ease;
+        z-index: 99999;
+    }
+    .navbar-toggle {
+        float: left !important;
+    }
         
 }
 
