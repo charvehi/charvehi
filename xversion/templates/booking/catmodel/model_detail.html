@@ -6,7 +6,7 @@
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>Book your ride-YAAN Rides</title>
+  <title>Book your ride - YAAN Rides</title>
     <!---------------for carousel---------------->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -226,7 +226,6 @@
         <div class="media">
         <div class="media-left media-top">
             <a class="ry_user" title="User-Bike rider" aria-expanded="false"></a>
-            <!--<img src="https://img.icons8.com/ios-glyphs/30/000000/user.png" class="media-object" style="width:30px">-->
         </div>
         <div class="media-body">
             <h4 class="media-heading">{{ review.user_id.first_name }} {{ review.user_id.last_name }} ({{ review.rating }})</h4>
@@ -252,8 +251,11 @@
           {% for model in modeldetails %}
 <form id="review-form" action="">
     {% csrf_token %}
-    {{ form.as_table }}
-    <input type="submit" class="btn" value="Add" />
+    <table style="border-collapse: separate; border-spacing: 10px;">
+        <tr><td><label for="rating">Rating:</label></td><td>{{ form.rating }}</td></tr>
+        <tr><td><label for="comment">Comment:</label></td><td>{{ form.comment }}</td></tr>
+    </table>
+        <input type="submit" class="btn" value="Post" />
 </form>
           {% endfor %}
 <!--Form end-->
@@ -283,21 +285,7 @@
 
     $('.stars').stars();
 </script>
-    <script defer>
-    function displayrating() {
-        let stars = '';
-        let sn = document.getElementById('rtg').value;
-        let rmg = 5 - sn;
-        for (let i = 0; i < sn; i++) {
-            stars += "<span class='fa fa-star checked'></span>";
-        }
-        for (let i = 0; i < rmg; i++) {
-            stars += "<span class='fa fa-star unchecked'></span>";
-        }
-        document.getElementById("rating").innerHTML = stars;
-    }
-    window.onload = displayrating;
-    </script>
+
 
           {% for model in modeldetails %}
 <script type="text/javascript" async>
@@ -315,7 +303,7 @@ $(document).ready(function() {
                 data: formData,
                 success: function (data) {
                     document.getElementById('review-form').reset();
-                    //alert('Reviewed');
+                    alert('Thank you. Your reviews help us improve.');
                     location.reload();
                     my_comment();
                     $('#usr_cmnt_tb').hide();

@@ -15,6 +15,13 @@
      .navbar-default {
     background: #131f3e;;
 }
+.ry_user {
+    background-image: url("http://127.0.0.1:8000/static/ico_set/icon_pack.png");
+    background-position: -8px -120px;
+    height: 25px;
+    width: 30px;
+    display: inline-block;
+}
 </style>
 </head>
 <body>
@@ -33,7 +40,7 @@
         <div class="col-md-20" style="margin-top: 2em">
         <div class="media">
         <div class="media-left media-top">
-            <img src="img_avatar1.png" class="media-object" style="width:30px">
+            <a class="ry_user" title="User-Bike rider" aria-expanded="false"></a>
         </div>
         <div class="media-body">
             <h4 class="media-heading">{{ review.user_id.first_name }} {{ review.user_id.last_name }} ({{ review.rating }})</h4>
