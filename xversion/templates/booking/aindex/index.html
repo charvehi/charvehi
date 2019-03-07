@@ -8,7 +8,7 @@
 <meta name="google-site-verification" content="-0oQmfExzaWWH0oLRN4891V2ungtZHfBDYDkC5OU0jk" />
 <meta name="description" content="Instantly rent efficient and affordable motorbikes near you. Cheap motorbikes available from partnered fleet masters. Unlock 10% discount after first ride.">
 <meta name="keywords" content="yaanrides,yaanride,yaan rides,yaan ride,rideyaan,bike rental,rent a bike,bike rent near me,rent a bike in dehradun,bike hire,hire a bike,bike hire near me,hire a bike in dehradun">
-<title>YAAN Rides</title>
+<title>Motorbikes near you, Book Instantly, Affordable rides - YAAN Rides</title>
 <!-- Latest compiled and minified CSS -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -19,16 +19,15 @@
 <link rel="stylesheet" href="{% static 'stylesheet/index_direct.css' %}">
 <link rel="stylesheet" href="{% static 'frontpage/custom.css' %}">
 <script src="{% static 'frontpage/js.js' %}" ></script>
-
-
+<link rel="shortcut icon" href="{% static 'ico_set/ry-logo/favicon.ico' %}" type="image/x-icon">
+<link rel="icon" href="{% static 'ico_set/ry-logo/favicon.ico' %}" type="image/x-icon">
 <style>
       #prime-head-logo {
-          height: 3em;
-          margin-top: 5em;;
+          margin-top: 1.6em;;
       }
 
       #logo-holder {
-          background: url("/static/frontpage/img/yaanrides-background01.jpg");
+          background: url("/static/frontpage/img/yaanrides-background.jpg");
           height: 10em;
           background-size: 780px 280px;
           background-position: -5px -700px;
@@ -168,6 +167,9 @@ border:0px solid #e97d00; -webkit-border-radius: 3px; -moz-border-radius: 3px;bo
         background: #fefefa;
         border: none;
   }
+    #logo-holder-lg {
+        display: none;
+    }
     #profile-ico-cont {
         float: right;
         margin-top: 1em;
@@ -176,7 +178,7 @@ border:0px solid #e97d00; -webkit-border-radius: 3px; -moz-border-radius: 3px;bo
 }
 @media only screen and (min-width: 767px) {
   .header .backgroundimg {
-    background-image: url('static/frontpage/img/yaanrides-background.jpg');
+    background-image: url('static/frontpage/img/yaanrides-background01.jpg');
 }
     #logo-holder {
         display: none;
@@ -265,6 +267,7 @@ span.box-edit {
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                              </button>
+                            <div id="logo-holder-lg"><a href="{% url 'index' %}" class="navbar-brand brand" data-selector="nav a, a.edit" style=""><img src="/static/ico_set/ry-logo/ry-logo-sm.png" style="position: absolute;bottom: 2px;"></a></div>
                             <div id="profile-ico-cont"><img src="https://img.icons8.com/ios-glyphs/30/000000/user.png"></div>
                         </div>
                         <div class="collapse navbar-collapse" id="micon">
@@ -293,7 +296,7 @@ span.box-edit {
 
                     <div class="container-fluid">
       <div class="row backgroundimg">
-                    <div id="logo-holder" align="center"><img id="prime-head-logo" src="{% static 'frontpage/img/logo.jpg' %}"></div>
+                    <div id="logo-holder" align="center"><img id="prime-head-logo" src="{% static 'ico_set/ry-logo/ry-logo-sm-rc.png' %}"></div>
 
           <div class="col-sm-1">
 
@@ -470,7 +473,7 @@ span.box-edit {
         <div class="container">
             <div class="row">
                 <div class="col-sm-3">
-                    <h2 class="logo"><a href="#"> LOGO </a></h2>
+                    <h2 class="logo"><img src="/static/ico_set/ry-logo/ry-favicon-white.png" style="border-radius: 10px"></h2>
                 </div>
                 <div class="col-sm-2">
                     <h5>About us</h5>
