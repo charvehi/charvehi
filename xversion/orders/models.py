@@ -31,6 +31,7 @@ class UserOrderInfo(models.Model):
     end_date = models.DateField(blank=False, max_length=6)
     end_time = models.CharField(max_length=8, blank=False)
     duration = models.CharField(max_length=30, blank=False, default=0)
+    delivery = models.BooleanField(default=False)
     price_hour = models.DecimalField(max_digits=6, decimal_places=2, default=0)
     price_day = models.DecimalField(max_digits=6, decimal_places=2, default=0)
     dealer_money = models.DecimalField(max_digits=6, decimal_places=2, default=0)
