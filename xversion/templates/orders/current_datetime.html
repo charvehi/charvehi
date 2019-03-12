@@ -1,3 +1,4 @@
+{% load static %}
 <html>
   <head onload="submitPayuForm()">
   <script type="text/javascript">
@@ -10,17 +11,54 @@
       payuForm.submit();
     }
   </script>
+    <style>
+.middle {
+    height: 200px;
+    width: 400px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -200px;
+}
+
+  .loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 100px;
+  height: 100px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+    </style>
   </head>
-  <body>
-    <h2>PayU Form</h2>
-    <br/>
+  <body onload="document.forms['payuForm'].submit()">
+{% block content %}
+<div class="middle">
+  <h2>Redirecting to payment</h2>
+<div class="loader"></div>
+</div>
+
+                {% for item in cart %}
+                    {% with model=item.model  %}
+
     {% if error %}
-	
-      <span style="color:red">Please fill all mandatory fields.</span>
-      <br/>
-      <br/>
+
       {% endif %}
-     
+                 {% with totail_items=cart|length %}
+                {% if cart|length > 0 %}
       <form action={{ action }} method="post" name="payuForm">
         {% csrf_token %}
       <input type="hidden" name="key" value="{{ MERCHANT_KEY }}" />
@@ -28,90 +66,27 @@
       <input type="hidden" name="hash" value="{{ hashh }}"/>
        <input type="hidden" name="posted" value="{{ posted }}"/>
       <input type="hidden" name="txnid" value="{{ txnid }}" />
-      <table>
-        <tr>
-          <td><b>Mandatory Parameters</b></td>
-        </tr>
-        <tr>
-         <td>Amount: </td>
-          <td><input name="amount" value="{{ posted.amount|default:'' }}" /></td>
-          <td>First Name: </td>
-          <td><input name="firstname" id="firstname" value="{{ posted.firstname|default:'' }}" /></td>
-        </tr>
-        <tr>
-          <td>Email: </td>
-          <td><input name="email" id="email" value="{{ posted.email|default:'' }}" /></td>
-          <td>Phone: </td>
-          <td><input name="phone" value="{{ posted.phone|default:'' }}" /></td>
-        </tr>
-        <tr>
-          <td>Product Info: </td>
-          <td colspan="3"><textarea name="productinfo">{{ posted.productinfo|default:'' }}</textarea></td>
-        </tr>
-        <tr>
-          <td>Success URI: </td>
-          <td colspan="3"><input name="surl" value="{{ posted.surl }}" size="64" /></td>
-        </tr>
-        <tr>
-          <td>Failure URI: </td>
-          <td colspan="3"><input name="furl" value="{{ posted.furl }}" size="64" /></td>
-        </tr>
 
-        <tr>
-          <td colspan="3"><input type="hidden" name="service_provider" value="payu_paisa" size="64" /></td>
-        </tr>
-             <tr>
-          <td><b>Optional Parameters</b></td>
-        </tr>
-        <tr>
-          <td>Last Name: </td>
-          <td><input name="lastname" id="lastname" value="{{ posted.lastname }}" /></td>
-          <td>Cancel URI: </td>
-          <td><input name="curl" value="" /></td>
-        </tr>
-        <tr>
-          <td>Address1: </td>
-          <td><input name="address1" value="{{ posted.address1 }}" /></td>
-          <td>Address2: </td>
-          <td><input name="address2" value="{{ posted.address2 }}" /></td>
-        </tr>
-        <tr>
-          <td>City: </td>
-          <td><input name="city" value="{{ posted.city }}" /></td>
-          <td>State: </td>
-          <td><input name="state" value="{{ posted.state }}" /></td>
-        </tr>
-        <tr>
-          <td>Country: </td>
-          <td><input name="country" value="{{ posted.country }}" /></td>
-          <td>Zipcode: </td>
-          <td><input name="zipcode" value="{{ posted.zipcode }}" /></td>
-        </tr>
-        <tr>
-          <td>UDF1: </td>
-          <td><input name="udf1" value="{{ posted.udf1 }}" /></td>
-          <td>UDF2: </td>
-          <td><input name="udf2" value="{{ posted.udf2 }}" /></td>
-        </tr>
-        <tr>
-          <td>UDF3: </td>
-          <td><input name="udf3" value="{{ posted.udf3 }}" /></td>
-          <td>UDF4: </td>
-          <td><input name="udf4" value="{{ posted.udf4 }}" /></td>
-        </tr>
-        <tr>
-          <td>UDF5: </td>
-          <td><input name="udf5" value="{{ posted.udf5 }}" /></td>
-          <td>PG: </td>
-          <td><input name="pg" value="{{ posted.PG }}" /></td>
-        </tr>
-        
-     <td colspan="4"><input type="submit" value="Submit" /></td>
-      
-    
-        </tr>
-      </table>
+          <input type="hidden" name="amount" value="{{ cart.get_total_price }}" />
+          <input type="hidden" name="firstname" id="firstname" value="{{ request.user.first_name|default:name }}" />
+
+          <input type="hidden" name="email" id="email" value="{{ request.user.email|default:'example@example.com' }}" />
+          <input type="hidden" name="phone" value="{{ request.user.phone|default:phone }}" />
+
+          <textarea name="productinfo" style="display: none">{{ model.model_name }}</textarea>
+
+          <input type="hidden" name="surl" value="http://127.0.0.1:8000/bike/book/success/" size="64" />
+
+          <input type="hidden" name="furl" value="http://127.0.0.1:8000/bike/book/failure/" size="64" />
+          <input type="hidden" type="hidden" name="service_provider" value="payu_paisa" size="64" />
     </form>
+                  {% endif %}
+            {% endwith %}
+                    {% endwith %}
+                            {% empty %}
+                {% endfor %}
+  {% endblock %}
+
   </body>
 </html>
 

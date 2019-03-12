@@ -12,6 +12,7 @@ from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import get_template
 from django.template import Context, Template, RequestContext
+import datetime
 import hashlib
 from random import randint
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
@@ -19,21 +20,28 @@ from django.template.context_processors import csrf
 
 
 def Home(request):
+    cart = Cart(request)
     MERCHANT_KEY = "xoTYBwdz"
     key = "xoTYBwdz"
     SALT = "XPR2AS7dy8"
     PAYU_BASE_URL = "https://sandboxsecure.payu.in/_payment"
     action = ''
     posted = {}
+    phone = request.POST.get('phone', '')
+    name = request.POST.get('fname', '')
+    print(phone)
     # Merchant Key and Salt provided y the PayU.
     for i in request.POST:
         posted[i] = request.POST[i]
-    random = str(randint(0, 20))
-
-    hash_object = hashlib.sha256(random)
+    hash_object = hashlib.sha256(b'randint(0,20)')
     txnid = hash_object.hexdigest()[0:20]
+    '''amount = 253
+    productinfo = 'good'
+    firstname = 'ayush'
+    email = 'ayush4920@gmail.com'''''
     hashh = ''
     posted['txnid'] = txnid
+
     hashSequence = "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10"
     posted['key'] = key
     hash_string = ''
@@ -49,22 +57,29 @@ def Home(request):
     action = PAYU_BASE_URL
     if (posted.get("key") != None and posted.get("txnid") != None and posted.get("productinfo") != None and posted.get(
             "firstname") != None and posted.get("email") != None):
-        args = {"posted": posted, "hashh": hashh,
-                "MERCHANT_KEY": MERCHANT_KEY,
-                "txnid": txnid,
-                "hash_string": hash_string,
-                "action": "https://test.payu.in/_payment",
-                }
-        return render_to_response('orders/current_datetime.html', args)
-
+        args = {
+            "phone": phone,
+            "name": name,
+            "cart": cart,
+            "posted": posted, "hashh": hashh,
+            "MERCHANT_KEY": MERCHANT_KEY,
+            "txnid": txnid,
+            "hash_string": hash_string,
+            "action": PAYU_BASE_URL,
+        }
+        return render(request, 'orders/current_datetime.html', args)
     else:
-        args = {"posted": posted, "hashh": hashh,
-                "MERCHANT_KEY": MERCHANT_KEY,
-                "txnid": txnid,
-                "hash_string": hash_string,
-                "action": action,
-                }
-        return render_to_response('orders/current_datetime.html', args)
+        args = {
+            "phone": phone,
+            "name": name,
+            "cart": cart,
+            "posted": posted, "hashh": hashh,
+            "MERCHANT_KEY": MERCHANT_KEY,
+            "txnid": txnid,
+            "hash_string": hash_string,
+            "action": ".",
+        }
+        return render(request, 'orders/current_datetime.html', args)
 
 
 @csrf_protect
@@ -97,8 +112,13 @@ def success(request):
         "Your Transaction ID for this transaction is ", txnid
         print
         "We have received a payment of Rs. ", amount, ". Your order will soon be shipped."
-    return render_to_response('orders/success.html',
-                              RequestContext(request, {"txnid": txnid, "status": status, "amount": amount}))
+
+    args = {
+        "txnid": txnid,
+        "status": status,
+        "amount": amount,
+    }
+    return render(request, 'orders/success.html', args)
 
 
 @csrf_protect
@@ -120,7 +140,7 @@ def failure(request):
         retHashSeq = additionalCharges + '|' + salt + '|' + status + '|||||||||||' + email + '|' + firstname + '|' + productinfo + '|' + amount + '|' + txnid + '|' + key
     except Exception:
         retHashSeq = salt + '|' + status + '|||||||||||' + email + '|' + firstname + '|' + productinfo + '|' + amount + '|' + txnid + '|' + key
-    hashh = hashlib.sha512(retHashSeq).hexdigest().lower()
+    hashh = hashlib.sha512(retHashSeq.encode('utf-8')).hexdigest().lower()
     if (hashh != posted_hash):
         print
         "Invalid Transaction. Please try again"
@@ -131,7 +151,7 @@ def failure(request):
         "Your Transaction ID for this transaction is ", txnid
         print
         "We have received a payment of Rs. ", amount, ". Your order will soon be shipped."
-    return render_to_response("orders/Failure.html", RequestContext(request, c))
+    return render(request, "orders/Failure.html", c)
 #---------------------Payments views ends--------------------------#
 
 

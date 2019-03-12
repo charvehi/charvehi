@@ -18,7 +18,7 @@ urlpatterns = [
     url(r'^delivery/apply/(?P<delivery_value>[-\w]+)/$', views.delivery_charge, name='delivery_charge'),
     #-----------------------Payments urls begin----------------------------#
     #url(r'^admin/', include(admin.site.urls)),
-    url(r'^home/', Home),
+    url(r'^redirect_to_payment/', Home),
     url(r'^success/', success),
     url(r'^failure/', failure),
     # -----------------------Payments urls ends----------------------------#
