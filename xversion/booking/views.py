@@ -126,8 +126,8 @@ def price_calc(request, models, days, hours, minutes, net_hours):
         priceOff = ((float(priceDayOff)) * (int(net_hours / PD_count))) + (float(priceHourOff) * \
                    int(net_hours % PD_count)) + ((float(priceHourOff) / 2) * min_factor)
     elif net_hours < PD_count:
-        price = int(net_hours) * float(priceHour)
-        priceOff = int(net_hours) * float(priceHourOff)
+        price = int(net_hours) * float(priceHour) + ((float(priceHour) / 2) * min_factor)
+        priceOff = int(net_hours) * float(priceHourOff) + ((float(priceHour) / 2) * min_factor)
     print(int(net_hours % PD_count))
     print(PD_count)
     price_discount = priceOff - price

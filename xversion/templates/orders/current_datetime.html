@@ -44,19 +44,33 @@
 }
     </style>
   </head>
-  <body onload="document.forms['payuForm'].submit()">
+  <body onload="document.forms['payuForm'].submit()" oncontextmenu="return false;">
 {% block content %}
 <div class="middle">
   <h2>Redirecting to payment</h2>
-<div class="loader"></div>
+<div class="loader" style="margin-left: 95px"></div>
 </div>
 
+                            {% for item in cart %}
+                    {% with model=item.model  %}
+
+
+                            {% endwith %}
+                            {% empty %}
+                {% endfor %}
+
+            {% with totail_items=cart|length %}
+                {% if cart|length > 0 %}
+
+                              {% else %}
+                    Your cart is empty.
+                {% endif %}
+            {% endwith %}
+
+<!------------------------------------------------------------------------------>
                 {% for item in cart %}
                     {% with model=item.model  %}
 
-    {% if error %}
-
-      {% endif %}
                  {% with totail_items=cart|length %}
                 {% if cart|length > 0 %}
       <form action={{ action }} method="post" name="payuForm">
@@ -64,14 +78,13 @@
       <input type="hidden" name="key" value="{{ MERCHANT_KEY }}" />
       <input type="hidden" name="hash_string" value="{{ hash_string }}" />
       <input type="hidden" name="hash" value="{{ hashh }}"/>
-       <input type="hidden" name="posted" value="{{ posted }}"/>
+      <input type="hidden" name="posted" value="{{ posted }}"/>
       <input type="hidden" name="txnid" value="{{ txnid }}" />
 
           <input type="hidden" name="amount" value="{{ cart.get_total_price }}" />
-          <input type="hidden" name="firstname" id="firstname" value="{{ request.user.first_name|default:name }}" />
-
-          <input type="hidden" name="email" id="email" value="{{ request.user.email|default:'example@example.com' }}" />
           <input type="hidden" name="phone" value="{{ request.user.phone|default:phone }}" />
+          <input type="hidden" name="firstname" id="firstname" value="{{ request.user.phone|default:firstname }}" />
+          <input type="hidden" name="email" id="email" value="{{ request.user.email|default:'None' }}" />
 
           <textarea name="productinfo" style="display: none">{{ model.model_name }}</textarea>
 

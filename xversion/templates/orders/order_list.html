@@ -140,7 +140,6 @@ h1 {
 
 input {
   padding: 10px;
-  width: 100%;
   font-size: 17px;
   font-family: Raleway;
   border: 1px solid #aaaaaa;
@@ -226,6 +225,7 @@ button:hover {
                             {% for item in cart %}
                     {% with model=item.model  %}
 <div class="media">
+    <!--<a href="{% url 'orders:cart_remove' model.m_id %}"><span class="fa fa-close" style="color: grey; float: right"></span></a>-->
   <div class="media-left media-top">
 <a href="{{ model.get__absolute_url }}">
     <img src="{% if model.model_image %} {{ media_url }}{{ model.model_image.img }} {% else %} {% static 'img/default.jpg' %} {% endif %}" alt="..." style="width: 8em">
@@ -237,7 +237,7 @@ button:hover {
         <div><label><input id="delv_check" type="checkbox" {% if request.session.delivery %}checked{% endif %}> I want delivery (Charges*)</label></div>
       {% endif %}
     <p>₹{{ item.price }}</p>
-    <a href="{% url 'orders:cart_remove' model.m_id %}">Remove</a>
+          <a href="{% url 'orders:cart_remove' model.m_id %}">Remove</a>
   </div>
 </div>
                             <hr>
@@ -294,19 +294,23 @@ button:hover {
                      {% csrf_token %}
     <span id="close-popup" class="fa fa-close"></span>
     <h3><a href="http://127.0.0.1:8000/accounts/login/" style="margin-left: 25px">Login</a><div style="margin-top: 8px">OR</div></h3>
-  <!-- One "tab" for each step in the form: -->
   <div class="tab">
     <p><input placeholder="Mobile Number" oninput="this.className = ''" name="phone"></p>
   </div>
   <div class="tab">
-    <p><input placeholder="Your Name" oninput="this.className = ''" name="fname"></p>
+    <p><input placeholder="Your Name" oninput="this.className = ''" name="firstname"></p>
+  </div>
+  <div class="tab">
+    <p><input placeholder="Enter OTP" oninput="this.className = ''" name="otp"></p>
   </div>
   <div style="overflow:auto;">
     <div style="float:right;">
       <button type="button" id="prevBtn" onclick="nextPrev(-1)">Back</button>
+      <button type="button" id="rsndBtn" onclick="" style="background-color: #bbbbbb">Resend</button>
       <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
     </div>
   <div style="text-align:center;margin-top:40px; display: none">
+    <span class="step"></span>
     <span class="step"></span>
     <span class="step"></span>
   </div>
@@ -385,6 +389,7 @@ function showTab(n) {
   // This function will display the specified tab of the form...
   var x = document.getElementsByClassName("tab");
   x[n].style.display = "block";
+  document.getElementById("rsndBtn").style.display = "none";
   //... and fix the Previous/Next buttons:
   if (n == 0) {
     document.getElementById("prevBtn").style.display = "none";
@@ -392,7 +397,8 @@ function showTab(n) {
     document.getElementById("prevBtn").style.display = "inline";
   }
   if (n == (x.length - 1)) {
-    document.getElementById("nextBtn").innerHTML = "Pay Now";
+    document.getElementById("rsndBtn").style.display = "inline";
+    document.getElementById("nextBtn").innerHTML = "Verify";
   } else {
     document.getElementById("nextBtn").innerHTML = "Next";
   }

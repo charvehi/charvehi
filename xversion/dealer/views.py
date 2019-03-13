@@ -44,13 +44,13 @@ def show(request):
             models_list.append(m)
     form = EditDealerForm(instance=dealer)
 
-    args= {
-        'dealers':dealers,
-        'models':models_list,
+    args = {
+        'dealers': dealers,
+        'models': models_list,
         'media_url': settings.MEDIA_URL,
-        'form':form,
+        'form': form,
          }
-    return render(request,"dealer/detailshow.html",args)
+    return render(request, "dealer/detailshow.html", args)
 
 @dealer_required
 @login_required

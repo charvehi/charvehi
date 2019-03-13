@@ -17,8 +17,8 @@ class UserOrderInfo(models.Model):
         (3, str(three.day) + " " + str(three.strftime("%b"))),
         (4, str(four.day) + " " + str(four.strftime("%b"))),
     )
-    order_id = models.BigIntegerField(primary_key=True, default=0)
-    u_id = models.BigIntegerField(default=0)
+    order_id = models.CharField(max_length=80, blank=False)
+    u_id = models.BigIntegerField(default=0, blank=True)
     name = models.CharField(max_length=40, blank=False, default=0)
     mobile = models.IntegerField(default=0)
     d_id = models.IntegerField(default=0)
@@ -41,7 +41,8 @@ class UserOrderInfo(models.Model):
     #REQUIRED_FIELDS = ['email', 'password']
 
     def __str__(self):
-        return self.order_id, self.d_id
+        template = 'Order Id: {0.order_id}, Dealer Id: {0.d_id}'
+        return template.format(self)
 
     class Meta:
         verbose_name_plural = 'Orders'

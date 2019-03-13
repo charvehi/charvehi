@@ -64,7 +64,7 @@ class CategoryModel(models.Model):   #Model storage table
     model_name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=150, unique=True, db_index=True)
     model_image = models.ForeignKey(CategoryModelImage, db_column='image', null=True, on_delete=models.CASCADE)
-    rating = models.IntegerField()
+    rating = models.IntegerField(default=0)
     status = models.BooleanField(default=False)
     specification = models.CharField(max_length=300)
 

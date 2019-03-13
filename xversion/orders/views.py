@@ -6,6 +6,7 @@ from booking.models import CategoryModel
 from .cart import Cart
 import datetime
 from django.contrib.auth.decorators import login_required
+from datetime import datetime as dt
 
 #---------------------Payments views begin--------------------------#
 from django.shortcuts import render, render_to_response
@@ -28,17 +29,12 @@ def Home(request):
     action = ''
     posted = {}
     phone = request.POST.get('phone', '')
-    name = request.POST.get('fname', '')
-    print(phone)
+    firstname = request.POST.get('firstname')
     # Merchant Key and Salt provided y the PayU.
     for i in request.POST:
         posted[i] = request.POST[i]
     hash_object = hashlib.sha256(b'randint(0,20)')
     txnid = hash_object.hexdigest()[0:20]
-    '''amount = 253
-    productinfo = 'good'
-    firstname = 'ayush'
-    email = 'ayush4920@gmail.com'''''
     hashh = ''
     posted['txnid'] = txnid
 
@@ -59,7 +55,7 @@ def Home(request):
             "firstname") != None and posted.get("email") != None):
         args = {
             "phone": phone,
-            "name": name,
+            "firstname": firstname,
             "cart": cart,
             "posted": posted, "hashh": hashh,
             "MERCHANT_KEY": MERCHANT_KEY,
@@ -71,7 +67,7 @@ def Home(request):
     else:
         args = {
             "phone": phone,
-            "name": name,
+            "firstname": firstname,
             "cart": cart,
             "posted": posted, "hashh": hashh,
             "MERCHANT_KEY": MERCHANT_KEY,
@@ -101,7 +97,7 @@ def success(request):
         retHashSeq = additionalCharges + '|' + salt + '|' + status + '|||||||||||' + email + '|' + firstname + '|' + productinfo + '|' + amount + '|' + txnid + '|' + key
     except Exception:
         retHashSeq = salt + '|' + status + '|||||||||||' + email + '|' + firstname + '|' + productinfo + '|' + amount + '|' + txnid + '|' + key
-    hashh = hashlib.sha512(retHashSeq).hexdigest().lower()
+    hashh = hashlib.sha512(retHashSeq.encode('utf-8')).hexdigest().lower()
     if (hashh != posted_hash):
         print
         "Invalid Transaction. Please try again"
@@ -112,6 +108,74 @@ def success(request):
         "Your Transaction ID for this transaction is ", txnid
         print
         "We have received a payment of Rs. ", amount, ". Your order will soon be shipped."
+
+    #------------------------------save order in DB---------------------------#
+    cart = Cart(request)
+    start = request.COOKIES.get('start')
+    end = request.COOKIES.get('end')
+    days, hours, minutes, net_hours = duration_calc(request, start, end)
+
+    d_li = []
+    m_li = []
+    price_hour_dealer_li = []
+    price_day_dealer_li = []
+    dealer_money_li = []
+
+    for item in cart:
+        dealer = item['model'].d_id.d_id
+        model = item['model'].m_id
+        dealer_hour_price = item['model'].price_hour_dealer
+        dealer_day_price = item['model'].price_day_dealer
+        dealer_amount = dealer_money(request, item['model'], days, hours, minutes, net_hours)
+
+        d_li.append(dealer)
+        m_li.append(model)
+        price_hour_dealer_li.append(dealer_hour_price)
+        price_day_dealer_li.append(dealer_day_price)
+        dealer_money_li.append(dealer_amount)
+
+    for d_id, m_id, price_h_dealer, price_d_dealer, money_dealer in zip(d_li, m_li, price_hour_dealer_li, price_day_dealer_li, dealer_money_li):
+
+        orders = UserOrderInfo()
+        models = CategoryModel()
+        if request.session.get('delivery'):
+            if request.session['delivery']:
+                orders.delivery = 1
+            else:
+                orders.delivery = 0
+
+        if request.user.id is None:
+            orders.u_id = 0
+        else:
+            orders.u_id = request.user.id
+
+        orders.order_id = txnid
+        orders.u_id = orders.u_id
+        orders.name = request.POST["firstname"]
+        orders.mobile = request.POST["phone"]
+        orders.d_id = d_id
+        orders.m_id = m_id
+        orders.booked_at = datetime.datetime.now()
+        orders.start_date = datetime.datetime.strptime(request.COOKIES.get('start').split(" ", 1)[0], '%d/%m/%Y').strftime('%Y-%m-%d')
+        orders.start_time = request.COOKIES.get('start').split(" ", 1)[1]
+        orders.end_date = datetime.datetime.strptime(request.COOKIES.get('end').split(" ", 1)[0], '%d/%m/%Y').strftime('%Y-%m-%d')
+        orders.end_time = request.COOKIES.get('end').split(" ", 1)[1]
+        orders.duration = str(days)+"::"+str(hours)+":"+str(minutes)+"("+str(net_hours)+")"
+        orders.delivery = orders.delivery
+        orders.price_hour = price_h_dealer
+        orders.price_day = price_d_dealer
+        orders.dealer_money = money_dealer
+        orders.amount_paid = request.POST["amount"]
+        orders.lat = request.COOKIES.get('lat')
+        orders.lon = request.COOKIES.get('lon')
+
+        for item in cart:
+            models = CategoryModel.objects.get(m_id=item['model'].m_id)
+            models.status = 0
+            models.save()
+        cart.clear()
+        orders.save()
+    #------------------------------save order in DB ends-------------------------------#
 
     args = {
         "txnid": txnid,
@@ -151,8 +215,25 @@ def failure(request):
         "Your Transaction ID for this transaction is ", txnid
         print
         "We have received a payment of Rs. ", amount, ". Your order will soon be shipped."
+
     return render(request, "orders/Failure.html", c)
 #---------------------Payments views ends--------------------------#
+
+
+def duration_calc(request, start, end):
+    datetimeFormat1 = '%d/%m/%Y %I:%M %p'
+    check = dt.strptime(start, datetimeFormat1)
+    check.strftime('%d/%m/%Y %H:%M')
+
+
+    check1 = dt.strptime(end, datetimeFormat1)
+    check1.strftime('%d/%m/%Y %H:%M')
+    newdiff = check1 - check
+    days, hours, minutes = newdiff.days, newdiff.seconds // 3600, newdiff.seconds % 3600 / 60.0
+    print(hours)
+    net_hours = (days*24)+hours
+    print(net_hours)
+    return days, hours, minutes, net_hours
 
 
 @login_required
@@ -238,11 +319,27 @@ def cart_remove(request, model_id):
 
 def cart_detail(request):
     cart = Cart(request)
+
     loc = request.COOKIES.get('loc')
     start = request.COOKIES.get('start')
     end = request.COOKIES.get('end')
     lat = request.COOKIES.get('lat')
     lon = request.COOKIES.get('lon')
+
+    s = "15/03/2019 12:30 PM"
+    print("string is")
+    print(s.split(" ", 1)[1])
+
+    d_li = []
+    m_li = []
+    for item in cart:
+        model = item['model'].price_hour_dealer
+        dealer = item['model'].d_id.d_id
+        d_li.append(dealer)
+        m_li.append(model)
+    print(d_li)
+    print(m_li)
+
     if request.session.get('coupon', None):
         coupon_name = request.session['coupon']
     else:
@@ -252,6 +349,7 @@ def cart_detail(request):
     if request.user.is_authenticated:
         if request.user.ride_count is 0:
             coupon_name = None
+
     #for item in cart:
      #   item['update_quantity_form'] = CartAddProductForm(initial={'quantity': item['quantity'], 'update': True})
     context = {
@@ -268,6 +366,38 @@ def cart_detail(request):
     return render(request, 'orders/order_list.html', context)
 
 
+def dealer_money(request, models, days, hours, minutes, net_hours):
+    priceHour = models.price_hour_dealer
+    PH_Count = models.ph_count
+    priceDay = models.price_day_dealer
+    PD_count = models.pd_count
+
+    print(priceHour)
+    print(priceDay)
+
+    min_factor = 0
+    if int(minutes) is not 0:
+        min_factor = 1
+
+    if PD_count is 1:
+        PD_count = 12
+    else:
+        PD_count = 24
+
+    if PD_count >= net_hours > PH_Count:
+        dealer_money = (float(priceDay))
+
+    elif net_hours >= PD_count:
+        dealer_money = ((float(priceDay)) * (int(net_hours / PD_count))) + (float(priceHour) * \
+                int(net_hours % PD_count)) + ((float(priceHour) / 2) * min_factor)
+
+    elif net_hours < PD_count:
+        dealer_money = int(net_hours) * float(priceHour) + ((float(priceHour) / 2) * min_factor)
+
+    print(dealer_money)
+    return dealer_money
+
+
 def delivery_charge(request, delivery_value):
     print("entered del")
     dv = delivery_value
@@ -281,3 +411,5 @@ def delivery_charge(request, delivery_value):
         del request.session['delivery']
         request.session.modified = True
         return HttpResponse(request)
+
+
