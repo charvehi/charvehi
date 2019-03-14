@@ -99,8 +99,7 @@ def success(request):
         retHashSeq = salt + '|' + status + '|||||||||||' + email + '|' + firstname + '|' + productinfo + '|' + amount + '|' + txnid + '|' + key
     hashh = hashlib.sha512(retHashSeq.encode('utf-8')).hexdigest().lower()
     if (hashh != posted_hash):
-        print
-        "Invalid Transaction. Please try again"
+        print("Invalid Transaction. Please try again")
     else:
         print
         "Thank You. Your order status is ", status
@@ -137,7 +136,6 @@ def success(request):
     for d_id, m_id, price_h_dealer, price_d_dealer, money_dealer in zip(d_li, m_li, price_hour_dealer_li, price_day_dealer_li, dealer_money_li):
 
         orders = UserOrderInfo()
-        models = CategoryModel()
         if request.session.get('delivery'):
             if request.session['delivery']:
                 orders.delivery = 1
