@@ -37,10 +37,22 @@ class Cart(object):
             # --------------------Price calculation ends-----------------------#
 
         if model_id not in self.cart:
-            self.cart[model_id] = {'quantity': 0, 'price': str(model.price)}
+            self.cart[model_id] = {'quantity': 0, 'price': str(model.price), 'delivery': 0}
             self.cart[model_id]['quantity'] += quantity
             #self.cart[model_id]['quantity'] += quantity
         self.save()
+
+    def add_delivery(self, model):
+        model_id = str(model.m_id)
+        if model_id in self.cart:
+            self.cart[model_id]['delivery'] = 1
+            self.save()
+
+    def remove_delivery(self, model):
+        model_id = str(model.m_id)
+        if model_id in self.cart:
+            self.cart[model_id]['delivery'] = 0
+            self.save()
 
     def save(self):
         self.session[settings.CART_SESSION_ID] = self.cart

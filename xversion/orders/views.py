@@ -133,14 +133,14 @@ def success(request):
         price_day_dealer_li.append(dealer_day_price)
         dealer_money_li.append(dealer_amount)
 
-    for d_id, m_id, price_h_dealer, price_d_dealer, money_dealer in zip(d_li, m_li, price_hour_dealer_li, price_day_dealer_li, dealer_money_li):
-
+    for d_id, m_id, price_h_dealer, price_d_dealer, money_dealer, item in zip(d_li, m_li, price_hour_dealer_li, price_day_dealer_li, dealer_money_li, cart):
         orders = UserOrderInfo()
-        if request.session.get('delivery'):
-            if request.session['delivery']:
-                orders.delivery = 1
-            else:
-                orders.delivery = 0
+        print("delivery value is")
+        print(item['delivery'])
+        if item['delivery'] is 1:
+            orders.delivery = 1
+        else:
+            orders.delivery = 0
 
         if request.user.id is None:
             orders.u_id = 0
@@ -167,12 +167,11 @@ def success(request):
         orders.lat = request.COOKIES.get('lat')
         orders.lon = request.COOKIES.get('lon')
 
-        for item in cart:
-            models = CategoryModel.objects.get(m_id=item['model'].m_id)
-            models.status = 0
-            models.save()
-        cart.clear()
+        models = CategoryModel.objects.get(m_id=item['model'].m_id)
+        models.status = 0
+        models.save()
         orders.save()
+    cart.clear()
     #------------------------------save order in DB ends-------------------------------#
 
     args = {
@@ -187,6 +186,7 @@ def success(request):
 @csrf_exempt
 def failure(request):
     c = {}
+    cart = Cart(request)
     c.update(csrf(request))
     status = request.POST["status"]
     firstname = request.POST["firstname"]
@@ -396,18 +396,19 @@ def dealer_money(request, models, days, hours, minutes, net_hours):
     return dealer_money
 
 
-def delivery_charge(request, delivery_value):
+def delivery_charge(request, model_id, delivery_value):
     print("entered del")
     dv = delivery_value
     print(dv)
+    cart = Cart(request)
+    product = get_object_or_404(CategoryModel, m_id=model_id)
     #d_charge = get_object_or_404(CategoryModel, is_delivery=True)
     if dv is '1':
-            print("applied")
-            request.session['delivery'] = dv
-            return HttpResponse(request)
+        print("applied")
+        cart.add_delivery(product)
+        return HttpResponse(request)
     elif dv is '0':
-        del request.session['delivery']
-        request.session.modified = True
+        cart.remove_delivery(product)
         return HttpResponse(request)
 
 

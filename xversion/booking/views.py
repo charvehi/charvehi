@@ -239,7 +239,7 @@ def category_model_details(request, model_id, model_slug=None):
     lon = math.radians(float(lon_o))
     r = 6371.0
     if model_slug is not None:
-        details = CategoryModel.objects.filter(m_id=model_id)
+        details = CategoryModel.objects.filter(m_id=model_id, status=1)
         dealer = get_object_or_404(CategoryModel, m_id=model_id)
 
         days, hours, minutes, net_hours = duration_calc(request, start, end)

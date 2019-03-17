@@ -234,7 +234,7 @@ button:hover {
   <div class="media-body">
     <h4 class="media-heading">{{ model.model_name }}</h4>
       {% if model.is_delivery is True %}
-        <div><label><input id="delv_check" type="checkbox" {% if request.session.delivery %}checked{% endif %}> I want delivery (Charges*)</label></div>
+        <div><label><input class="delv_check" type="checkbox" {% if item.delivery is 1 %}checked{% endif %} name="{{ model.m_id }}"> I want delivery (Charges*)</label></div>
       {% endif %}
     <p>₹{{ item.price }}</p>
           <a href="{% url 'orders:cart_remove' model.m_id %}">Remove</a>
@@ -320,25 +320,28 @@ button:hover {
 
 <script>
 $(document).ready(function() {
-    function del_check(check){
+    function del_check(m_id, check){
             //var cc = $('#coupon').val();
             $.ajax({
-                url: 'http://127.0.0.1:8000/bike/book/delivery/apply/'+check,
+                url: 'http://127.0.0.1:8000/bike/book/delivery/apply/'+m_id+'/'+check,
                 data: null,
                 success: function (data) {
                     window.location.href = window.location.href;
                 },
             });
     }
-$('#delv_check').change(function() {
+$('.delv_check').change(function(ev) {
+  elementClicked = $(ev.target);
+  var name = elementClicked.attr('name');
+  var m_id = $("input[name=" + name + "]").attr("name");
   if ($(this).is(':checked')) {
-      var check = "1";
+    var check = "1";
     console.log('Checked');
-    del_check(check);
+    del_check(m_id, check);
   } else {
     var check = "0";
     console.log('Unchecked');
-    del_check(check);
+    del_check(m_id, check);
   }
 });
 

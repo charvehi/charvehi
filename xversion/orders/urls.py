@@ -15,7 +15,7 @@ urlpatterns = [
     url(r'^orders/$', views.cart_detail, name='cart_detail'),
     url(r'^make_purchase/add/(?P<model_id>\d+)/(?P<model_slug>[-\w]+)/$', views.cart_add, name='cart_add'),
     url(r'^remove/(?P<model_id>\d+)/$', views.cart_remove, name='cart_remove'),
-    url(r'^delivery/apply/(?P<delivery_value>[-\w]+)/$', views.delivery_charge, name='delivery_charge'),
+    url(r'^delivery/apply/(?P<model_id>\d+)/(?P<delivery_value>[-\w]+)/$', views.delivery_charge, name='delivery_charge'),
     #-----------------------Payments urls begin----------------------------#
     #url(r'^admin/', include(admin.site.urls)),
     url(r'^redirect_to_payment/', Home),

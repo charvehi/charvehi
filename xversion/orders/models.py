@@ -20,7 +20,7 @@ class UserOrderInfo(models.Model):
     order_id = models.CharField(max_length=80, blank=False)
     u_id = models.BigIntegerField(default=0, blank=True)
     name = models.CharField(max_length=40, blank=False, default=0)
-    mobile = models.IntegerField(default=0)
+    mobile = models.BigIntegerField(default=0)
     d_id = models.IntegerField(default=0)
     m_id = models.IntegerField(default=0)
     booked_at = models.DateTimeField(auto_now=True)
