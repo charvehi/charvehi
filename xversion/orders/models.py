@@ -38,6 +38,7 @@ class UserOrderInfo(models.Model):
     amount_paid = models.DecimalField(max_digits=6, decimal_places=2, default=0)
     lat = models.DecimalField(max_digits=9, decimal_places=6, blank=True, default=0)
     lon = models.DecimalField(max_digits=9, decimal_places=6, blank=True, default=0)
+    due = models.BooleanField(default=True)
     #REQUIRED_FIELDS = ['email', 'password']
 
     def __str__(self):
