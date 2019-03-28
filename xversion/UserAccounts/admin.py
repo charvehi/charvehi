@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.contrib.auth.models import Group
+from UserAccounts.models import Feedback
 
 from django import forms
 User = get_user_model()
@@ -35,5 +36,6 @@ class MyUserAdmin(UserAdmin):
 
 admin.site.register(User, MyUserAdmin)
 admin.site.unregister(Group)
+admin.site.register(Feedback)
 
 #admin.site.site_header = 'Charvehi' or admin/base_site.html

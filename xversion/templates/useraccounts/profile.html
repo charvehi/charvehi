@@ -23,59 +23,33 @@
 <body>
 
 {% block content %}
-
-            <header class="header7" id="header7">
-
   {% include "useraccounts/base.html" %}
 
-                <div class="intro center-content">
-                    <div class="container">
-                     {% if user.email %}
-                                            <div class="form-group">
-                                               <h3 class="text-center">Welcome {{ user.email }}</h3>
-                                            </div>
-                                            {% endif %}
-                        <div class="row">
-                            <div class="col-md-5">
+                        <div align="center">
+                        <img src="https://img.icons8.com/material-rounded/100/000000/user.png">
+                        </div>
 
+                        <div class="row">
+                            <div class="col-md-12">
                                 <div class="row">
                                         <div class="col-sm-12">
-
-
-
-                                            {% if messages %}
-
-{% for message in messages %}
-<div >
-    {{message }}
-</div>
-{%endfor %}
-{% endif %}
-                                            {% if user %}
-                                            <div class="form-group">
-                                                username:{{ user }}
-                                            </div>
-                                            {% endif %}
+<div align="center">
+    {% if user.email %}
+                                                   <h3 class="text-center">Welcome {{ user }}</h3>
+    {% endif %}
                                             {% if user.email %}
                                             <div class="form-group">
-                                                Email:{{ user.email }}
+                                                {{ user.email }}
                                             </div>
                                             {% endif %}
                                             {% if user.first_name %}
                                             <div class="form-group">
-                                               FirsetName: {{user.first_name  }}
+                                               {{user.first_name }} {{ user.last_name }}
                                             </div>
-
-                                            {% endif %}
-                                            {% if user.last_name %}
-                                            <div class="form-group">
-                                                LastName:{{ user.last_name }}
-                                            </div>
-
                                             {% endif %}
                                             {% if user.city %}
                                             <div class="form-group">
-                                                Address:{{ user.city }}
+                                                {{ user.city }}
                                             </div>
 
                                             {% endif %}
@@ -85,18 +59,48 @@
                                             </div>
 
                                             {% endif %}
-
+</div>
+{% if messages %}
+{% for message in messages %}
+<div align="center">
+    {{message }}
+</div>
+{%endfor %}
+{% endif %}
                                         </div>
+                                    <div class="col-md-12">
+                                        <hr>
+                                        <h3 class="text-center"><strong>My Happy Rides</strong></h3>
+{% for rideinfo in rides %}
+<table class="table">
+    <thead>
+    <tr>
+            <th>Order ID: {{ rideinfo.order_id }}</th>
+    </tr>
+    </thead>
+	<tr>
+        <td height="17" align="left"><h3>Description</h3></td>
+        <td align="right"><h3>Values</h3></td>
+	</tr>
+	<tr>
+        <td height="17" align="left"><h4>Start date</h4></td>
+        <td align="right">{{ rideinfo.start_date }}<div style="font-size: 12px">({{ rideinfo.start_time }})</div></td>
+	</tr>
 
+	<tr>
+        <td height="17" align="left"><h4>End date</h4></td>
+        <td align="right">{{ rideinfo.end_date }}<div style="font-size: 12px">({{ rideinfo.end_time }})</div></td>
+	</tr>
+    <tr>
+        <td height="17" align="left"><h3>Amount</h3></td>
+        <td align="right"><h3>₹{{ rideinfo.amount_paid }}</h3><td>
+    </tr>
+</table>
+{% endfor %}
+                                    </div>
                             </div>
-
-                        </div><!-- row -->
-
-                    </div><!-- intro -->
-
-                </div><!-- container -->
-                </div>
-            </header><!-- header -->
-{% endblock %}
+                        </div>
+                    </div>
+                        {% endblock %}
 </body>
 </html>

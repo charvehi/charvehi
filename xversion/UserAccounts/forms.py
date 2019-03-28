@@ -1,11 +1,12 @@
 from  django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
+from django.forms import ModelForm, Textarea
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm, PasswordResetForm, \
     PasswordChangeForm
 
 from dealer.models import Dealer
-
+from UserAccounts.models import Feedback
 User = get_user_model()
 
 
@@ -169,3 +170,17 @@ class EditProfileForm(UserChangeForm):
 class NewPasswordResetForm(PasswordResetForm):
     email=forms.EmailField(widget=forms.TextInput(
         attrs={'class':'form-control','placeholder': 'Email Address', 'id': 'email', }),required=True)
+
+
+class FeedbackForm(ModelForm):
+    # rating = forms.IntegerField(widget=forms.TextInput(attrs={'id': 'reviewRating'}))
+    comment = forms.CharField(widget=forms.Textarea(attrs={'id': 'reviewComment', 'cols': 0, 'rows': 6}), max_length=200, required=True)
+
+    REQUIRED_FIELDS = ['comment', 'email']
+
+    class Meta:
+        model = Feedback
+        fields = ['rating', 'comment', 'email', 'phone']
+        widgets = {
+            'comment': Textarea(attrs={'id': 'reviewComment', 'cols': 40, 'rows': 3})
+        }

@@ -20,7 +20,8 @@ urlpatterns =[
     url(r'^change-password/$', views.change_password, name='change_password'),
     #new url for dealer login
     url(r'^regdealer/$', views.registerdealer, name='registerdealer'),
-
+    url(r'^feedback/$', views.feedback, name='feedback'),
+    url(r'^giveFeedback/$', views.giveFeedback, name='giveFeedback'),
     #url('^', include('django.contrib.auth.urls')),
 
 ]

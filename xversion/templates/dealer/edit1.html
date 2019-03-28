@@ -48,8 +48,8 @@
                     </div>
 
                   <div class="form-group">
-        <label class="">Model status:</label>
-   <input type="checkbox" name="status" id="id_status"  {%if model.status %}checked="{{  model.status }}" {%endif %}  />check or uncheck status
+        <label class="">Model Status:</label> {{  model.status }}
+   <input type="checkbox" name="status" id="id_status"  {%if model.status %}checked="{{  model.status }}" {%endif %}  />
 
                     </div>
                     <button type="submit" class="btn btn-success btn-block">Update</button>

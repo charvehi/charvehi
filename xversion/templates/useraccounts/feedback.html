@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+          <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-sclale=1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>My Profile - YAAN Rides</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="{% static 'stylesheet/index_direct.css' %}">
+<link rel="shortcut icon" href="{% static 'ico_set/ry-logo/favicon.ico' %}" type="image/x-icon">
+<link rel="icon" href="{% static 'ico_set/ry-logo/favicon.ico' %}" type="image/x-icon">
+    <style>
+            .navbar-default {
+    background: #131f3e;;
+}
+    </style>
+</head>
+<body>
+
+{% block content %}
+  {% include "useraccounts/base.html" %}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                        <div class="col-sm-12">
+<div align="center">
+    <div id="my_review_form">
+<h3>We value your feedback</h3>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<form id="review-form" action="">
+    {% csrf_token %}
+    <table style="border-collapse: separate; border-spacing: 10px;">
+        <tr><td><label for="rating">Rating:</label></td><td>{{ form.rating }}</td></tr>
+        <tr><td><label for="comment">Comment:</label></td><td>{{ form.comment }}</td></tr>
+        <tr><td><label for="email">Email:</label></td><td>{{ form.email }}</td></tr>
+    </table>
+    <div class="col-sm-12">
+            <div class="col-sm-4">
+            </div>
+            <div class="col-sm-4">
+    <div class="mk-bkng-btn-sec"><button type="submit" class="btn mk-bkng-btn">Post</button></a></div>
+            </div>
+            <div class="col-sm-4">
+            </div>
+    </div>
+</form>
+<!--Form end-->
+          </div>
+</div>
+                                        </div>
+                            </div>
+                        </div>
+                    </div>
+                        {% endblock %}
+</body>
+
+<script type="text/javascript" async>
+$(document).ready(function() {
+    var token = '{{csrf_token}}';
+    var m_id = '{{ model.m_id }}';
+    var reviewForm = $('#review-form');
+    reviewForm.submit(function(event) {
+        event.preventDefault();
+        var formData = reviewForm.serialize();
+            $.ajax({
+                headers: { "X-CSRFToken": token },
+                type: 'POST',
+                url: 'http://127.0.0.1:8000/accounts/giveFeedback/',
+                data: formData,
+                success: function (data) {
+                    document.getElementById('review-form').reset();
+                    alert('Thank you. Your feedback help us improve.');
+                    location.reload();
+                },
+                error: function (data) {
+                    alert('Failed to feedback');
+                }
+            });
+        //}
+    });
+});
+</script>
+</html>

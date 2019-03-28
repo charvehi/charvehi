@@ -1,14 +1,20 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-
+from django.shortcuts import render, redirect, get_object_or_404
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm,PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash, get_user_model
 from django.urls import reverse
-
 from .forms import RegistrationForm, EditProfileForm, DealerRegistrationForm
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.models import User
+from orders.models import UserOrderInfo
+from booking.models import CategoryModel
+from UserAccounts.models import Feedback
+from UserAccounts.forms import FeedbackForm
+from django.http import HttpResponse
+import datetime
+
 
 User = get_user_model()
 # Create your views here.
@@ -53,9 +59,22 @@ def registerdealer(request):
 @login_required
 def view_profile(request):
     storage = messages.get_messages(request)
-
-    args = {'user': request.user,'message':storage}
-    return render(request,'useraccounts/profile.html',args)
+    user = get_object_or_404(User, username=request.user)
+    rides = UserOrderInfo.objects.filter(u_id=user.id)
+    print(rides)
+    model_name = []
+    for r in rides:
+        model = get_object_or_404(CategoryModel, m_id=r.m_id)
+        model_name.append(model)
+    print(model_name)
+    print(user.id)
+    args = {
+                'user': request.user,
+                'message': storage,
+                'rides': rides,
+                'model': model_name,
+         }
+    return render(request, 'useraccounts/profile.html', args)
 
 def edit_profile(request):
     if request.method == 'POST':
@@ -87,6 +106,33 @@ def change_password(request):
         form = PasswordChangeForm(user= request.user)
         args = {'form': form}
         return render(request,'useraccounts/change_password.html',args)
+
+
+def feedback(request):
+    form = FeedbackForm()
+    context = {
+        'form': form,
+    }
+    return render(request, 'useraccounts/feedback.html', context)
+
+
+def giveFeedback(request):
+    if request.is_ajax() and request.method == 'POST':
+        rating = request.POST.get('rating')
+        comment = request.POST.get('comment')
+        email = request.POST.get('email')
+
+        review = Feedback()
+        review.rating = rating
+        review.comment = comment
+        review.email = email
+        review.pub_date = datetime.datetime.now()
+        review.save()
+        return HttpResponse(review)
+    else:
+            print("form invalid")
+    return render(request, 'useraccounts/feedback.html')
+
 
 
 
