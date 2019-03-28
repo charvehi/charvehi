@@ -58,11 +58,16 @@ def show(request):
 def edit(request, id):
     model = CategoryModel.objects.get(m_id=id)
     return render(request,'dealer/edit1.html', {'model':model})
+
+
+
 @dealer_required
 @login_required
 def update(request, id):
     model = CategoryModel.objects.get(m_id=id)
+    print(model)
     form = EditModelForm(request.POST, instance = model)
+    print(form)
     if form.is_valid():
         u = form.save()
         u.save()

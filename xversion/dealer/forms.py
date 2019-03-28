@@ -10,21 +10,24 @@ class DealerForm(forms.ModelForm):
         model = Dealer
         fields = "__all__"
 
-class EditDealerForm(UserChangeForm):
+class EditDealerForm(forms.ModelForm):
     status = forms.BooleanField(required=False)
 
     class Meta:
         model = Dealer
         fields = {
-        'status',
-        
+            'status',
+        }
+        exclude = {
+            'password'
         }
 
-class EditModelForm(UserChangeForm):
+class EditModelForm(forms.ModelForm):
     status =forms.BooleanField(required=False)
 
     class Meta:
         model = CategoryModel
-        fields = { 'status',}
+        fields = { 'status'}
+        exclude = { 'password', }
 
 
