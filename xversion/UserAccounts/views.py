@@ -84,7 +84,7 @@ def edit_profile(request):
             form.save()
            # profile_form.save()
 
-            return redirect('/useraccounts/profile')
+            return redirect('/accounts/profile')
     else:
         form = EditProfileForm(instance=request.user)
         #profile_form = EditProfileFormCustom(instance=request.user.userprofile)

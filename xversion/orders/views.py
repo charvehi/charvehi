@@ -3,6 +3,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from orders.models import UserOrderInfo
 from booking.models import CategoryModel
+
+from UserAccounts.decorators import admin_required
 from .cart import Cart
 import datetime
 from django.contrib.auth.decorators import login_required
@@ -235,6 +237,7 @@ def duration_calc(request, start, end):
 
 
 @login_required
+@admin_required
 def order_report(request):
     orders = UserOrderInfo.objects.all()
     print(datetime.date.today())

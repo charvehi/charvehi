@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.forms import ModelForm, Textarea
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm, PasswordResetForm, \
-    PasswordChangeForm
+    PasswordChangeForm, ReadOnlyPasswordHashField
 
 from dealer.models import Dealer
 from UserAccounts.models import Feedback
@@ -153,7 +153,6 @@ class EditProfileForm(UserChangeForm):
     phone = forms.RegexField(regex=r'^(\+\d{1,3})?,?\s?\d{8,13}$', widget=forms.TextInput(
         attrs={'class': 'form-control', 'placeholder': 'Enter mobile number', 'id': 'mobile', }), required=True)
 
-
     class Meta:
         model = User
         fields = {
@@ -166,6 +165,9 @@ class EditProfileForm(UserChangeForm):
         exclude = {
 
         }
+
+    def clean_password(self):
+            return ""
         #we can use exclude = {}
 class NewPasswordResetForm(PasswordResetForm):
     email=forms.EmailField(widget=forms.TextInput(

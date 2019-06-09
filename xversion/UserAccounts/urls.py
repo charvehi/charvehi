@@ -16,8 +16,10 @@ urlpatterns =[
     url(r'^logout/$', LogoutView.as_view(template_name='useraccounts/logout.html'), name='logout'),
     url(r'^register/$', views.register, name='register'),
     url(r'^profile/$', views.view_profile, name='view_profile'),
+    #url(r'^profile/edit/$', , name='edit_profile'),
     url(r'^profile/edit/$', views.edit_profile, name='edit_profile'),
-    url(r'^change-password/$', views.change_password, name='change_password'),
+    url(r'^change-password/$',auth_views.PasswordChangeView.as_view(template_name='useraccounts/change_password.html'),name='change_password'),
+    #url(r'^change-password/$', views.change_password, name='change_password'),
     #new url for dealer login
     url(r'^regdealer/$', views.registerdealer, name='registerdealer'),
     url(r'^feedback/$', views.feedback, name='feedback'),
